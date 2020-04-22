@@ -4,8 +4,6 @@ This is the Unity SDK of AdTrace™. It supports iOS, Android, Windows Store 8.1
 
 **Note**: As of version **1.0.0**, AdTrace Unity SDK is compatible with **Unity 5 and newer** versions.
 
-Read this in other languages: [English][en-readme], [中文][zh-readme], [日本語][ja-readme], [한국어][ko-readme].
-
 ## Table of contents
 
 * [Basic integration](#basic-integration)
