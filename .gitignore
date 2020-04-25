@@ -200,7 +200,7 @@ src/
 src.meta
 ProjectSettings/
 Scripts/Unity4Assets
-AdTrace.unitypackage
+*.unitypackage
 
 # ======================= #
 # Unity Project necessary #
