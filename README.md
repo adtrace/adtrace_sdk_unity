@@ -396,6 +396,18 @@ adtraceEvent.setCallbackId("Your-Custom-Id");
 AdTrace.trackEvent(adtraceEvent);
 ```
 
+### <a id="cp-event-event-value"></a>Event value
+
+You can also add custom string value to event. You can set this value by calling the `setEventValue` method on your `AdTraceEvent` instance:
+
+```cs
+AdTraceEvent adtraceEvent = new AdTraceEvent("abc123");
+
+adtraceEvent.setEventValue("Your-Value");
+
+AdTrace.trackEvent(adtraceEvent);
+```
+
 ### <a id="cp-session-parameters"></a>Session parameters
 
 Session parameters are saved locally and sent with every AdTrace SDK **event and session**. Whenever you add these parameters, we save them (so you don't need to add them again). Adding the same parameter twice will have no effect.
@@ -628,6 +640,16 @@ AdTraceAttribution attribution = AdTrace.getAttribution();
 ```
 
 **Note**: Current attribution information is available after our backend tracks the app install and triggers the attribution callback. It is not possible to access a user's attribution value before the SDK has been initialized and the attribution callback has been triggered.
+
+### <a id="ad-send-installed-apps"></a>Send installed apps
+
+To increase the accuracy and security in fraud detection, you can enable the sending of installed applications on user's device as follows:
+
+```cs
+adtraceConfig.setEnableSendInstalledApps(true);
+```
+
+**Note**: This option is **disabled** by default.
 
 ### <a id="ad-device-ids"></a>Device IDs
 
