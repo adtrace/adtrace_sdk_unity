@@ -85,7 +85,7 @@ As of version `1.0.3`, you can download the latest version from our [releases pa
 
 Open your project in the Unity Editor, go to `Assets → Import Package → Custom Package` and select the downloaded Unity package file.
 
-![][import_package]
+![Import package](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/Assets/import-unitypackage.png)
 
 ### <a id="qs-integrate-sdk"></a>Integrate the SDK into your app
 
@@ -102,7 +102,7 @@ You can edit the AdTrace script parameters in the prefab `Inspector menu` to set
 * [log level](#adtrace-logging)
 * [environment](#environment)
 
-![][adtrace_editor]
+![AdTrace Prefab](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/Assets/prefab-editor.png)
 
 <a id="app-token">Replace `{YourAppToken}` with your actual App Token.
 
@@ -781,7 +781,5 @@ If needed, disable dSYM File. In the `Project Navigator`, select the `Unity-iPho
 [install-referrer-aar]:    Extras/Android/installreferrer-1.1.2.aar
 [android-custom-receiver]: https://github.com/adtrace/adtrace_sdk_android/blob/master/doc/english/multiple-receivers.md
 
-[adtrace_editor]:            docs/Assets/prefab-editor.png
-[import_package]:      docs/Assets/import-unitypackage.png
 [ads_identifier]: Extras/Android/play-services-ads-identifier-17.0.0.aar
 [ads_identifier_maven]: https://maven.google.com/com/google/android/gms/play-services-ads-identifier/17.0.0/play-services-ads-identifier-17.0.0.aar
