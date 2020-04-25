@@ -8,7 +8,7 @@ namespace com.adtrace.sdk
 #if UNITY_IOS
     public class AdTraceiOS
     {
-        private const string sdkPrefix = "unity1.0.0";
+        private const string sdkPrefix = "unity1.0.3";
 
         [DllImport("__Internal")]
         private static extern void _AdTraceLaunchApp(
