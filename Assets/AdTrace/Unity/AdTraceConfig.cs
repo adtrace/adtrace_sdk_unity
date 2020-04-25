@@ -17,6 +17,7 @@ namespace com.adtrace.sdk
         internal bool? isDeviceKnown;
         internal bool? sendInBackground;
         internal bool? eventBufferingEnabled;
+        internal bool? enableSendInstalledApps;
         internal bool? allowSuppressLogLevel;
         internal bool launchDeferredDeeplink;
         internal AdTraceLogLevel? logLevel;
@@ -31,6 +32,9 @@ namespace com.adtrace.sdk
         // Android specific members
         internal bool? readImei;
         internal string processName;
+        // iOS specific members
+        internal bool? allowiAdInfoReading;
+        internal bool? allowIdfaReading;
         // Windows specific members
         internal Action<String> logDelegate;
 
@@ -74,6 +78,11 @@ namespace com.adtrace.sdk
         public void setEventBufferingEnabled(bool eventBufferingEnabled)
         {
             this.eventBufferingEnabled = eventBufferingEnabled;
+        }
+
+        public void setEnableSendInstalledApps(bool enableSendInstalledApps)
+        {
+            this.enableSendInstalledApps = enableSendInstalledApps;
         }
 
         public void setDelayStart(double delayStart)
@@ -164,6 +173,17 @@ namespace com.adtrace.sdk
             this.info2 = info2;
             this.info3 = info3;
             this.info4 = info4;
+        }
+
+        // iOS specific methods.
+        public void setAllowiAdInfoReading(bool allowiAdInfoReading)
+        {
+            this.allowiAdInfoReading = allowiAdInfoReading;
+        }
+
+        public void setAllowIdfaReading(bool allowIdfaReading)
+        {
+            this.allowIdfaReading = allowIdfaReading;
         }
 
         // Android specific methods.
