@@ -9,7 +9,7 @@ using com.adtrace.sdk;
 
 public class ExampleGUI : MonoBehaviour
 {
-    private int numberOfButtons = 8;
+    private int numberOfButtons = 9;
     private bool isEnabled;
     private bool showPopUp = false;
     private string txtSetEnabled = "Disable SDK";
@@ -27,9 +27,8 @@ public class ExampleGUI : MonoBehaviour
         {
             if (!string.Equals(txtManualLaunch, "SDK Launched", StringComparison.OrdinalIgnoreCase))
             {
-                AdTraceConfig adtraceConfig = new AdTraceConfig("bwyeo7y07nlb", AdTraceEnvironment.Sandbox);
+                AdTraceConfig adtraceConfig = new AdTraceConfig("0var7lga5xsj", AdTraceEnvironment.Sandbox);
                 adtraceConfig.setLogLevel(AdTraceLogLevel.Verbose);
-                adtraceConfig.setLogDelegate(msg => Debug.Log(msg));
                 adtraceConfig.setEventSuccessDelegate(EventSuccessCallback);
                 adtraceConfig.setEventFailureDelegate(EventFailureCallback);
                 adtraceConfig.setSessionSuccessDelegate(SessionSuccessCallback);
@@ -45,20 +44,20 @@ public class ExampleGUI : MonoBehaviour
         
         if (GUI.Button(new Rect(0, Screen.height * 1 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Simple Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("03v1w4");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("81xsai");
             AdTrace.trackEvent(adtraceEvent);
         }
 
         if (GUI.Button(new Rect(0, Screen.height * 2 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Revenue Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("a4fd35");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("wk1amr");
             adtraceEvent.setRevenue(0.25, "EUR");
             AdTrace.trackEvent(adtraceEvent);
         }
 
         if (GUI.Button(new Rect(0, Screen.height * 3 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Callback Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("34vgg9");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("3ovwsn");
             adtraceEvent.addCallbackParameter("key", "value");
             adtraceEvent.addCallbackParameter("foo", "bar");
             AdTrace.trackEvent(adtraceEvent);
@@ -66,13 +65,20 @@ public class ExampleGUI : MonoBehaviour
 
         if (GUI.Button(new Rect(0, Screen.height * 4 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Partner Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("w788qs");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("p6cac6");
             adtraceEvent.addPartnerParameter("key", "value");
             adtraceEvent.addPartnerParameter("foo", "bar");
             AdTrace.trackEvent(adtraceEvent);
         }
 
-        if (GUI.Button(new Rect(0, Screen.height * 5 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), txtSetOfflineMode))
+        if (GUI.Button(new Rect(0, Screen.height * 5 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Value Event"))
+        {
+            AdTraceEvent adtraceEvent = new AdTraceEvent("m6kwz0");
+            adtraceEvent.setEventValue("myValue");
+            AdTrace.trackEvent(adtraceEvent);
+        }
+
+        if (GUI.Button(new Rect(0, Screen.height * 6 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), txtSetOfflineMode))
         {
             if (string.Equals(txtSetOfflineMode, "Turn Offline Mode ON", StringComparison.OrdinalIgnoreCase))
             {
@@ -86,7 +92,7 @@ public class ExampleGUI : MonoBehaviour
             }
         }
 
-        if (GUI.Button(new Rect(0, Screen.height * 6 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), txtSetEnabled))
+        if (GUI.Button(new Rect(0, Screen.height * 7 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), txtSetEnabled))
         {
             if (string.Equals(txtSetEnabled, "Disable SDK", StringComparison.OrdinalIgnoreCase))
             {
@@ -100,7 +106,7 @@ public class ExampleGUI : MonoBehaviour
             }
         }
 
-        if (GUI.Button(new Rect(0, Screen.height * 7 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Is SDK Enabled?"))
+        if (GUI.Button(new Rect(0, Screen.height * 8 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Is SDK Enabled?"))
         {
             isEnabled = AdTrace.isEnabled();
             showPopUp = true;
