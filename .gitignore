@@ -5,6 +5,7 @@ Temp/
 Obj/
 UnityGenerated/
 Library/
+UIElementsSchema/
 
 # ===================================================================== #
 # Binary DLL files have to be ADDDED (not ignored). Used by Windows SDK #
@@ -163,6 +164,7 @@ ClientBin
 ~$*
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
+.idea
 
 # =========================================================================== #
 # Backup & report files from converting an old project file to a newer        #
@@ -195,6 +197,7 @@ src/
 src.meta
 ProjectSettings/
 Scripts/Unity4Assets
+AdTrace.unitypackage
 
 # ======================= #
 # Unity Project necessary #
