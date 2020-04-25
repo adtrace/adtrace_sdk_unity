@@ -128,6 +128,9 @@ DocProject/Help/html
 # Click-Once directory #
 # ==================== #
 publish
+PublishData/
+Assets/AdTrace/README.pdf
+Assets/AdTrace/README.pdf.meta
 
 # ================== #
 # Publish Web Output #
@@ -210,3 +213,9 @@ unity_sdk*.sln
 # ========== #
 !google-play-services_lib/AndroidManifest.xml
 *.lock.json
+
+# ======================= #
+#   Asset Store Tools     #
+# ======================= #
+Assets/AssetStoreTools
+Assets/AssetStoreTools.meta
