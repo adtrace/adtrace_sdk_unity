@@ -8,7 +8,7 @@ namespace com.adtrace.sdk
 #if UNITY_ANDROID
     public class AdTraceAndroid
     {
-        private const string sdkPrefix = "unity1.0.1";
+        private const string sdkPrefix = "unity1.0.3";
         private static bool launchDeferredDeeplink = true;
         private static AndroidJavaClass ajcAdTrace = new AndroidJavaClass("io.adtrace.sdk.AdTrace");
         private static AndroidJavaObject ajoCurrentActivity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
@@ -81,6 +81,12 @@ namespace com.adtrace.sdk
             if (adtraceConfig.sendInBackground != null)
             {
                 ajoAdTraceConfig.Call("setSendInBackground", adtraceConfig.sendInBackground.Value);
+            }
+
+            // Check if user enabled send installed apps.
+            if (adtraceConfig.enableSendInstalledApps != null)
+            {
+                ajoAdTraceConfig.Call("enableSendInstalledApps", adtraceConfig.enableSendInstalledApps.Value);
             }
 
             // Check if user has set user agent value.
@@ -216,6 +222,12 @@ namespace com.adtrace.sdk
                 ajoAdTraceEvent.Call("setCallbackId", adtraceEvent.callbackId);
             }
 
+            // Check if user has added event value to the event.
+            if (adtraceEvent.eventValue != null)
+            {
+                ajoAdTraceEvent.Call("setEventValue", adtraceEvent.eventValue);
+            }
+
             // Track the event.
             ajcAdTrace.CallStatic("trackEvent", ajoAdTraceEvent);
         }
@@ -233,6 +245,11 @@ namespace com.adtrace.sdk
         public static void SetOfflineMode(bool enabled)
         {
             ajcAdTrace.CallStatic("setOfflineMode", enabled);
+        }
+
+        public static void SetEnableLocation(bool enabled)
+        {
+            ajcAdTrace.CallStatic("enableLocation", enabled);
         }
 
         public static void SendFirstPackages()
