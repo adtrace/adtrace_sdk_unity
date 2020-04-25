@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:debuggable="true">
 
-        <!-- Adjust broadcast receiver used to capture referrer content from INSTALL_REFERRER intent. -->
+        <!-- AdTrace broadcast receiver used to capture referrer content from INSTALL_REFERRER intent. -->
         <receiver
             android:name="io.adtrace.sdk.AdTraceReferrerReceiver"
             android:permission="android.permission.INSTALL_PACKAGES"
