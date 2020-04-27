@@ -50,22 +50,22 @@ This is the Unity SDK of Adtrace™. It supports iOS, Android. You can read more
 
 ### Additional features
 
-   * [Push token (uninstall tracking)](#ad-push-token)
-   * [Attribution callback](#ad-attribution-callback)
-   * [Session and event callbacks](#ad-session-event-callbacks)
-   * [User attribution](#ad-user-attribution)
-   * [Send installed apps](#ad-send-installed-apps)
-   * [Device IDs](#ad-device-ids)
-      * [iOS advertising identifier](#ad-idfa)
-      * [Google Play Services advertising identifier](#ad-gps-adid)
-      * [Amazon advertising identifier](#ad-amazon-adid)
-      * [AdTrace device identifier](#ad-adid)
-   * [Pre-installed trackers](#ad-pre-installed-trackers)
-   * [Offline mode](#ad-offline-mode)
-   * [Disable tracking](#ad-disable-tracking)
-   * [Event buffering](#ad-event-buffering)
-   * [Background tracking](#ad-background-tracking)
-   * [GDPR right to be forgotten](#ad-gdpr-forget-me)
+   * [Push token (uninstall tracking)](#af-push-token)
+   * [Attribution callback](#af-attribution-callback)
+   * [Session and event callbacks](#af-session-event-callbacks)
+   * [User attribution](#af-user-attribution)
+   * [Send installed apps](#af-send-installed-apps)
+   * [Device IDs](#af-device-ids)
+      * [iOS advertising identifier](#af-idfa)
+      * [Google Play Services advertising identifier](#af-gps-adid)
+      * [Amazon advertising identifier](#af-amazon-adid)
+      * [AdTrace device identifier](#af-adid)
+   * [Pre-installed trackers](#af-pre-installed-trackers)
+   * [Offline mode](#af-offline-mode)
+   * [Disable tracking](#af-disable-tracking)
+   * [Event buffering](#af-event-buffering)
+   * [Background tracking](#af-background-tracking)
+   * [GDPR right to be forgotten](#af-gdpr-forget-me)
 
 ### Testing and troubleshooting
    * [Debug information in iOS](#tt-debug-ios)
@@ -482,7 +482,7 @@ You can delay the start time of the AdTrace SDK for a maximum of 10 seconds.
 
 Once you integrate the AdTrace SDK into your project, you can take advantage of the following features:
 
-### <a id="ad-push-token"></a>Push token (uninstall tracking)
+### <a id="af-push-token"></a>Push token (uninstall tracking)
 
 Push tokens are used for Audience Builder and client callbacks; they are also required for uninstall and reinstall tracking.
 
@@ -492,7 +492,7 @@ To send us a push notification token, call the `setDeviceToken` method on the `A
 AdTrace.setDeviceToken("YourPushNotificationToken");
 ```
 
-### <a id="ad-attribution-callback"></a>Attribution callback
+### <a id="af-attribution-callback"></a>Attribution callback
 
 You can set up a callback to be notified about attribution changes. We consider a variety of different sources for attribution, so we provide this information asynchronously.
 
@@ -539,7 +539,7 @@ The callback function will be called when the SDK receives final attribution dat
 - `string clickLabel` the click label of the current attribution
 - `string adid` the AdTrace device identifier
 
-### <a id="ad-session-event-callbacks"></a>Session and event callbacks
+### <a id="af-session-event-callbacks"></a>Session and event callbacks
 
 You can set up callbacks to notify you of successful and failed events and/or sessions.
 
@@ -631,7 +631,7 @@ Both event and session failed objects also contain:
 
 - `bool WillRetry` indicates there will be an attempt to resend the package at a later time
 
-### <a id="ad-user-attribution"></a>User attribution
+### <a id="af-user-attribution"></a>User attribution
 
 This callback, like an attribution callback, is triggered whenever the attribution information changes. Access your user's current attribution information whenever you need it by calling the following method of the `AdTrace` instance:
 
@@ -641,7 +641,7 @@ AdTraceAttribution attribution = AdTrace.getAttribution();
 
 **Note**: Current attribution information is available after our backend tracks the app install and triggers the attribution callback. It is not possible to access a user's attribution value before the SDK has been initialized and the attribution callback has been triggered.
 
-### <a id="ad-send-installed-apps"></a>Send installed apps
+### <a id="af-send-installed-apps"></a>Send installed apps
 
 To increase the accuracy and security in fraud detection, you can enable the sending of installed applications on user's device as follows:
 
@@ -651,11 +651,11 @@ adtraceConfig.setEnableSendInstalledApps(true);
 
 **Note**: This option is **disabled** by default.
 
-### <a id="ad-device-ids"></a>Device IDs
+### <a id="af-device-ids"></a>Device IDs
 
 The AdTrace SDK lets you receive device identifiers.
 
-### <a id="ad-idfa">iOS Advertising Identifier
+### <a id="af-idfa">iOS Advertising Identifier
 
 To obtain the IDFA, call the function `getIdfa` of the `AdTrace` instance:
 
@@ -663,7 +663,7 @@ To obtain the IDFA, call the function `getIdfa` of the `AdTrace` instance:
 string idfa = AdTrace.getIdfa();
 ```
 
-### <a id="ad-gps-adid"></a>Google Play Services advertising identifier
+### <a id="af-gps-adid"></a>Google Play Services advertising identifier
 
 The Google advertising ID can only be read in a background thread. If you call the method `getGoogleAdId` of the `AdTrace` instance with an `Action<string>` delegate, it will work in any situation:
 
@@ -675,7 +675,7 @@ AdTrace.getGoogleAdId((string googleAdId) => {
 
 You will now have access to the Google advertising ID as the variable `googleAdId`.
 
-### <a id="ad-amazon-adid"></a>Amazon advertising identifier
+### <a id="af-amazon-adid"></a>Amazon advertising identifier
 
 If you need to get the Amazon advertising ID, call the `getAmazonAdId` method on `AdTrace` instance:
 
@@ -683,7 +683,7 @@ If you need to get the Amazon advertising ID, call the `getAmazonAdId` method on
 string amazonAdId = AdTrace.getAmazonAdId();
 ```
 
-### <a id="ad-adid"></a>AdTrace device identifier
+### <a id="af-adid"></a>AdTrace device identifier
 
 Our backend generates a unique AdTrace device identifier (known as an `adid`) for every device that has your app installed. In order to get this identifier, call this method on `AdTrace` instance:
 
@@ -693,7 +693,7 @@ String adid = AdTrace.getAdid();
 
 Information about the adid is only available after our backend tracks the app install. It is not possible to access the adid value before the SDK has been initialized and the installation of your app has been successfully tracked.
 
-### <a id="ad-pre-installed-trackers"></a>Pre-installed trackers
+### <a id="af-pre-installed-trackers"></a>Pre-installed trackers
 
 To use the AdTrace SDK to recognize users whose devices came with your app pre-installed, follow these steps:
 
@@ -716,7 +716,7 @@ Although the dashboard displays a tracker URL (including `http://app.adtrace.io/
     Default tracker: 'abc123'
     ```
 
-### <a id="ad-offline-mode"></a>Offline mode
+### <a id="af-offline-mode"></a>Offline mode
 
 Offline mode suspends transmission to our servers while retaining tracked data to be sent at a later point. While the AdTrace SDK is in offline mode, all information is saved in a file. Please be careful not to trigger too many events in offline mode.
 
@@ -730,7 +730,7 @@ Deactivate offline mode by calling `setOfflineMode` with `false`. When you put t
 
 This setting is not remembered between sessions, meaning that the SDK is in online mode whenever it starts, even if the app was terminated in offline mode.
 
-### <a id="ad-disable-tracking"></a>Disable tracking
+### <a id="af-disable-tracking"></a>Disable tracking
 
 You can disable AdTrace SDK tracking by invoking the method `setEnabled` with the enabled parameter as `false`. This setting is remembered between sessions, but it can only be activated after the first session.
 
@@ -740,7 +740,7 @@ AdTrace.setEnabled(false);
 
 You can check if the AdTrace SDK is currently active with the method `isEnabled`. It is always possible to activate the AdTrace SDK by invoking `setEnabled` with the `enabled` parameter set to `true`.
 
-### <a id="ad-event-buffering"></a>Event buffering
+### <a id="af-event-buffering"></a>Event buffering
 
 If your app makes heavy use of event tracking, you might want to delay some network requests in order to send them in one batch every minute. You can enable event buffering with your `AdTraceConfig` instance:
 
@@ -754,7 +754,7 @@ AdTrace.start(adtraceConfig);
 
 If nothing is set, event buffering is disabled by default.
 
-### <a id="ad-background-tracking"></a>Background tracking
+### <a id="af-background-tracking"></a>Background tracking
 
 The default behaviour of the AdTrace SDK is to pause sending network requests while the app is in the background. You can change this in your `AdTraceConfig` instance:
 
@@ -766,7 +766,7 @@ adtraceConfig.setSendInBackground(true);
 AdTrace.start(adtraceConfig);
 ```
 
-### <a id="ad-gdpr-forget-me"></a>GDPR right to be forgotten
+### <a id="af-gdpr-forget-me"></a>GDPR right to be forgotten
 
 In accordance with article 17 of the EU's General Data Protection Regulation (GDPR), you can notify AdTrace when a user has exercised their right to be forgotten. Calling the following method will instruct the AdTrace SDK to communicate the user's choice to be forgotten to the AdTrace backend:
 
