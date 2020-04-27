@@ -633,7 +633,7 @@ Both event and session failed objects also contain:
 
 ### <a id="af-user-attribution"></a>User attribution
 
-This callback, like an attribution callback, is triggered whenever the attribution information changes. Access your user's current attribution information whenever you need it by calling the following method of the `AdTrace` instance:
+This callback, like an [attribution callback](af-attribution-callback), is triggered whenever the attribution information changes. Access your user's current attribution information whenever you need it by calling the following method of the `AdTrace` instance:
 
 ```cs
 AdTraceAttribution attribution = AdTrace.getAttribution();
