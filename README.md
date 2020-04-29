@@ -1,3 +1,10 @@
+<p align="center"><a href="https://adtrace.io" target="_blank" rel="noopener noreferrer"><img width="100" src="http://adtrace.io/fa/wp-content/uploads/2019/02/logo.png" alt="Adtrace logo"></a></p>
+
+<p align="center">
+  <a href='https://opensource.org/licenses/MIT'><img src='https://img.shields.io/badge/License-MIT-green.svg'></a>
+</p>
+
+
 ## Summary
 
 This is the Unity SDK of Adtrace™. It supports iOS, Android. You can read more about Adtrace™ at [adtrace.io].
@@ -7,7 +14,7 @@ This is the Unity SDK of Adtrace™. It supports iOS, Android. You can read more
 ## Table of contents
 
 ### Quick start
-
+   * [Example app](#qs-example-app)
    * [Getting started](#qs-getting-started)
       * [Get the SDK](#qs-get-sdk)
       * [Add the SDK to your project](#qs-add-sdk)
@@ -73,6 +80,13 @@ This is the Unity SDK of Adtrace™. It supports iOS, Android. You can read more
 
 ## Quick start
 
+### <a id="qs-example-app"></a>Example app
+
+There are example Unity scene inside the  [`ExampleGUI`  directory][example-app]. In there you can check how the AdTrace SDK can be integrated.
+
+And The source for this example scene is `ExampleGUI.cs` .
+
+
 ### <a id="qs-getting-started"></a>Getting started
 
 To integrate the Adtrace SDK into your Unity project, follow these steps.
@@ -108,15 +122,11 @@ You can edit the AdTrace script parameters in the prefab `Inspector menu` to set
 
 <a id="environment">Depending on whether you are building your app for testing or for production, change the `Environment` setting to either 'Sandbox' or 'Production'.
 
-**Important:** Set the value to `Sandbox` if you or someone else is testing your app. Make sure to set the environment to `Production` before you publish the app. Set it back to `Sandbox` if you start testing again. Also, have in mind that by default AdTrace dashboard is showing production traffic of your app, so in case you want to see traffic you generated while testing in sandbox mode, make sure to switch to sandbox traffic view within dashboard.
+**Important:** Set the value to `Sandbox` if you or someone else is testing your app. Make sure to set the environment to `Production` before you publish the app. Set it back to `Sandbox` if you start testing again. Also, have in mind that by default AdTrace panel is showing production traffic of your app, so in case you want to see traffic you generated while testing in sandbox mode, make sure to switch to sandbox traffic view within panel.
 
 We use the environment setting to distinguish between real traffic and artificial traffic from test devices. Please make sure to keep your environment setting updated.
 
 <a id="start-manually">If you don't want the Adtrace SDK to start automatically with the app's `Awake` event, select `Start Manually`. With this option, you'll initialize and start the Adtrace SDK from the within the code by calling the `AdTrace.start` method with the `AdTraceConfig` object as a parameter.
-
-You can find an example scene with a button menu showing these options here: `Assets/AdTrace/ExampleGUI/ExampleGUI.unity`.
-
-The source for this scene is located at `Assets/AdTrace/ExampleGUI/ExampleGUI.cs`.
 
 ### <a id="qs-adtrace-logging"></a>Adtrace logging
 
@@ -215,7 +225,7 @@ The Android post-build process makes changes to the `AndroidManifest.xml` file l
 
 ### <a id="qs-sdk-signature"></a>SDK signature
 
-If the SDK signature is enabled on your account and you have access to App Secrets in your dashboard, add all secret parameters (`secretId`, `info1`, `info2`, `info3`, `info4`) to the `setAppSecret` method of `AdTraceConfig` instance:
+If the SDK signature is enabled on your account and you have access to App Secrets in your panel, add all secret parameters (`secretId`, `info1`, `info2`, `info3`, `info4`) to the `setAppSecret` method of `AdTraceConfig` instance:
 
 ```cs
 AdTraceConfig adtraceConfig = new AdTraceConfig("{YourAppToken}", "{YourEnvironment}");
@@ -303,7 +313,7 @@ To set up deeplink handling in an iOS app on a nativel level, please use a nativ
 
 ### <a id="et-tracking"></a>Track an event
 
-You can use AdTrace to track any event in your app. If you want to track every tap on a button, create a new event token in your dashboard. Let's say that the event token is `abc123`. In your button's click handler method, add the following lines to track the click:
+You can use AdTrace to track any event in your app. If you want to track every tap on a button, create a new event token in your panel. Let's say that the event token is `abc123`. In your button's click handler method, add the following lines to track the click:
 
 ```cs
 AdTraceEvent adtraceEvent = new AdTraceEvent("abc123");
@@ -342,7 +352,7 @@ AdTrace.trackEvent(adtraceEvent);
 
 ### <a id="cp"></a>Custom parameters overview
 
-In addition to the data points the AdTrace SDK collects by default, you can use the AdTrace SDK to track and add as many custom values as you need (user IDs, product IDs, etc.) to the event or session. Custom parameters are only available as raw data and will **not** appear in your AdTrace dashboard.
+In addition to the data points the AdTrace SDK collects by default, you can use the AdTrace SDK to track and add as many custom values as you need (user IDs, product IDs, etc.) to the event or session. Custom parameters are only available as raw data and will **not** appear in your AdTrace panel.
 
 Use callback parameters for the values you collect for your own internal use, and partner parameters for those you share with external partners. If a value (e.g. product ID) is tracked both for internal use and external partner use, we recommend using both callback and partner parameters.
 
@@ -350,7 +360,7 @@ Use callback parameters for the values you collect for your own internal use, an
 
 ### <a id="cp-event-callback-parameters"></a>Event callback parameters
 
-If you register a callback URL for events in your [dashboard], we will send a GET request to that URL whenever the event is tracked. You can also put key-value pairs in an object and pass it to the `trackEvent` method. We will then append these parameters to your callback URL.
+If you register a callback URL for events in your [panel], we will send a GET request to that URL whenever the event is tracked. You can also put key-value pairs in an object and pass it to the `trackEvent` method. We will then append these parameters to your callback URL.
 
 For example, if you've registered the URL `http://www.example.com/callback`, then you would track an event like this:
 
@@ -371,7 +381,7 @@ http://www.example.com/callback?key=value&foo=bar
 
 ### <a id="cp-event-partner-parameters"></a>Event partner parameters
 
-Once your parameters are activated in the dashboard, you can send them to your network partners.
+Once your parameters are activated in the panel, you can send them to your network partners.
 
 This works the same way as callback parameters; add them by calling the `addPartnerParameter` method on your `AdTraceEvent` instance.
 
@@ -442,7 +452,7 @@ AdTrace.resetSessionCallbackParameters();
 
 In the same way that [session callback parameters](#cp-session-callback-parameters) are sent with every event or session that triggers our SDK, there are also session partner parameters.
 
-These are transmitted to network partners for all of the integrations activated in your [dashboard].
+These are transmitted to network partners for all of the integrations activated in your [panel].
 
 The session partner parameters interface is similar to the event partner parameters interface, however instead of adding the key and its value to an event, add it by calling the `addSessionPartnerParameter` method of the `AdTrace` instance.
 
@@ -697,7 +707,7 @@ Information about the adid is only available after our backend tracks the app in
 
 To use the AdTrace SDK to recognize users whose devices came with your app pre-installed, follow these steps:
 
-1. Create a new tracker in your [dashboard].
+1. Create a new tracker in your [panel].
 2. Set the default tracker of your `AdTraceConfig`:
 
   ```cs
@@ -708,7 +718,7 @@ To use the AdTrace SDK to recognize users whose devices came with your app pre-i
 
   Replace `{TrackerToken}` with the tracker token you created in step 2. E.g. `{abc123}`
 
-Although the dashboard displays a tracker URL (including `http://app.adtrace.io/`), in your source code you should only enter the six or seven-character token and not the entire URL.
+Although the panel displays a tracker URL (including `http://app.adtrace.io/`), in your source code you should only enter the six or seven-character token and not the entire URL.
 
 3. Build and run your app. You should see a line like the following in the log output:
 
@@ -787,8 +797,10 @@ Even with the post build script it is possible that the project is not ready to 
 If needed, disable dSYM File. In the `Project Navigator`, select the `Unity-iPhone` project. Click the `Build Settings` tab and search for `debug information`. There should be an `Debug Information Format` or `DEBUG_INFORMATION_FORMAT` option. Change it from `DWARF with dSYM File` to `DWARF`.
 
 
-[dashboard]:  http://panel.adtrace.io
+[panel]:  http://panel.adtrace.io
 [adtrace.io]: http://adtrace.io
+
+[example-app]: Assets/AdTrace/ExampleGUI
 
 [ios]:                     https://github.com/adtrace/adtrace_sdk_ios
 [android]:                 https://github.com/adtrace/adtrace_sdk_android
