@@ -19,14 +19,14 @@ This is the Unity SDK of Adtrace™. It supports iOS, Android. You can read more
       * [Get the SDK](#qs-get-sdk)
       * [Add the SDK to your project](#qs-add-sdk)
       * [Integrate the SDK into your app](#qs-integrate-sdk)
-      * [AdTrace logging](#qs-adtrace-logging)
-      * [Google Play Services](#qs-gps)
-      * [Proguard settings](#qs-android-proguard)
-      * [Google Install Referrer](#qs-install-referrer)
-      * [Post-build process](#qs-post-build-process)
-        * [iOS post-build process](#qs-post-build-ios)
-        * [Android post-build process](#qs-post-build-android)
-      * [SDK signature](#qs-sdk-signature)
+        * [Google Play Services](#qs-gps)
+        * [Proguard settings](#qs-android-proguard)
+        * [Google Install Referrer](#qs-install-referrer)
+        * [Post-build process](#qs-post-build-process)
+          * [iOS post-build process](#qs-post-build-ios)
+          * [Android post-build process](#qs-post-build-android)
+        * [SDK signature](#qs-sdk-signature)
+        * [AdTrace logging](#qs-adtrace-logging)
 
 ### Deeplinking
 
@@ -128,30 +128,6 @@ We use the environment setting to distinguish between real traffic and artificia
 
 <a id="start-manually">If you don't want the Adtrace SDK to start automatically with the app's `Awake` event, select `Start Manually`. With this option, you'll initialize and start the Adtrace SDK from the within the code by calling the `AdTrace.start` method with the `AdTraceConfig` object as a parameter.
 
-### <a id="qs-adtrace-logging"></a>Adtrace logging
-
-You can increase or decrease the granularity of the logs you see by changing the value of `Log Level` to one of the following:
-
-- `Verbose` - enable all logs
-- `Debug` - disable verbose logs
-- `Info` - disable debug logs (default)
-- `Warn` - disable info logs
-- `Error` - disable warning logs
-- `Assert` - disable error logs
-- `Suppress` - disable all logs
-
-If you want to disable all of your log output when initializing the AdTrace SDK manually, set the log level to suppress and use a constructor for the `AdTraceConfig` object. This opens a boolean parameter where you can enter whether the suppress log level should be supported or not:
-
-```cs
-string appToken = "{YourAppToken}";
-AdTraceEnvironment environment = AdTraceEnvironment.Sandbox;
-
-AdTraceConfig config = new AdTraceConfig(appToken, environment, true);
-config.setLogLevel(AdTraceLogLevel.Suppress);
-
-AdTrace.start(config);
-```
-
 ### <a id="qs-gps"></a>Google Play Services
 
 Since August 1st 2014, apps in the Google Play Store must use the [Google Advertising ID][google_ad_id] to uniquely identify devices. To allow the AdTrace SDK to use the Google Advertising ID, integrate [Google Play Services][google_play_services]. To do this add `play-services-ads-identifier` into the `Assets/Plugins/Android` folder of your Unity project.
@@ -236,6 +212,31 @@ AdTrace.start(adtraceConfig);
 ```
 
 The SDK signature is now integrated in your app.
+
+### <a id="qs-adtrace-logging"></a>Adtrace logging
+
+You can increase or decrease the granularity of the logs you see by changing the value of `Log Level` to one of the following:
+
+- `Verbose` - enable all logs
+- `Debug` - disable verbose logs
+- `Info` - disable debug logs (default)
+- `Warn` - disable info logs
+- `Error` - disable warning logs
+- `Assert` - disable error logs
+- `Suppress` - disable all logs
+
+If you want to disable all of your log output when initializing the AdTrace SDK manually, set the log level to suppress and use a constructor for the `AdTraceConfig` object. This opens a boolean parameter where you can enter whether the suppress log level should be supported or not:
+
+```cs
+string appToken = "{YourAppToken}";
+AdTraceEnvironment environment = AdTraceEnvironment.Sandbox;
+
+AdTraceConfig config = new AdTraceConfig(appToken, environment, true);
+config.setLogLevel(AdTraceLogLevel.Suppress);
+
+AdTrace.start(config);
+```
+
 
 
 ## Deeplinking
