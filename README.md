@@ -18,15 +18,16 @@ This is the Unity SDK of Adtrace™. It supports iOS, Android. You can read more
    * [Getting started](#qs-getting-started)
       * [Get the SDK](#qs-get-sdk)
       * [Add the SDK to your project](#qs-add-sdk)
-      * [Integrate the SDK into your app](#qs-integrate-sdk)
+      * [Adtrace project settings](#qs-adtrace-project-settings)
         * [Google Play Services](#qs-gps)
         * [Proguard settings](#qs-android-proguard)
         * [Google Install Referrer](#qs-install-referrer)
-        * [Post-build process](#qs-post-build-process)
-          * [iOS post-build process](#qs-post-build-ios)
-          * [Android post-build process](#qs-post-build-android)
-        * [SDK signature](#qs-sdk-signature)
-        * [AdTrace logging](#qs-adtrace-logging)
+   * [Integrate the SDK into your app](#qs-integrate-sdk)
+      * [Post-build process](#qs-post-build-process)
+        * [iOS post-build process](#qs-post-build-ios)
+        * [Android post-build process](#qs-post-build-android)
+      * [SDK signature](#qs-sdk-signature)
+      * [AdTrace logging](#qs-adtrace-logging)
 
 ### Deeplinking
 
@@ -100,33 +101,10 @@ As of version `1.0.3`, you can download the latest version from our [releases pa
 Open your project in the Unity Editor, go to `Assets → Import Package → Custom Package` and select the downloaded Unity package file.
 
 ![Import package](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/Assets/import-unitypackage.png)
+  
+### <a id="qs-adtrace-project-settings"></a>Adtrace project settings
 
-### <a id="qs-integrate-sdk"></a>Integrate the SDK into your app
-
-Add the prefab from `Assets/AdTrace/Prefab/AdTrace.prefab` to the first scene.
-
-You can edit the AdTrace script parameters in the prefab `Inspector menu` to set up the following options:
-
-* [start manually](#start-manually)
-* [event buffering](#event-buffering)
-* [send in background](#background-tracking)
-* [launch deferred deeplink](#deeplinking-deferred-open)
-* [enable send installed apps](#deeplinking-deferred-open)
-* [app token](#app-token)
-* [log level](#adtrace-logging)
-* [environment](#environment)
-
-![AdTrace Prefab](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/Assets/prefab-editor.png)
-
-<a id="app-token">Replace `{YourAppToken}` with your actual App Token.
-
-<a id="environment">Depending on whether you are building your app for testing or for production, change the `Environment` setting to either 'Sandbox' or 'Production'.
-
-**Important:** Set the value to `Sandbox` if you or someone else is testing your app. Make sure to set the environment to `Production` before you publish the app. Set it back to `Sandbox` if you start testing again. Also, have in mind that by default AdTrace panel is showing production traffic of your app, so in case you want to see traffic you generated while testing in sandbox mode, make sure to switch to sandbox traffic view within panel.
-
-We use the environment setting to distinguish between real traffic and artificial traffic from test devices. Please make sure to keep your environment setting updated.
-
-<a id="start-manually">If you don't want the Adtrace SDK to start automatically with the app's `Awake` event, select `Start Manually`. With this option, you'll initialize and start the Adtrace SDK from the within the code by calling the `AdTrace.start` method with the `AdTraceConfig` object as a parameter.
+Once the AdTrace SDK has been added to your app, certain tweaks are going to be performed so that the AdTrace SDK can work properly. Below you can find a description of every additional thing that the AdTrace SDK performs after you've added it to your app and what needs to be done by you in order for AdTrace SDK to work properly.
 
 ### <a id="qs-gps"></a>Google Play Services
 
@@ -171,6 +149,33 @@ To add support for the Google Play Referrer API, download the install referrer l
 - From [Maven repository][install-referrer-aar-maven]
 - From [AdTrace repository][install-referrer-aar]
 
+### <a id="qs-integrate-sdk"></a>Integrate the SDK into your app
+
+Add the prefab from `Assets/AdTrace/Prefab/AdTrace.prefab` to the first scene.
+
+You can edit the AdTrace script parameters in the prefab `Inspector menu` to set up the following options:
+
+* [start manually](#start-manually)
+* [event buffering](#event-buffering)
+* [send in background](#background-tracking)
+* [launch deferred deeplink](#deeplinking-deferred-open)
+* [enable send installed apps](#deeplinking-deferred-open)
+* [app token](#app-token)
+* [log level](#adtrace-logging)
+* [environment](#environment)
+
+![AdTrace Prefab](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/Assets/prefab-editor.png)
+
+<a id="app-token">Replace `{YourAppToken}` with your actual App Token.
+
+<a id="environment">Depending on whether you are building your app for testing or for production, change the `Environment` setting to either 'Sandbox' or 'Production'.
+
+**Important:** Set the value to `Sandbox` if you or someone else is testing your app. Make sure to set the environment to `Production` before you publish the app. Set it back to `Sandbox` if you start testing again. Also, have in mind that by default AdTrace panel is showing production traffic of your app, so in case you want to see traffic you generated while testing in sandbox mode, make sure to switch to sandbox traffic view within panel.
+
+We use the environment setting to distinguish between real traffic and artificial traffic from test devices. Please make sure to keep your environment setting updated.
+
+<a id="start-manually">If you don't want the Adtrace SDK to start automatically with the app's `Awake` event, select `Start Manually`. With this option, you'll initialize and start the Adtrace SDK from the within the code by calling the `AdTrace.start` method with the `AdTraceConfig` object as a parameter.
+
 ### <a id="qs-post-build-process"></a>Post-build process
 
 To complete the app build process, the Adtrace Unity package performs custom post-build actions to ensure the Adtrace SDK can work properly inside the app.
@@ -198,6 +203,7 @@ The Android post-build process makes changes to the `AndroidManifest.xml` file l
 - Adds the Adtrace broadcast receiver (needed for getting install referrer information via Google Play Store intent). For more details, consult the official [Android SDK README][android].
 
 **Note:** If you are using your own broadcast receiver to handle the `INSTALL_REFERRER` intent, you don't need to add the Adtrace broadcast receiver to your manifest file. Remove it, but add the call to the Adtrace broadcast receiver inside your own receiver, as described in the [Android guide][android-custom-receiver].
+
 
 ### <a id="qs-sdk-signature"></a>SDK signature
 
