@@ -100,7 +100,7 @@ As of version `1.0.3`, you can download the latest version from our [releases pa
 
 Open your project in the Unity Editor, go to `Assets → Import Package → Custom Package` and select the downloaded Unity package file.
 
-![Import package](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/Assets/import-unitypackage.png)
+![Import package](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/assets/import-unitypackage.png)
   
 ### <a id="qs-adtrace-project-settings"></a>Adtrace project settings
 
@@ -164,7 +164,7 @@ You can edit the AdTrace script parameters in the prefab `Inspector menu` to set
 * [log level](#adtrace-logging)
 * [environment](#environment)
 
-![AdTrace Prefab](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/Assets/prefab-editor.png)
+![AdTrace Prefab](https://github.com/adtrace/adtrace_sdk_unity/blob/master/doc/assets/prefab-editor.png)
 
 <a id="app-token">Replace `{YourAppToken}` with your actual App Token.
 
