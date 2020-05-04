@@ -159,7 +159,7 @@ You can edit the AdTrace script parameters in the prefab `Inspector menu` to set
 * [event buffering](#event-buffering)
 * [send in background](#background-tracking)
 * [launch deferred deeplink](#deeplinking-deferred-open)
-* [enable send installed apps](#deeplinking-deferred-open)
+* [enable send installed apps](#send-installed-apps)
 * [app token](#app-token)
 * [log level](#adtrace-logging)
 * [environment](#environment)
