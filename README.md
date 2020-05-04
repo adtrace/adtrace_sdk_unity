@@ -145,7 +145,7 @@ Google introduced the Google Play Referrer API in order to provide a more reliab
 
 The AdTrace post-build process catches the Google Play Store intent; you can take a few additional steps to add support for the new Google Play Referrer API.
 
-To add support for the Google Play Referrer API, download the install referrer library and place the AAR file into your `Plugins/Android` folder:
+To add support for the Google Play Referrer API, download the install referrer library and place the AAR file into your `Assets/Plugins/Android` folder:
 - From [Maven repository][install-referrer-aar-maven]
 - From [AdTrace repository][install-referrer-aar]
 
