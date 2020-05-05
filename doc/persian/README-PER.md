@@ -900,10 +900,10 @@ listener ها هنگامی فراخوانده میشوند که SDK تلاش ب�
 <br/>
 <div dir="rtl" align='right'>
 <ul>
-<li><code>string message</code> پیام از طرف سرور(یا ارور از طرف SDK)</li>
-<li><code>string timestamp</code> زمان دریافتی از سرور</li>
-<li><code>string adid</code> یک شناسه یکتا که از طریق ادتریس ساخته شده است</li>
-<li><code>Dictionary<string, object> jsonResponse</code> شی JSON دریافتی از سمت سرور</li>
+<li><code>string Message</code> پیام از طرف سرور(یا ارور از طرف SDK)</li>
+<li><code>string Timestamp</code> زمان دریافتی از سرور</li>
+<li><code>string Adid</code> یک شناسه یکتا که از طریق ادتریس ساخته شده است</li>
+<li><code>Dictionary<string, object> JsonResponse</code> شی JSON دریافتی از سمت سرور</li>
 </ul>
 </div>
 <br/>
@@ -913,8 +913,8 @@ listener ها هنگامی فراخوانده میشوند که SDK تلاش ب�
 <br/>
 <div dir="rtl" align='right'>
 <ul>
-<li><code>var eventToken</code> توکن مربوط به رویداد مورد نظر</li>
-<li><code>var cakkbackId</code> <a href="#cp-ep-id">شناسه callback</a> که برای یک رویداد تنظیم میشود</li>
+<li><code>var EventToken</code> توکن مربوط به رویداد مورد نظر</li>
+<li><code>var CakkbackId</code> <a href="#cp-ep-id">شناسه callback</a> که برای یک رویداد تنظیم میشود</li>
 </ul>
 </div>
 <br/>
@@ -924,7 +924,7 @@ listener ها هنگامی فراخوانده میشوند که SDK تلاش ب�
 <br/>
 <div dir="rtl" align='right'>
 <ul>
-<li><code>bool willRetry</code> یک boolean ای  تلاش مجدد برای ارسال داده را نشان میدهد.</li>
+<li><code>bool WillRetry</code> یک boolean ای  تلاش مجدد برای ارسال داده را نشان میدهد.</li>
 </ul>
 </div>
 
