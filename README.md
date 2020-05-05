@@ -705,7 +705,7 @@ string amazonAdId = AdTrace.getAmazonAdId();
 Our backend generates a unique AdTrace device identifier (known as an `adid`) for every device that has your app installed. In order to get this identifier, call this method on `AdTrace` instance:
 
 ```cs
-String adid = AdTrace.getAdid();
+string adid = AdTrace.getAdid();
 ```
 
 Information about the adid is only available after our backend tracks the app install. It is not possible to access the adid value before the SDK has been initialized and the installation of your app has been successfully tracked.
