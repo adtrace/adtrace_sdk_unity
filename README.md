@@ -145,7 +145,7 @@ Google introduced the Google Play Referrer API in order to provide a more reliab
 
 The AdTrace post-build process catches the Google Play Store intent; you can take a few additional steps to add support for the new Google Play Referrer API.
 
-To add support for the Google Play Referrer API, download the install referrer library and place the AAR file into your `Plugins/Android` folder:
+To add support for the Google Play Referrer API, download the install referrer library and place the AAR file into your `Assets/Plugins/Android` folder:
 - From [Maven repository][install-referrer-aar-maven]
 - From [AdTrace repository][install-referrer-aar]
 
@@ -159,7 +159,7 @@ You can edit the AdTrace script parameters in the prefab `Inspector menu` to set
 * [event buffering](#event-buffering)
 * [send in background](#background-tracking)
 * [launch deferred deeplink](#deeplinking-deferred-open)
-* [enable send installed apps](#deeplinking-deferred-open)
+* [enable send installed apps](#send-installed-apps)
 * [app token](#app-token)
 * [log level](#adtrace-logging)
 * [environment](#environment)
@@ -705,7 +705,7 @@ string amazonAdId = AdTrace.getAmazonAdId();
 Our backend generates a unique AdTrace device identifier (known as an `adid`) for every device that has your app installed. In order to get this identifier, call this method on `AdTrace` instance:
 
 ```cs
-String adid = AdTrace.getAdid();
+string adid = AdTrace.getAdid();
 ```
 
 Information about the adid is only available after our backend tracks the app install. It is not possible to access the adid value before the SDK has been initialized and the installation of your app has been successfully tracked.
