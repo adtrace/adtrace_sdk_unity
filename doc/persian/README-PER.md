@@ -750,7 +750,7 @@ AdTrace.setPushToken("YourPushNotificationToken");
 <br/>
 <div dir="rtl" align='right'>
 <ul>
-  <li>یک متد با امضای <code>&gt;Action&lt;AdTraceAttribution</code> درست کنید.</li>
+  <li>یک متد با امضای <code>&lt;Action&lt;AdTraceAttribution</code> درست کنید.</li>
   <li>بعد از ساختن آبجکت <code>AdTraceConfig</code> متد <code>adtraceConfig.setAttributionChangedDelegate</code> که از آبجکت درست شده استفاده میکند، فراخوانی کنید.</li>
   <li>به جای استفاده از <code>AdTrace.prefab</code> بایستی اسکریپت <code>AdTrace.cs</code> درون یک <code>GameObject</code> دیگری استفاده شود. مطمئن شوید که <code>GameObject</code> را به عنوان پارامتر دوم <code>adtraceConfig.setAttributionChangedDelegate</code> استفاده کنید.</li>
 </ul>
@@ -980,7 +980,7 @@ string idfa = AdTrace.getIdfa();
 ### <div id="af-di-gps-adid" dir="rtl" align='right'>شناسه تبلیغات سرویس های گوگل پلی</div>
 
 <div dir="rtl" align='right'>
-برای دستیابی به شناسه تبلیغات گوگل بایستی از طریق متد <code>getGoogleAdId</code> که به صورت یک thread در پس زمینه اجرا میشود که یک <code>&gt;Action&lt;string</code> را پاس میدهد، استفاده کرد:
+برای دستیابی به شناسه تبلیغات گوگل بایستی از طریق متد <code>getGoogleAdId</code> که به صورت یک thread در پس زمینه اجرا میشود که یک <code>&lt;Action&lt;string</code> را پاس میدهد، استفاده کرد:
 </div>
 <br/>
 
