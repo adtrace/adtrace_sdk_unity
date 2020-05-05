@@ -144,7 +144,7 @@ SDK یونیتی ادتریس. شما برای اطلاعات بیشتر میت�
 ### <div id="qs-sdk-get" dir="rtl" align='right'>دریافت SDK</div>
 
 <div dir="rtl" align='right'>
-شما میتوانید آخرین نسخه ادتریس <code>1.0.3</code> را در بخش <a href="/releases">صفحه رلیز</a> دریافت کنید.
+شما میتوانید آخرین نسخه ادتریس <code>1.0.3</code> را در بخش <a href="https://github.com/adtrace/adtrace_sdk_unity/releases">صفحه رلیز</a> دریافت کنید.
 </div>
 
 ### <div id="qs-sdk-add" dir="rtl" align='right'>افزودن پروژه به SDK</div>
