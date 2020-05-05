@@ -51,8 +51,8 @@ SDK یونیتی ادتریس. شما برای اطلاعات بیشتر میت�
   <li><a href="#dl-overview">نمای کلی لینک دهی عمیق</a></li>                  
   <li><a href="#dl-standard">سناریو لینک دهی عمیق استاندار</a></li>
   <li><a href="#dl-deferred">سناریو لینک دهی عمیق به تعویق افتاده</a></li>
-  <li><a href="#dl-handle-android">بکارگیری لینک دهی عمیق در اندروید</a></li>
-  <li><a href="#dl-handle-ios">بکارگیری لینک دهی عمیق در iOS</a></li>
+  <li><a href="#dl-app-android">بکارگیری لینک دهی عمیق در اندروید</a></li>
+  <li><a href="#dl-app-ios">بکارگیری لینک دهی عمیق در iOS</a></li>
 </ul>
 </div>
 
@@ -439,13 +439,13 @@ AdTrace.start(adtraceConfig);
 برای فعالسازی اینکه اپ شما لینک دهی عمیق را پشتیبانی میکند، برای هر پلتفرم بایستی scheme ای تنظیم شود.
 </div>
 
-### <div id="dl-handle-android" dir="rtl" align='right'>بکارگیری لینک دهی عمیق در اندروید</div>
+### <div id="dl-app-android" dir="rtl" align='right'>بکارگیری لینک دهی عمیق در اندروید</div>
 
 <div dir="rtl" align='right'>
 برای تنظیم لینک دهی عمیق در اندروید میتوانید از راهنمایی <a href="https://github.com/adtrace/adtrace_sdk_android#deep-linking">SDK اندروید</a> استفاده کنید. این کار در محیط Android Studio انجام میشود.
 </div>
 
-### <div id="dl-handle-ios" dir="rtl" align='right'>بکارگیری لینک دهی عمیق در iOS</div>
+### <div id="dl-app-ios" dir="rtl" align='right'>بکارگیری لینک دهی عمیق در iOS</div>
 
 <div dir="rtl" align='right'>
 برای تنظیم لینک دهی عمیق در iOS میتوانید از راهنمایی <a href="https://github.com/adtrace/adtrace_sdk_ios#deep-linking">iOS SDK</a> استفاده کنید. این کار در محیط Xcode انجام میشود.
