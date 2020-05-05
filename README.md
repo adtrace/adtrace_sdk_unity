@@ -1,3 +1,5 @@
+English | [فارسی][per-readme]
+
 <p align="center"><a href="https://adtrace.io" target="_blank" rel="noopener noreferrer"><img width="100" src="http://adtrace.io/fa/wp-content/uploads/2019/02/logo.png" alt="Adtrace logo"></a></p>
 
 <p align="center">
@@ -806,6 +808,7 @@ If needed, disable dSYM File. In the `Project Navigator`, select the `Unity-iPho
 
 [panel]:  http://panel.adtrace.io
 [adtrace.io]: http://adtrace.io
+[per-readme]:  ./doc/persian/README-PER.md
 
 [example-app]: Assets/AdTrace/ExampleGUI
 
