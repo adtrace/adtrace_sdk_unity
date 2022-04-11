@@ -110,7 +110,7 @@ As of version `2.0.1`, you can add AdTrace SDK from the latest version from our 
 
 Open your project in the Unity Editor, go to `Assets → Import Package → Custom Package` and select the downloaded Unity package file.
 
-![][import_package]
+<img src="./doc/assets/import_package.jpg">
 
 ### <a id="qs-integrate-sdk"></a>Integrate the SDK into your app
 
@@ -126,13 +126,13 @@ You can edit the AdTrace script parameters in the prefab `Inspector menu` to set
 * [Log Level](#adtrace-logging)
 * [Environment](#environment)
 
-<img src="./doc/assets/import_package.jpg">
+<img src="./doc/assets/prefab-editor.jpg">
 
  Replace `{YourAppToken}` with your actual App Token. you can access it in [adtrace panel](https://panel.adtrace.io). 
 
  Depending on whether you are building your app for testing or for production, change the `Environment` setting to either `Sandbox` or `Production`.
 
-**Important:** Set the value to `Sandbox` if you or someone else is testing your app. Make sure to set the environment to `Production` before you publish the app. Set it back to `Sandbox` if you start testing again. Also, have in mind that by default AdTrace dashboard is showing production traffic of your app, so in case you want to see traffic you generated while testing in sandbox mode, make sure to switch to sandbox traffic view within dashboard.
+**Important:** Set the value to `Sandbox` if you or someone else is testing your app. Make sure to set the environment to `Production` before you publish the app. Set it back to `Sandbox` if you start testing again. Also, have in mind that by default AdTrace panel is showing production traffic of your app, so in case you want to see traffic you generated while testing in sandbox mode, make sure to switch to sandbox traffic view within panel.
 
 We use the environment setting to distinguish between real traffic and artificial traffic from test devices. Please make sure to keep your environment setting updated.
 
@@ -183,17 +183,17 @@ Since August 1st 2014, apps in the Google Play Store must use the [Google Advert
 
 There are two main ways to download the Android SDK. Any tool using the `Android SDK Manager` will offer a quick link to download and install the Android SDK tools. Once installed, you can find the libraries in the `SDK_FOLDER/extras/google/google_play_services/libproject/` folder.
 
-![][android_sdk_location]
 
 If you aren't using any tools with the Android SDK Manager, download the official standalone [Android SDK][android_sdk_download]. Next, download the Andoird SDK Tools by following the instructions in the `SDK Readme.txt` README provided by Google, located in the Android SDK folder.
 
-**Update**: With the latest Android SDK version, Google has changed the structure of the Google Play Services folders inside of the root SDK folder. It now looks like this:
-
-![][android_sdk_location_new]
 
 You can now add only the part of the Google Play Services library that the AdTrace SDK needs––the basement. To do this, add the `play-services-basement-x.y.z.aar` file to your `Assets/Plugins/Android` folder. 
 
 With Google Play Services library 15.0.0, Google has moved the classes needed to get the Google advertising ID into a  `play-services-ads-identifier` package. Add this package to your app if you are using library version 15.0.0 or later. When you’re finished, please test to make sure the AdTrace SDK correctly obtains the Google advertising ID; we have noticed some inconsistencies, depending upon which Unity integrated development environment (IDE) version you use. 
+
+
+**Download Google play sevices ads identifier:** [maven](https://mvnrepository.com/artifact/com.google.android.gms/play-services-ads-identifier) , [direct link](../Extras/Android/play-services-basement-18.0.0.aar)
+
 
 #### <a id="gps-adid-permission"></a>Add permission to gather Google advertising ID
 
@@ -238,11 +238,12 @@ Google introduced the Google Play Referrer API in order to provide a more reliab
 
 The AdTrace post-build process catches the Google Play Store intent; you can take a few additional steps to add support for the new Google Play Referrer API.
 
-To add support for the Google Play Referrer API, download the [install referrer library][install-referrer-aar] from Maven repository and place the AAR file into your `Plugins/Android` folder.
+
+To add support for the Google Play Referrer API, download the [install referrer library](https://mvnrepository.com/artifact/com.android.installreferrer/installreferrer) from Maven repository or via [direct link](../Extras/Android/installreferrer-2.2.aar) and place the AAR file into your `Plugins/Android` folder.
 
 #### <a id="qs-huawei-referrer-api"></a>Huawei Referrer API
 
-As of v4.21.1, the AdTrace SDK supports install tracking on Huawei devices with Huawei App Gallery version 10.4 and higher. No additional integration steps are needed to start using the Huawei Referrer API.
+As of v2.0.1, the AdTrace SDK supports install tracking on Huawei devices with Huawei App Gallery version 10.4 and higher. No additional integration steps are needed to start using the Huawei Referrer API.
 
 ### <a id="qs-post-build-process"></a>Post-build process
 
@@ -282,7 +283,7 @@ The Android post-build process makes changes to the `AndroidManifest.xml` file l
 
 An account manager can activate the AdTrace SDK signature for you. Contact AdTrace support at support@adtrace.io if you want to use this feature.
 
-If the SDK signature is enabled on your account and you have access to App Secrets in your dashboard, add all secret parameters (`secretId`, `info1`, `info2`, `info3`, `info4`) to the `setAppSecret` method of `AdTraceConfig` instance:
+If the SDK signature is enabled on your account and you have access to App Secrets in your panel, add all secret parameters (`secretId`, `info1`, `info2`, `info3`, `info4`) to the `setAppSecret` method of `AdTraceConfig` instance:
 
 ```cs
 AdTraceConfig adtraceConfig = new AdTraceConfig("{YourAppToken}", "{YourEnvironment}");
@@ -370,7 +371,7 @@ To set up deeplink handling in an iOS app on a nativel level, please use a nativ
 
 ### <a id="et-tracking"></a>Track an event
 
-You can use AdTrace to track any event in your app. If you want to track every tap on a button, [create a new event token](https://help.adtrace.io/en/tracking/in-app-events/basic-event-setup#generate-event-tokens-in-the-adtrace-dashboard) in your dashboard. Let's say that the event token is `abc123`. In your button's click handler method, add the following lines to track the click:
+You can use AdTrace to track any event in your app. If you want to track every tap on a button, [create a new event token](https://help.adtrace.io/en/tracking/in-app-events/basic-event-setup#generate-event-tokens-in-the-adtrace-panel) in your panel. Let's say that the event token is `abc123`. In your button's click handler method, add the following lines to track the click:
 
 ```cs
 AdTraceEvent adtraceEvent = new AdTraceEvent("abc123");
@@ -383,11 +384,11 @@ If your users generate revenue by engaging with advertisements or making in-app 
 
 ```cs
 AdTraceEvent adtraceEvent = new AdTraceEvent("abc123");
-adtraceEvent.setRevenue(0.01, "EUR");
+adtraceEvent.setRevenue(12000, "Toman");
 AdTrace.trackEvent(adtraceEvent);
 ```
 
-When you set a currency token, AdTrace will automatically convert the incoming revenues using the openexchange API into a reporting revenue of your choice. [Read more about currency conversion here](http://help.adtrace.io/tracking/revenue-events/currency-conversion).
+When you set a currency token, AdTrace will automatically convert the incoming revenues using the openexchange API into a reporting revenue of your choice. 
 
 If you want to track in-app purchases, please make sure to call `trackEvent` only if the purchase is finished and the item has been purchased. This is important in order to avoid tracking revenue your users did not actually generate.
 
@@ -399,7 +400,7 @@ Add an optional transaction ID to avoid tracking duplicated revenues. The SDK re
 ```cs
 AdTraceEvent adtraceEvent = new AdTraceEvent("abc123");
 
-adtraceEvent.setRevenue(0.01, "EUR");
+adtraceEvent.setRevenue(12000, "Toman");
 adtraceEvent.setTransactionId("transactionId");
 
 AdTrace.trackEvent(adtraceEvent);
@@ -409,15 +410,15 @@ AdTrace.trackEvent(adtraceEvent);
 
 ### <a id="cp"></a>Custom parameters overview
 
-In addition to the data points the AdTrace SDK collects by default, you can use the AdTrace SDK to track and add as many custom values as you need (user IDs, product IDs, etc.) to the event or session. Custom parameters are only available as raw data and will **not** appear in your AdTrace dashboard.
+In addition to the data points the AdTrace SDK collects by default, you can use the AdTrace SDK to track and add as many custom values as you need (user IDs, product IDs, etc.) to the event or session. Custom parameters are only available as raw data and will **not** appear in your AdTrace panel.
 
-Use [callback parameters](https://help.adtrace.io/en/manage-data/export-raw-data/callbacks/best-practices-callbacks) for the values you collect for your own internal use, and partner parameters for those you share with external partners. If a value (e.g. product ID) is tracked both for internal use and external partner use, we recommend using both callback and partner parameters.
+Use callback parameters for the values you collect for your own internal use, and partner parameters for those you share with external partners. If a value (e.g. product ID) is tracked both for internal use and external partner use, we recommend using both callback and partner parameters.
 
 ### <a id="cp-event-parameters"></a>Event parameters
 
 ### <a id="cp-event-callback-parameters"></a>Event callback parameters
 
-If you register a callback URL for events in your [dashboard], we will send a GET request to that URL whenever the event is tracked. You can also put key-value pairs in an object and pass it to the `trackEvent` method. We will then append these parameters to your callback URL.
+If you register a callback URL for events in your [panel], we will send a GET request to that URL whenever the event is tracked. You can also put key-value pairs in an object and pass it to the `trackEvent` method. We will then append these parameters to your callback URL.
 
 For example, if you've registered the URL `http://www.example.com/callback`, then you would track an event like this:
 
@@ -436,27 +437,24 @@ In this case we would track the event and send a request to:
 http://www.example.com/callback?key=value&foo=bar
 ```
 
-AdTrace supports a variety of placeholders, for example `{idfa}` for iOS or `{gps_adid}` for Android, which can be used as parameter values.  Using this example, in the resulting callback we would replace the placeholder with the IDFA/ Google Play Services ID of the current device. Read more about [real-time callbacks](https://help.adtrace.io/en/manage-data/export-raw-data/callbacks) and see our full list of [placeholders](https://partners.adtrace.io/placeholders/). 
+AdTrace supports a variety of placeholders, for example `{idfa}` for iOS or `{gps_adid}` for Android, which can be used as parameter values.  Using this example, in the resulting callback we would replace the placeholder with the IDFA/ Google Play Services ID of the current device.
 
 **Note:** We don't store any of your custom parameters. We only append them to your callbacks. If you haven't registered a callback for an event, we will not read these parameters.
 
 
 ### <a id="cp-event-value-parameters"></a>Event value parameters
 
-Once your parameters are activated in the dashboard, you can send them to your network partners. Read more about [module partners](https://docs.adtrace.io/en/special-partners/) and their extended integration.
-
-This works the same way as callback parameters; add them by calling the `addPartnerParameter` method on your `AdTraceEvent` instance.
+You can send events with desired values. This works the same way as callback parameters; add them by calling the `addEventParameter` method on your `AdTraceEvent` instance.
 
 ```cs
 AdTraceEvent adtraceEvent = new AdTraceEvent("abc123");
 
-adtraceEvent.addPartnerParameter("key", "value");
-adtraceEvent.addPartnerParameter("foo", "bar");
+adtraceEvent.addEventParameter("key", "value");
+adtraceEvent.addEventParameter("foo", "bar");
 
 AdTrace.trackEvent(adtraceEvent);
 ```
 
-You can read more about special partners and these integrations in our [guide to special partners][special-partners].
 
 ### <a id="cp-event-callback-id"></a>Event callback identifier
 
@@ -504,7 +502,7 @@ AdTrace.resetSessionCallbackParameters();
 
 In the same way that [session callback parameters](#cp-session-callback-parameters) are sent with every event or session that triggers our SDK, there are also session partner parameters.
 
-These are transmitted to network partners for all of the integrations activated in your [dashboard].
+These are transmitted to network partners for all of the integrations activated in your [panel].
 
 The session partner parameters interface is similar to the Event value parameters interface, however instead of adding the key and its value to an event, add it by calling the `addSessionPartnerParameter` method of the `AdTrace` instance.
 
@@ -613,7 +611,7 @@ To get the current app tracking authorization status you can call `getAppTrackin
 
 **Note**: This feature exists only in iOS platform.
 
-If you have implemented the AdTrace iOS SDK v4.23.0 or above and your app is running on iOS 14 and above, the communication with SKAdNetwork will be set on by default, although you can choose to turn it off. When set on, AdTrace automatically registers for SKAdNetwork attribution when the SDK is initialized. If events are set up in the AdTrace dashboard to receive conversion values, the AdTrace backend sends the conversion value data to the SDK. The SDK then sets the conversion value. After AdTrace receives the SKAdNetwork callback data, it is then displayed in the dashboard.
+If you have implemented the AdTrace iOS SDK v4.23.0 or above and your app is running on iOS 14 and above, the communication with SKAdNetwork will be set on by default, although you can choose to turn it off. When set on, AdTrace automatically registers for SKAdNetwork attribution when the SDK is initialized. If events are set up in the AdTrace panel to receive conversion values, the AdTrace backend sends the conversion value data to the SDK. The SDK then sets the conversion value. After AdTrace receives the SKAdNetwork callback data, it is then displayed in the panel.
 
 In case you don't want the AdTrace SDK to automatically communicate with SKAdNetwork, you can disable that by calling the following method on configuration object:
 
@@ -749,7 +747,7 @@ Currently we support the below `source` parameter values:
 - `AdTraceConfig.AdTraceAdRevenueSourceAdMob` - representing AdMob platform.
 - `AdTraceConfig.AdTraceAdRevenueSourceIronSource` - representing IronSource platform.
 
-**Note**: Additional documentation which explains detailed integration with every of the supported sources will be provided outside of this README. Also, in order to use this feature, additional setup is needed for your app in AdTrace dashboard, so make sure to get in touch with our support team to make sure that everything is set up correctly before you start to use this feature.
+**Note**: Additional documentation which explains detailed integration with every of the supported sources will be provided outside of this README. Also, in order to use this feature, additional setup is needed for your app in AdTrace panel, so make sure to get in touch with our support team to make sure that everything is set up correctly before you start to use this feature.
 
 ### <a id="ad-subscriptions"></a>Subscription tracking
 
@@ -1010,7 +1008,6 @@ An external device identifier is a custom value that you can assign to a device 
 
 You can also use an external device ID as a custom identifier for a device. This can be useful if you use these identifiers elsewhere and want to keep continuity.
 
-Check out our [external device identifiers article](https://help.adtrace.io/en/article/external-device-identifiers) for more information.
 
 > **Note** This setting requires AdTrace SDK v4.20.0 or later.
 
@@ -1082,14 +1079,14 @@ Depending upon your implmentation method, you may need to make a change to your 
 
 #### Use a default tracker
 
-- Create a new tracker in your [dashboard].
+- Create a new tracker in your [panel].
 - Open your app delegate and set the default tracker of your config:
 
   ```csharp
   adtraceConfig.setDefaultTracker("{TrackerToken}");
   ```
 
-- Replace `{TrackerToken}` with the tracker token you created in step one. Please note that the dashboard displays a tracker URL (including `http://app.adtrace.io/`). In your source code, you should specify only the six or seven-character token and not the entire URL.
+- Replace `{TrackerToken}` with the tracker token you created in step one. Please note that the panel displays a tracker URL (including `http://app.adtrace.io/`). In your source code, you should specify only the six or seven-character token and not the entire URL.
 
 - Build and run your app. You should see a line like the following in your LogCat:
 
@@ -1225,7 +1222,7 @@ Even with the post build script it is possible that the project is not ready to 
 If needed, disable dSYM File. In the `Project Navigator`, select the `Unity-iPhone` project. Click the `Build Settings` tab and search for `debug information`. There should be an `Debug Information Format` or `DEBUG_INFORMATION_FORMAT` option. Change it from `DWARF with dSYM File` to `DWARF`.
 
 
-[dashboard]:  https://panel.adtrace.io
+[panel]:  https://panel.adtrace.io
 [adtrace.io]: https://adtrace.io
 
 
