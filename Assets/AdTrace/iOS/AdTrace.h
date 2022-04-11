@@ -1,19 +1,22 @@
 //
-//  AdTrace.h
-//  AdTrace
-//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
 
 
 #import "ADTEvent.h"
 #import "ADTConfig.h"
 #import "ADTAttribution.h"
+#import "ADTSubscription.h"
+#import "ADTThirdPartySharing.h"
+#import "ADTAdRevenue.h"
+#import "ADTLinkResolution.h"
 
-@interface AdTraceTestOptions : NSObject
+@interface AdtraceTestOptions : NSObject
 
 @property (nonatomic, copy, nullable) NSString *baseUrl;
 @property (nonatomic, copy, nullable) NSString *gdprUrl;
-@property (nonatomic, copy, nullable) NSString *basePath;
-@property (nonatomic, copy, nullable) NSString *gdprPath;
+@property (nonatomic, copy, nullable) NSString *subscriptionUrl;
+@property (nonatomic, copy, nullable) NSString *extraPath;
 @property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
 @property (nonatomic, copy, nullable) NSNumber *sessionIntervalInMilliseconds;
@@ -22,26 +25,49 @@
 @property (nonatomic, assign) BOOL deleteState;
 @property (nonatomic, assign) BOOL noBackoffWait;
 @property (nonatomic, assign) BOOL iAdFrameworkEnabled;
+@property (nonatomic, assign) BOOL adServicesFrameworkEnabled;
+@property (nonatomic, assign) BOOL enableSigning;
+@property (nonatomic, assign) BOOL disableSigning;
 
 @end
 
 /**
- * Constants for our supported tracking environments
+ * Constants for our supported tracking environments.
  */
 extern NSString * __nonnull const ADTEnvironmentSandbox;
 extern NSString * __nonnull const ADTEnvironmentProduction;
 
 /**
- * @brief The main interface to AdTrace.
- *
- * @note Use the methods of this class to tell AdTrace about the usage of your app.
- *       See the README for details.
+ * Constants for supported ad revenue sources.
  */
-@interface AdTrace : NSObject
+extern NSString * __nonnull const ADTAdRevenueSourceAppLovinMAX;
+extern NSString * __nonnull const ADTAdRevenueSourceMopub;
+extern NSString * __nonnull const ADTAdRevenueSourceAdMob;
+extern NSString * __nonnull const ADTAdRevenueSourceIronSource;
+extern NSString * __nonnull const ADTAdRevenueSourceAdMost;
+extern NSString * __nonnull const ADTAdRevenueSourceUnity;
+extern NSString * __nonnull const ADTAdRevenueSourceHeliumChartboost;
 
 /**
- * @brief Tell AdTrace that the application did launch.
- *        This is required to initialize AdTrace. Call this in the didFinishLaunching
+ * Constants for country app's URL strategies.
+ */
+extern NSString * __nonnull const ADTUrlStrategyIndia;
+extern NSString * __nonnull const ADTUrlStrategyChina;
+extern NSString * __nonnull const ADTDataResidencyEU;
+extern NSString * __nonnull const ADTDataResidencyTR;
+extern NSString * __nonnull const ADTDataResidencyUS;
+
+/**
+ * @brief The main interface to Adtrace.
+ *
+ * @note Use the methods of this class to tell Adtrace about the usage of your app.
+ *       See the README for details.
+ */
+@interface Adtrace : NSObject
+
+/**
+ * @brief Tell Adtrace that the application did launch.
+ *        This is required to initialize Adtrace. Call this in the didFinishLaunching
  *        method of your AppDelegate.
  *
  * @note See ADTConfig.h for more configuration options
@@ -54,7 +80,7 @@ extern NSString * __nonnull const ADTEnvironmentProduction;
 + (void)appDidLaunch:(nullable ADTConfig *)adtraceConfig;
 
 /**
- * @brief Tell AdTrace that a particular event has happened.
+ * @brief Tell Adtrace that a particular event has happened.
  *
  * @note See ADTEvent.h for more event options.
  *
@@ -109,7 +135,7 @@ extern NSString * __nonnull const ADTEnvironmentProduction;
 
 /**
  * @brief Set the device token used by push notifications.
- *        This method is only used by AdTrace non native SDKs. Don't use it anywhere else.
+ *        This method is only used by Adtrace non native SDKs. Don't use it anywhere else.
  *
  * @param pushToken Apple push notification token for iOS device as NSString.
  */
@@ -133,7 +159,7 @@ extern NSString * __nonnull const ADTEnvironmentProduction;
 /**
  * @brief Get current adtrace identifier for the user.
  *
- * @note AdTrace identifier is available only after installation has been successfully tracked.
+ * @note Adtrace identifier is available only after installation has been successfully tracked.
  *
  * @return Current adtrace identifier value for the user.
  */
@@ -150,9 +176,9 @@ extern NSString * __nonnull const ADTEnvironmentProduction;
 + (nullable ADTAttribution *)attribution;
 
 /**
- * @brief Get current AdTrace SDK version string.
+ * @brief Get current Adtrace SDK version string.
  *
- * @return AdTrace SDK version string (iosX.Y.Z).
+ * @return Adtrace SDK version string (iosX.Y.Z).
  */
 + (nullable NSString *)sdkVersion;
 
@@ -227,11 +253,76 @@ extern NSString * __nonnull const ADTEnvironmentProduction;
 + (void)gdprForgetMe;
 
 /**
- * Obtain singleton AdTrace object.
+ * @brief Track ad revenue for given source.
+ *
+ * @param source Ad revenue source.
+ * @param payload Ad revenue payload.
  */
-+ (nullable id)getInstance;
++ (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
 
-+ (void)setTestOptions:(nullable AdTraceTestOptions *)testOptions;
+/**
+ * @brief Give right user to disable sharing data to any third-party.
+ */
++ (void)disableThirdPartySharing;
+
+/**
+ * @brief Track third paty sharing with possibility to allow or disallow it.
+ *
+ * @param thirdPartySharing Third party sharing choice.
+ */
++ (void)trackThirdPartySharing:(nonnull ADTThirdPartySharing *)thirdPartySharing;
+
+/**
+ * @brief Track measurement consent.
+ *
+ * @param enabled Value of the consent.
+ */
++ (void)trackMeasurementConsent:(BOOL)enabled;
+
+/**
+ * @brief Track ad revenue.
+ *
+ * @param adRevenue Ad revenue object instance containing all the relevant ad revenue tracking data.
+ */
++ (void)trackAdRevenue:(nonnull ADTAdRevenue *)adRevenue;
+
+/**
+ * @brief Track subscription.
+ *
+ * @param subscription Subscription object.
+ */
++ (void)trackSubscription:(nonnull ADTSubscription *)subscription;
+
+/**
+ * @brief Adtrace wrapper for requestTrackingAuthorizationWithCompletionHandler: method.
+ *
+ * @param completion Block which value of tracking authorization status will be delivered to.
+ */
++ (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
+
+/**
+ * @brief Getter for app tracking authorization status.
+ *
+ * return Value of app tracking authorization status.
+ */
++ (int)appTrackingAuthorizationStatus;
+
+/**
+ * @brief Adtrace wrapper for updateConversionValue: method.
+ *
+ * @param conversionValue Conversion value you would like SDK to set for given user.
+ */
++ (void)updateConversionValue:(NSInteger)conversionValue;
+
+/**
+ * @brief Method used for internal testing only. Don't use it in production.
+ */
++ (void)setTestOptions:(nullable AdtraceTestOptions *)testOptions;
+
+/**
+ * Obtain singleton Adtrace object.
+ */
++ (nullable instancetype)getInstance;
 
 - (void)appDidLaunch:(nullable ADTConfig *)adtraceConfig;
 
@@ -269,6 +360,10 @@ extern NSString * __nonnull const ADTEnvironmentProduction;
 
 - (void)gdprForgetMe;
 
+- (void)trackAdRevenue:(nonnull NSString *)source payload:(nonnull NSData *)payload;
+
+- (void)trackSubscription:(nonnull ADTSubscription *)subscription;
+
 - (BOOL)isEnabled;
 
 - (nullable NSString *)adid;
@@ -280,5 +375,17 @@ extern NSString * __nonnull const ADTEnvironmentProduction;
 - (nullable ADTAttribution *)attribution;
 
 - (nullable NSURL *)convertUniversalLink:(nonnull NSURL *)url scheme:(nonnull NSString *)scheme;
+
+- (void)requestTrackingAuthorizationWithCompletionHandler:(void (^_Nullable)(NSUInteger status))completion;
+
+- (int)appTrackingAuthorizationStatus;
+
+- (void)updateConversionValue:(NSInteger)conversionValue;
+
+- (void)trackThirdPartySharing:(nonnull ADTThirdPartySharing *)thirdPartySharing;
+
+- (void)trackMeasurementConsent:(BOOL)enabled;
+
+- (void)trackAdRevenue:(nonnull ADTAdRevenue *)adRevenue;
 
 @end

@@ -12,7 +12,7 @@
         android:xlargeScreens="true"
         android:anyDensity="true"/>
 
-    <!-- Permissions needed by the Adtrace SDK. -->
+    <!-- Permissions needed by the AdTrace SDK. -->
     <!-- For more information, check: https://github.com/adtrace/unity_sdk#post-build-android -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

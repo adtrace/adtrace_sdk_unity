@@ -1,15 +1,15 @@
 //
-//  AdTraceUnityDelegate.mm
-//  AdTrace SDK
-//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
+
 
 #import <objc/runtime.h>
-#import "AdTraceUnityDelegate.h"
+#import "AdtraceUnityDelegate.h"
 
 static dispatch_once_t onceToken;
-static AdTraceUnityDelegate *defaultInstance = nil;
+static AdtraceUnityDelegate *defaultInstance = nil;
 
-@implementation AdTraceUnityDelegate
+@implementation AdtraceUnityDelegate
 
 #pragma mark - Object lifecycle methods
 
@@ -29,10 +29,11 @@ static AdTraceUnityDelegate *defaultInstance = nil;
                            sessionSuccessCallback:(BOOL)swizzleSessionSuccessCallback
                            sessionFailureCallback:(BOOL)swizzleSessionFailureCallback
                          deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
+                   conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
-                         withAdTraceUnitySceneName:(NSString *)adtraceUnitySceneName {
+                         withAdtraceUnitySceneName:(NSString *)adtraceUnitySceneName; {
     dispatch_once(&onceToken, ^{
-        defaultInstance = [[AdTraceUnityDelegate alloc] init];
+        defaultInstance = [[AdtraceUnityDelegate alloc] init];
 
         // Do the swizzling where and if needed.
         if (swizzleAttributionCallback) {
@@ -59,9 +60,13 @@ static AdTraceUnityDelegate *defaultInstance = nil;
             [defaultInstance swizzleOriginalSelector:@selector(adtraceDeeplinkResponse:)
                                         withSelector:@selector(adtraceDeeplinkResponseWannabe:)];
         }
+        if (swizzleConversionValueUpdatedCallback) {
+            [defaultInstance swizzleOriginalSelector:@selector(adtraceConversionValueUpdated:)
+                                        withSelector:@selector(adtraceConversionValueUpdatedWannabe:)];
+        }
 
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
-        [defaultInstance setAdTraceUnitySceneName:adtraceUnitySceneName];
+        [defaultInstance setAdtraceUnitySceneName:adtraceUnitySceneName];
     });
     
     return defaultInstance;
@@ -88,6 +93,9 @@ static AdTraceUnityDelegate *defaultInstance = nil;
     [self addValueOrEmpty:attribution.adgroup forKey:@"adgroup" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.clickLabel forKey:@"clickLabel" toDictionary:dictionary];
     [self addValueOrEmpty:attribution.adid forKey:@"adid" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costType forKey:@"costType" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costAmount forKey:@"costAmount" toDictionary:dictionary];
+    [self addValueOrEmpty:attribution.costCurrency forKey:@"costCurrency" toDictionary:dictionary];
 
     NSData *dataAttribution = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
     NSString *stringAttribution = [[NSString alloc] initWithBytes:[dataAttribution bytes]
@@ -194,6 +202,12 @@ static AdTraceUnityDelegate *defaultInstance = nil;
     return _shouldLaunchDeferredDeeplink;
 }
 
+- (void)adtraceConversionValueUpdatedWannabe:(NSNumber *)conversionValue {
+    NSString *stringConversionValue = [conversionValue stringValue];
+    const char* charConversionValue = [stringConversionValue UTF8String];
+    UnitySendMessage([self.adtraceUnitySceneName UTF8String], "GetNativeConversionValueUpdated", charConversionValue);
+}
+
 - (void)swizzleOriginalSelector:(SEL)originalSelector
                    withSelector:(SEL)swizzledSelector {
     Class className = [self class];
@@ -218,7 +232,13 @@ static AdTraceUnityDelegate *defaultInstance = nil;
                  forKey:(NSString *)key
            toDictionary:(NSMutableDictionary *)dictionary {
     if (nil != value) {
-        [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
+        if ([value isKindOfClass:[NSString class]]) {
+            [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
+        } else if ([value isKindOfClass:[NSNumber class]]) {
+            [dictionary setObject:[NSString stringWithFormat:@"%@", [((NSNumber *)value) stringValue]] forKey:key];
+        } else {
+            [dictionary setObject:@"" forKey:key];
+        }
     } else {
         [dictionary setObject:@"" forKey:key];
     }

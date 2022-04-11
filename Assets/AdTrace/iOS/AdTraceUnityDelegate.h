@@ -1,15 +1,14 @@
 //
-//  AdTraceUnityDelegate.h
-//  AdTrace SDK
-//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
 
 
-#import "AdTrace.h"
+#import "Adtrace.h"
 
 /**
- * @brief The main interface to AdTrace Unity delegate. Used to do callback methods swizzling where needed.
+ * @brief The main interface to Adtrace Unity delegate. Used to do callback methods swizzling where needed.
  */
-@interface AdTraceUnityDelegate : NSObject<AdTraceDelegate>
+@interface AdtraceUnityDelegate : NSObject<AdtraceDelegate>
 
 /**
  * @brief Boolean indicating whether deferred deep link should be launched by SDK or not.
@@ -17,23 +16,24 @@
 @property (nonatomic) BOOL shouldLaunchDeferredDeeplink;
 
 /**
- * @brief Name of the Unity scene that loads AdTrace SDK.
+ * @brief Name of the Unity scene that loads Adtrace SDK.
  */
 @property (nonatomic, copy) NSString *adtraceUnitySceneName;
 
 /**
- * @brief Get instance of the AdTraceUnityDelegate with properly swizzled callback methods.
+ * @brief Get instance of the AdtraceUnityDelegate with properly swizzled callback methods.
  *
- * @param swizzleAttributionCallback        Indicator whether attribution callback should be swizzled or not.
- * @param swizzleEventSuccessCallback       Indicator whether event success callback should be swizzled or not.
- * @param swizzleEventFailureCallback       Indicator whether event failure callback should be swizzled or not.
- * @param swizzleSessionSuccessCallback     Indicator whether session success callback should be swizzled or not.
- * @param swizzleSessionFailureCallback     Indicator whether session failure callback should be swizzled or not.
- * @param swizzleDeferredDeeplinkCallback   Indicator whether deferred deep link callback should be swizzled or not.
- * @param shouldLaunchDeferredDeeplink      Indicator whether SDK should launch deferred deep link by default or not.
- * @param adtraceUnitySceneName              Name of the Unity scene that loads AdTrace SDK.
+ * @param swizzleAttributionCallback            Indicator whether attribution callback should be swizzled or not.
+ * @param swizzleEventSuccessCallback           Indicator whether event success callback should be swizzled or not.
+ * @param swizzleEventFailureCallback           Indicator whether event failure callback should be swizzled or not.
+ * @param swizzleSessionSuccessCallback         Indicator whether session success callback should be swizzled or not.
+ * @param swizzleSessionFailureCallback         Indicator whether session failure callback should be swizzled or not.
+ * @param swizzleDeferredDeeplinkCallback       Indicator whether deferred deep link callback should be swizzled or not.
+ * @param swizzleConversionValueUpdatedCallback Indicator whether deferred deep link callback should be swizzled or not.
+ * @param shouldLaunchDeferredDeeplink          Indicator whether SDK should launch deferred deep link by default or not.
+ * @param adtraceUnitySceneName                  Name of the Unity scene that loads Adtrace SDK.
  *
- * @return AdTraceUnityDelegate object instance with properly swizzled callback methods.
+ * @return AdtraceUnityDelegate object instance with properly swizzled callback methods.
  */
 + (id)getInstanceWithSwizzleOfAttributionCallback:(BOOL)swizzleAttributionCallback
                              eventSuccessCallback:(BOOL)swizzleEventSuccessCallback
@@ -41,11 +41,12 @@
                            sessionSuccessCallback:(BOOL)swizzleSessionSuccessCallback
                            sessionFailureCallback:(BOOL)swizzleSessionFailureCallback
                          deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
+                   conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
-                         withAdTraceUnitySceneName:(NSString *)adtraceUnitySceneName;
+                         withAdtraceUnitySceneName:(NSString *)adtraceUnitySceneName;
 
 /**
- * @brief Teardown method used to reset static AdTraceUnityDelegate instance.
+ * @brief Teardown method used to reset static AdtraceUnityDelegate instance.
  *        Used for testing purposes only.
  */
 + (void)teardown;

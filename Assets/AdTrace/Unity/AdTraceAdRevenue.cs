@@ -1,0 +1,73 @@
+﻿//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
+
+using System;
+using System.Collections.Generic;
+
+namespace io.adtrace.sdk
+{
+    public class AdTraceAdRevenue
+    {
+        internal string source;
+        internal double? revenue;
+        internal string currency;
+        internal int? adImpressionsCount;
+        internal string adRevenueNetwork;
+        internal string adRevenueUnit;
+        internal string adRevenuePlacement;
+        internal List<string> partnerList;
+        internal List<string> callbackList;
+
+        public AdTraceAdRevenue(string source)
+        {
+            this.source = source;
+        }
+
+        public void setRevenue(double amount, string currency)
+        {
+            this.revenue = amount;
+            this.currency = currency;
+        }
+
+        public void setAdImpressionsCount(int adImpressionsCount)
+        {
+            this.adImpressionsCount = adImpressionsCount;
+        }
+
+        public void setAdRevenueNetwork(string adRevenueNetwork)
+        {
+            this.adRevenueNetwork = adRevenueNetwork;
+        }
+
+        public void setAdRevenueUnit(string adRevenueUnit)
+        {
+            this.adRevenueUnit = adRevenueUnit;
+        }
+
+        public void setAdRevenuePlacement(string adRevenuePlacement)
+        {
+            this.adRevenuePlacement = adRevenuePlacement;
+        }
+
+        public void addCallbackParameter(string key, string value)
+        {
+            if (callbackList == null)
+            {
+                callbackList = new List<string>();
+            }
+            callbackList.Add(key);
+            callbackList.Add(value);
+        }
+
+        public void addPartnerParameter(string key, string value)
+        {
+            if (partnerList == null)
+            {
+                partnerList = new List<string>();
+            }
+            partnerList.Add(key);
+            partnerList.Add(value);
+        }
+    }
+}

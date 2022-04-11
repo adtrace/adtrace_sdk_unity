@@ -1,9 +1,13 @@
-﻿using System;
+﻿//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
+
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace com.adtrace.sdk
+namespace io.adtrace.sdk
 {
     public class AdTraceUtils
     {
@@ -21,10 +25,15 @@ namespace com.adtrace.sdk
         public static string KeyTrackerName = "trackerName";
         public static string KeyTrackerToken = "trackerToken";
         public static string KeyJsonResponse = "jsonResponse";
+        public static string KeyCostType = "costType";
+        public static string KeyCostAmount = "costAmount";
+        public static string KeyCostCurrency = "costCurrency";
 
         // For testing purposes.
         public static string KeyTestOptionsBaseUrl = "baseUrl";
         public static string KeyTestOptionsGdprUrl = "gdprUrl";
+        public static string KeyTestOptionsSubscriptionUrl = "subscriptionUrl";
+        public static string KeyTestOptionsExtraPath = "extraPath";
         public static string KeyTestOptionsBasePath = "basePath";
         public static string KeyTestOptionsGdprPath = "gdprPath";
         public static string KeyTestOptionsDeleteState = "deleteState";
@@ -36,6 +45,7 @@ namespace com.adtrace.sdk
         public static string KeyTestOptionsTeardown = "teardown";
         public static string KeyTestOptionsNoBackoffWait = "noBackoffWait";
         public static string KeyTestOptionsiAdFrameworkEnabled = "iAdFrameworkEnabled";
+        public static string KeyTestOptionsAdServicesFrameworkEnabled = "adServicesFrameworkEnabled";
 
         public static int ConvertLogLevel(AdTraceLogLevel? logLevel)
         {
@@ -73,6 +83,16 @@ namespace com.adtrace.sdk
             return (double)value;
         }
 
+        public static int ConvertInt(int? value)
+        {
+            if (value == null)
+            {
+                return -1;
+            }
+
+            return (int)value;
+        }
+
         public static long ConvertLong(long? value)
         {
             if (value == null)
@@ -89,9 +109,30 @@ namespace com.adtrace.sdk
             {
                 return null;
             }
+            // list of callback / partner parameters must contain even number of elements
+            if (list.Count % 2 != 0)
+            {
+                return null;
+            }
 
+            List<String> processedList = new List<String>();
+            for (int i = 0; i < list.Count; i += 2)
+            {
+                String key = list[i];
+                String value = list[i + 1];
+
+                if (key == null || value == null)
+                {
+                    continue;
+                }
+
+                processedList.Add(key);
+                processedList.Add(value);
+            }
+
+            // create JSON array
             var jsonArray = new JSONArray();
-            foreach (var listItem in list)
+            foreach (var listItem in processedList)
             {
                 jsonArray.Add(new JSONData(listItem));
             }
@@ -168,6 +209,7 @@ namespace com.adtrace.sdk
                 return null;
             }
 
+            // https://github.com/adtrace/unity_sdk/issues/137
             if (nodeValue == "")
             {
                 return null;
@@ -221,17 +263,16 @@ namespace com.adtrace.sdk
 #if UNITY_ANDROID
         public static AndroidJavaObject TestOptionsMap2AndroidJavaObject(Dictionary<string, string> testOptionsMap, AndroidJavaObject ajoCurrentActivity)
         {
-            AndroidJavaObject ajoTestOptions = new AndroidJavaObject("com.adtrace.sdk.AdTraceTestOptions");
+            AndroidJavaObject ajoTestOptions = new AndroidJavaObject("io.adtrace.sdk.AdTraceTestOptions");
             ajoTestOptions.Set<String>("baseUrl", testOptionsMap[KeyTestOptionsBaseUrl]);
             ajoTestOptions.Set<String>("gdprUrl", testOptionsMap[KeyTestOptionsGdprUrl]);
+            ajoTestOptions.Set<String>("subscriptionUrl", testOptionsMap[KeyTestOptionsSubscriptionUrl]);
 
-            if (testOptionsMap.ContainsKey(KeyTestOptionsBasePath) && !string.IsNullOrEmpty(testOptionsMap[KeyTestOptionsBasePath]))
+            if (testOptionsMap.ContainsKey(KeyTestOptionsExtraPath) && !string.IsNullOrEmpty(testOptionsMap[KeyTestOptionsExtraPath]))
             {
-                ajoTestOptions.Set<String>("basePath", testOptionsMap[KeyTestOptionsBasePath]);
-            }
-            if (testOptionsMap.ContainsKey(KeyTestOptionsGdprPath) && !string.IsNullOrEmpty(testOptionsMap[KeyTestOptionsGdprPath]))
-            {
-                ajoTestOptions.Set<String>("gdprPath", testOptionsMap[KeyTestOptionsGdprPath]);
+                ajoTestOptions.Set<String>("basePath", testOptionsMap[KeyTestOptionsExtraPath]);
+                ajoTestOptions.Set<String>("gdprPath", testOptionsMap[KeyTestOptionsExtraPath]);
+                ajoTestOptions.Set<String>("subscriptionPath", testOptionsMap[KeyTestOptionsExtraPath]);
             }
             if (testOptionsMap.ContainsKey(KeyTestOptionsDeleteState) && ajoCurrentActivity != null)
             {

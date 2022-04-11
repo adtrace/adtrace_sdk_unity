@@ -1,13 +1,11 @@
-//
-//  ADTEvent.h
-//  adtrace
-//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
 
 
 #import <Foundation/Foundation.h>
 
 /**
- * @brief AdTrace event class.
+ * @brief Adtrace event class.
  */
 @interface ADTEvent : NSObject<NSCopying>
 

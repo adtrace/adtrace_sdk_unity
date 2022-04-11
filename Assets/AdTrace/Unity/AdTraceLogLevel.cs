@@ -1,4 +1,4 @@
-﻿namespace com.adtrace.sdk
+﻿namespace io.adtrace.sdk
 {
     public enum AdTraceLogLevel
     {

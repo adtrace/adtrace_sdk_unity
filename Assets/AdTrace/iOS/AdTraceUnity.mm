@@ -1,16 +1,15 @@
 //
-//  AdTraceUnity.mm
-//  AdTrace SDK
-//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
 
 
-#import "AdTrace.h"
-#import "ADJEvent.h"
+#import "Adtrace.h"
+#import "ADTEvent.h"
 #import "ADTConfig.h"
-#import "AdTraceUnity.h"
-#import "AdTraceUnityDelegate.h"
+#import "AdtraceUnity.h"
+#import "AdtraceUnityDelegate.h"
 
-@implementation AdTraceUnity
+@implementation AdtraceUnity
 
 #pragma mark - Object lifecycle methods
 
@@ -66,7 +65,13 @@ BOOL isStringValid(const char* cString) {
 
 void addValueOrEmpty(NSMutableDictionary *dictionary, NSString *key, NSObject *value) {
     if (nil != value) {
-        [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
+        if ([value isKindOfClass:[NSString class]]) {
+            [dictionary setObject:[NSString stringWithFormat:@"%@", value] forKey:key];
+        } else if ([value isKindOfClass:[NSNumber class]]) {
+            [dictionary setObject:[NSString stringWithFormat:@"%@", [((NSNumber *)value) stringValue]] forKey:key];
+        } else {
+            [dictionary setObject:@"" forKey:key];
+        }
     } else {
         [dictionary setObject:@"" forKey:key];
     }
@@ -76,17 +81,24 @@ void addValueOrEmpty(NSMutableDictionary *dictionary, NSString *key, NSObject *v
 
 extern "C"
 {
-    void _AdTraceLaunchApp(const char* appToken,
+    void _AdtraceLaunchApp(const char* appToken,
                           const char* environment,
                           const char* sdkPrefix,
                           const char* userAgent,
                           const char* defaultTracker,
+                          const char* externalDeviceId,
+                          const char* urlStrategy,
                           const char* sceneName,
                           int allowSuppressLogLevel,
                           int logLevel,
                           int isDeviceKnown,
                           int eventBuffering,
                           int sendInBackground,
+                          int allowiAdInfoReading,
+                          int allowAdServicesInfoReading,
+                          int allowIdfaReading,
+                          int deactivateSkAdNetworkHandling,
+                          int needsCost,
                           int64_t secretId,
                           int64_t info1,
                           int64_t info2,
@@ -99,12 +111,15 @@ extern "C"
                           int isEventFailureCallbackImplemented,
                           int isSessionSuccessCallbackImplemented,
                           int isSessionFailureCallbackImplemented,
-                          int isDeferredDeeplinkCallbackImplemented) {
+                          int isDeferredDeeplinkCallbackImplemented,
+                          int isConversionValueUpdatedCallbackImplemented) {
         NSString *stringAppToken = isStringValid(appToken) == true ? [NSString stringWithUTF8String:appToken] : nil;
         NSString *stringEnvironment = isStringValid(environment) == true ? [NSString stringWithUTF8String:environment] : nil;
         NSString *stringSdkPrefix = isStringValid(sdkPrefix) == true ? [NSString stringWithUTF8String:sdkPrefix] : nil;
         NSString *stringUserAgent = isStringValid(userAgent) == true ? [NSString stringWithUTF8String:userAgent] : nil;
         NSString *stringDefaultTracker = isStringValid(defaultTracker) == true ? [NSString stringWithUTF8String:defaultTracker] : nil;
+        NSString *stringExternalDeviceId = isStringValid(externalDeviceId) == true ? [NSString stringWithUTF8String:externalDeviceId] : nil;
+        NSString *stringUrlStrategy = isStringValid(urlStrategy) == true ? [NSString stringWithUTF8String:urlStrategy] : nil;
         NSString *stringSceneName = isStringValid(sceneName) == true ? [NSString stringWithUTF8String:sceneName] : nil;
 
         ADTConfig *adtraceConfig;
@@ -127,16 +142,18 @@ extern "C"
             || isEventFailureCallbackImplemented
             || isSessionSuccessCallbackImplemented
             || isSessionFailureCallbackImplemented
-            || isDeferredDeeplinkCallbackImplemented) {
+            || isDeferredDeeplinkCallbackImplemented
+            || isConversionValueUpdatedCallbackImplemented) {
             [adtraceConfig setDelegate:
-                [AdTraceUnityDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
+                [AdtraceUnityDelegate getInstanceWithSwizzleOfAttributionCallback:isAttributionCallbackImplemented
                                                             eventSuccessCallback:isEventSuccessCallbackImplemented
                                                             eventFailureCallback:isEventFailureCallbackImplemented
                                                           sessionSuccessCallback:isSessionSuccessCallbackImplemented
                                                           sessionFailureCallback:isSessionFailureCallbackImplemented
                                                         deferredDeeplinkCallback:isDeferredDeeplinkCallbackImplemented
+                                                  conversionValueUpdatedCallback:isConversionValueUpdatedCallbackImplemented
                                                     shouldLaunchDeferredDeeplink:launchDeferredDeeplink
-                                                        withAdTraceUnitySceneName:stringSceneName]];
+                                                        withAdtraceUnitySceneName:stringSceneName]];
         }
 
         // Log level.
@@ -154,6 +171,26 @@ extern "C"
             [adtraceConfig setSendInBackground:(BOOL)sendInBackground];
         }
 
+        // Allow iAd info reading.
+        if (allowiAdInfoReading != -1) {
+            [adtraceConfig setAllowiAdInfoReading:(BOOL)allowiAdInfoReading];
+        }
+
+        // Allow AdServices info reading.
+        if (allowAdServicesInfoReading != -1) {
+            [adtraceConfig setAllowAdServicesInfoReading:(BOOL)allowAdServicesInfoReading];
+        }
+
+        // Deactivate default SKAdNetwork handling.
+        if (deactivateSkAdNetworkHandling != -1) {
+            [adtraceConfig deactivateSKAdNetworkHandling];
+        }
+
+        // Allow IDFA reading.
+        if (allowIdfaReading != -1) {
+            [adtraceConfig setAllowIdfaReading:(BOOL)allowIdfaReading];
+        }
+
         // Device known.
         if (isDeviceKnown != -1) {
             [adtraceConfig setIsDeviceKnown:(BOOL)isDeviceKnown];
@@ -162,6 +199,11 @@ extern "C"
         // Delay start.
         if (delayStart != -1) {
             [adtraceConfig setDelayStart:delayStart];
+        }
+
+        // Cost data in attribution callback.
+        if (needsCost != -1) {
+            [adtraceConfig setNeedsCost:(BOOL)needsCost];
         }
 
         // User agent.
@@ -174,17 +216,37 @@ extern "C"
             [adtraceConfig setDefaultTracker:stringDefaultTracker];
         }
 
+        // External device identifier.
+        if (stringExternalDeviceId != nil) {
+            [adtraceConfig setExternalDeviceId:stringExternalDeviceId];
+        }
+
+        // URL strategy.
+        if (stringUrlStrategy != nil) {
+            if ([stringUrlStrategy isEqualToString:@"china"]) {
+                [adtraceConfig setUrlStrategy:ADTUrlStrategyChina];
+            } else if ([stringUrlStrategy isEqualToString:@"india"]) {
+                [adtraceConfig setUrlStrategy:ADTUrlStrategyIndia];
+            } else if ([stringUrlStrategy isEqualToString:@"data-residency-eu"]) {
+                [adtraceConfig setUrlStrategy:ADTDataResidencyEU];
+            } else if ([stringUrlStrategy isEqualToString:@"data-residency-tr"]) {
+                [adtraceConfig setUrlStrategy:ADTDataResidencyTR];
+            } else if ([stringUrlStrategy isEqualToString:@"data-residency-us"]) {
+                [adtraceConfig setUrlStrategy:ADTDataResidencyUS];
+            }
+        }
+
         // App secret.
         if (secretId != -1 && info1 != -1 && info2 != -1 && info3 != -1 && info4 != 1) {
             [adtraceConfig setAppSecret:secretId info1:info1 info2:info2 info3:info3 info4:info4];
         }
 
         // Start the SDK.
-        [AdTrace appDidLaunch:adtraceConfig];
-        [AdTrace trackSubsessionStart];
+        [Adtrace appDidLaunch:adtraceConfig];
+        [Adtrace trackSubsessionStart];
     }
 
-    void _AdTraceTrackEvent(const char* eventToken,
+    void _AdtraceTrackEvent(const char* eventToken,
                            double revenue,
                            const char* currency,
                            const char* receipt,
@@ -251,55 +313,59 @@ extern "C"
         }
 
         // Track event.
-        [AdTrace trackEvent:event];
+        [Adtrace trackEvent:event];
     }
 
-    void _AdTraceTrackSubsessionStart() {
-        [AdTrace trackSubsessionStart];
+    void _AdtraceTrackSubsessionStart() {
+        [Adtrace trackSubsessionStart];
     }
 
-    void _AdTraceTrackSubsessionEnd() {
-        [AdTrace trackSubsessionEnd];
+    void _AdtraceTrackSubsessionEnd() {
+        [Adtrace trackSubsessionEnd];
     }
 
-    void _AdTraceSetEnabled(int enabled) {
+    void _AdtraceSetEnabled(int enabled) {
         BOOL bEnabled = (BOOL)enabled;
-        [AdTrace setEnabled:bEnabled];
+        [Adtrace setEnabled:bEnabled];
     }
 
-    int _AdTraceIsEnabled() {
-        BOOL isEnabled = [AdTrace isEnabled];
+    int _AdtraceIsEnabled() {
+        BOOL isEnabled = [Adtrace isEnabled];
         int iIsEnabled = (int)isEnabled;
         return iIsEnabled;
     }
 
-    void _AdTraceSetOfflineMode(int enabled) {
+    void _AdtraceSetOfflineMode(int enabled) {
         BOOL bEnabled = (BOOL)enabled;
-        [AdTrace setOfflineMode:bEnabled];
+        [Adtrace setOfflineMode:bEnabled];
     }
 
-    void _AdTraceSetDeviceToken(const char* deviceToken) {
-        NSString *stringDeviceToken = [NSString stringWithUTF8String:deviceToken];
-        [AdTrace setPushToken:stringDeviceToken];
+    void _AdtraceSetDeviceToken(const char* deviceToken) {
+        if (deviceToken != NULL) {
+            NSString *stringDeviceToken = [NSString stringWithUTF8String:deviceToken];
+            [Adtrace setPushToken:stringDeviceToken];
+        }
     }
 
-    void _AdTraceAppWillOpenUrl(const char* url) {
-        NSString *stringUrl = [NSString stringWithUTF8String:url];
-        NSURL *nsUrl;
-        if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
-            nsUrl = [NSURL URLWithString:[stringUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
-        } else {
+    void _AdtraceAppWillOpenUrl(const char* url) {
+        if (url != NULL) {
+            NSString *stringUrl = [NSString stringWithUTF8String:url];
+            NSURL *nsUrl;
+            if ([NSString instancesRespondToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
+                nsUrl = [NSURL URLWithString:[stringUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+            } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            nsUrl = [NSURL URLWithString:[stringUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        }
+                nsUrl = [NSURL URLWithString:[stringUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            }
 #pragma clang diagnostic pop
 
-        [AdTrace appWillOpenUrl:nsUrl];
+            [Adtrace appWillOpenUrl:nsUrl];
+        }
     }
 
-    char* _AdTraceGetIdfa() {
-        NSString *idfa = [AdTrace idfa];
+    char* _AdtraceGetIdfa() {
+        NSString *idfa = [Adtrace idfa];
         if (nil == idfa) {
             return NULL;
         }
@@ -313,8 +379,8 @@ extern "C"
         return idfaCStringCopy;
     }
 
-    char* _AdTraceGetAdid() {
-        NSString *adid = [AdTrace adid];
+    char* _AdtraceGetAdid() {
+        NSString *adid = [Adtrace adid];
         if (nil == adid) {
             return NULL;
         }
@@ -328,8 +394,8 @@ extern "C"
         return adidCStringCopy;
     }
 
-    char* _AdTraceGetSdkVersion() {
-        NSString *sdkVersion = [AdTrace sdkVersion];
+    char* _AdtraceGetSdkVersion() {
+        NSString *sdkVersion = [Adtrace sdkVersion];
         if (nil == sdkVersion) {
             return NULL;
         }
@@ -343,8 +409,8 @@ extern "C"
         return sdkVersionCStringCopy;
     }
 
-    char* _AdTraceGetAttribution() {
-        ADTAttribution *attribution = [AdTrace attribution];
+    char* _AdtraceGetAttribution() {
+        ADTAttribution *attribution = [Adtrace attribution];
         if (nil == attribution) {
             return NULL;
         }
@@ -358,6 +424,9 @@ extern "C"
         addValueOrEmpty(dictionary, @"adgroup", attribution.adgroup);
         addValueOrEmpty(dictionary, @"clickLabel", attribution.clickLabel);
         addValueOrEmpty(dictionary, @"adid", attribution.adid);
+        addValueOrEmpty(dictionary, @"costType", attribution.costType);
+        addValueOrEmpty(dictionary, @"costAmount", attribution.costAmount);
+        addValueOrEmpty(dictionary, @"costCurrency", attribution.costCurrency);
 
         NSData *dataAttribution = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
         NSString *stringAttribution = [[NSString alloc] initWithBytes:[dataAttribution bytes]
@@ -368,48 +437,277 @@ extern "C"
         return attributionCStringCopy;
     }
 
-    void _AdTraceSendFirstPackages() {
-        [AdTrace sendFirstPackages];
+    void _AdtraceSendFirstPackages() {
+        [Adtrace sendFirstPackages];
     }
 
-    void _AdTraceGdprForgetMe() {
-        [AdTrace gdprForgetMe];
+    void _AdtraceGdprForgetMe() {
+        [Adtrace gdprForgetMe];
     }
 
-    void _AdTraceAddSessionPartnerParameter(const char* key, const char* value) {
-        NSString *stringKey = [NSString stringWithUTF8String:key];
-        NSString *stringValue = [NSString stringWithUTF8String:value];
-        [AdTrace addSessionPartnerParameter:stringKey value:stringValue];
+    void _AdtraceDisableThirdPartySharing() {
+        [Adtrace disableThirdPartySharing];
     }
 
-    void _AdTraceAddSessionCallbackParameter(const char* key, const char* value) {
-        NSString *stringKey = [NSString stringWithUTF8String:key];
-        NSString *stringValue = [NSString stringWithUTF8String:value];
-        [AdTrace addSessionCallbackParameter:stringKey value:stringValue];
+    void _AdtraceAddSessionPartnerParameter(const char* key, const char* value) {
+        if (key != NULL && value != NULL) {
+            NSString *stringKey = [NSString stringWithUTF8String:key];
+            NSString *stringValue = [NSString stringWithUTF8String:value];
+            [Adtrace addSessionPartnerParameter:stringKey value:stringValue];
+        }
     }
 
-    void _AdTraceRemoveSessionPartnerParameter(const char* key) {
-        NSString *stringKey = [NSString stringWithUTF8String:key];
-        [AdTrace removeSessionPartnerParameter:stringKey];
+    void _AdtraceAddSessionCallbackParameter(const char* key, const char* value) {
+        if (key != NULL && value != NULL) {
+            NSString *stringKey = [NSString stringWithUTF8String:key];
+            NSString *stringValue = [NSString stringWithUTF8String:value];
+            [Adtrace addSessionCallbackParameter:stringKey value:stringValue];
+        }
     }
 
-    void _AdTraceRemoveSessionCallbackParameter(const char* key) {
-        NSString *stringKey = [NSString stringWithUTF8String:key];
-        [AdTrace removeSessionCallbackParameter:stringKey];
+    void _AdtraceRemoveSessionPartnerParameter(const char* key) {
+        if (key != NULL) {
+            NSString *stringKey = [NSString stringWithUTF8String:key];
+            [Adtrace removeSessionPartnerParameter:stringKey];
+        }
     }
 
-    void _AdTraceResetSessionPartnerParameters() {
-        [AdTrace resetSessionPartnerParameters];
+    void _AdtraceRemoveSessionCallbackParameter(const char* key) {
+        if (key != NULL) {
+            NSString *stringKey = [NSString stringWithUTF8String:key];
+            [Adtrace removeSessionCallbackParameter:stringKey];
+        }
     }
 
-    void _AdTraceResetSessionCallbackParameters() {
-        [AdTrace resetSessionCallbackParameters];
+    void _AdtraceResetSessionPartnerParameters() {
+        [Adtrace resetSessionPartnerParameters];
     }
 
-    void _AdTraceSetTestOptions(const char* baseUrl,
-                               const char* basePath,
+    void _AdtraceResetSessionCallbackParameters() {
+        [Adtrace resetSessionCallbackParameters];
+    }
+
+    void _AdtraceTrackAdRevenue(const char* source, const char* payload) {
+        if (source != NULL && payload != NULL) {
+            NSString *stringSource = [NSString stringWithUTF8String:source];
+            NSString *stringPayload = [NSString stringWithUTF8String:payload];
+            NSData *dataPayload = [stringPayload dataUsingEncoding:NSUTF8StringEncoding];
+            [Adtrace trackAdRevenue:stringSource payload:dataPayload];
+        }
+    }
+
+    void _AdtraceTrackAdRevenueNew(const char* source,
+                                  double revenue,
+                                  const char* currency,
+                                  int adImpressionsCount,
+                                  const char* adRevenueNetwork,
+                                  const char* adRevenueUnit,
+                                  const char* adRevenuePlacement,
+                                  const char* jsonCallbackParameters,
+                                  const char* jsonPartnerParameters) {
+        NSString *stringSource = isStringValid(source) == true ? [NSString stringWithUTF8String:source] : nil;
+        ADTAdRevenue *adRevenue = [[ADTAdRevenue alloc] initWithSource:stringSource];
+
+        // Revenue and currency.
+        if (revenue != -1 && currency != NULL) {
+            NSString *stringCurrency = [NSString stringWithUTF8String:currency];
+            [adRevenue setRevenue:revenue currency:stringCurrency];
+        }
+
+        // Ad impressions count.
+        if (adImpressionsCount != -1) {
+            [adRevenue setAdImpressionsCount:adImpressionsCount];
+        }
+
+        // Ad revenue network.
+        if (adRevenueNetwork != NULL) {
+            NSString *stringAdRevenueNetwork = [NSString stringWithUTF8String:adRevenueNetwork];
+            [adRevenue setAdRevenueNetwork:stringAdRevenueNetwork];
+        }
+
+        // Ad revenue unit.
+        if (adRevenueUnit != NULL) {
+            NSString *stringAdRevenueUnit = [NSString stringWithUTF8String:adRevenueUnit];
+            [adRevenue setAdRevenueUnit:stringAdRevenueUnit];
+        }
+
+        // Ad revenue placement.
+        if (adRevenuePlacement != NULL) {
+            NSString *stringAdRevenuePlacement = [NSString stringWithUTF8String:adRevenuePlacement];
+            [adRevenue setAdRevenuePlacement:stringAdRevenuePlacement];
+        }
+
+        // Callback parameters.
+        NSArray *arrayCallbackParameters = convertArrayParameters(jsonCallbackParameters);
+        if (arrayCallbackParameters != nil) {
+            NSUInteger count = [arrayCallbackParameters count];
+            for (int i = 0; i < count;) {
+                NSString *key = arrayCallbackParameters[i++];
+                NSString *value = arrayCallbackParameters[i++];
+                [adRevenue addCallbackParameter:key value:value];
+            }
+        }
+
+        NSArray *arrayPartnerParameters = convertArrayParameters(jsonPartnerParameters);
+        if (arrayPartnerParameters != nil) {
+            NSUInteger count = [arrayPartnerParameters count];
+            for (int i = 0; i < count;) {
+                NSString *key = arrayPartnerParameters[i++];
+                NSString *value = arrayPartnerParameters[i++];
+                [adRevenue addPartnerParameter:key value:value];
+            }
+        }
+
+        // Track ad revenue.
+        [Adtrace trackAdRevenue:adRevenue];
+    }
+
+    void _AdtraceTrackAppStoreSubscription(const char* price,
+                                          const char* currency,
+                                          const char* transactionId,
+                                          const char* receipt,
+                                          const char* billingStore,
+                                          const char* transactionDate,
+                                          const char* salesRegion,
+                                          const char* jsonCallbackParameters,
+                                          const char* jsonPartnerParameters) {
+        // Mandatory fields.
+        NSDecimalNumber *mPrice;
+        NSString *mCurrency;
+        NSString *mTransactionId;
+        NSData *mReceipt;
+        NSString *mBillingStore;
+
+        // Price.
+        if (price != NULL) {
+            mPrice = [NSDecimalNumber decimalNumberWithString:[NSString stringWithUTF8String:price]];
+        }
+
+        // Currency.
+        if (currency != NULL) {
+            mCurrency = [NSString stringWithUTF8String:currency];
+        }
+
+        // Transaction ID.
+        if (transactionId != NULL) {
+            mTransactionId = [NSString stringWithUTF8String:transactionId];
+        }
+
+        // Receipt.
+        if (receipt != NULL) {
+            mReceipt = [[NSString stringWithUTF8String:receipt] dataUsingEncoding:NSUTF8StringEncoding];
+        }
+
+        // Billing store (not used ATM, maybe in the future).
+        if (billingStore != NULL) {
+            mBillingStore = [NSString stringWithUTF8String:billingStore];
+        }
+
+        ADTSubscription *subscription = [[ADTSubscription alloc] initWithPrice:mPrice
+                                                                      currency:mCurrency
+                                                                 transactionId:mTransactionId
+                                                                    andReceipt:mReceipt];
+
+        // Optional fields.
+
+        // Transaction date.
+        if (transactionDate != NULL) {
+            NSTimeInterval transactionDateInterval = [[NSString stringWithUTF8String:transactionDate] doubleValue];
+            NSDate *oTransactionDate = [NSDate dateWithTimeIntervalSince1970:transactionDateInterval];
+            [subscription setTransactionDate:oTransactionDate];
+        }
+
+        // Sales region.
+        if (salesRegion != NULL) {
+            NSString *oSalesRegion = [NSString stringWithUTF8String:salesRegion];
+            [subscription setSalesRegion:oSalesRegion];
+        }
+
+        // Callback parameters.
+        NSArray *arrayCallbackParameters = convertArrayParameters(jsonCallbackParameters);
+        if (arrayCallbackParameters != nil) {
+            NSUInteger count = [arrayCallbackParameters count];
+            for (int i = 0; i < count;) {
+                NSString *key = arrayCallbackParameters[i++];
+                NSString *value = arrayCallbackParameters[i++];
+                [subscription addCallbackParameter:key value:value];
+            }
+        }
+
+        // Partner parameters.
+        NSArray *arrayPartnerParameters = convertArrayParameters(jsonPartnerParameters);
+        if (arrayPartnerParameters != nil) {
+            NSUInteger count = [arrayPartnerParameters count];
+            for (int i = 0; i < count;) {
+                NSString *key = arrayPartnerParameters[i++];
+                NSString *value = arrayPartnerParameters[i++];
+                [subscription addPartnerParameter:key value:value];
+            }
+        }
+        
+        // Track subscription.
+        [Adtrace trackSubscription:subscription];
+    }
+
+    void _AdtraceTrackThirdPartySharing(int enabled, const char* jsonGranularOptions) {
+        NSNumber *nEnabled = enabled >= 0 ? [NSNumber numberWithInt:enabled] : nil;
+        ADTThirdPartySharing *adtraceThirdPartySharing = [[ADTThirdPartySharing alloc] initWithIsEnabledNumberBool:nEnabled];
+
+        NSArray *arrayGranularOptions = convertArrayParameters(jsonGranularOptions);
+        if (arrayGranularOptions != nil) {
+            NSUInteger count = [arrayGranularOptions count];
+            for (int i = 0; i < count;) {
+                NSString *partnerName = arrayGranularOptions[i++];
+                NSString *granularOptions = arrayGranularOptions[i++];
+                // granularOptions is now NSString which pretty much contains array of partner key-value pairs
+                if (granularOptions != nil) {
+                    NSData *dataJson = [granularOptions dataUsingEncoding:NSUTF8StringEncoding];
+                    NSArray *partnerGranularOptions = [NSJSONSerialization JSONObjectWithData:dataJson options:0 error:nil];
+                    if (partnerGranularOptions != nil) {
+                        // in here we have partner and key-value pair for it
+                        for (int j = 0; j < [partnerGranularOptions count];) {
+                            [adtraceThirdPartySharing addGranularOption:partnerName
+                                                     key:partnerGranularOptions[j++]
+                                                     value:partnerGranularOptions[j++]];
+                        }
+                    }
+                }
+            }
+        }
+
+        [Adtrace trackThirdPartySharing:adtraceThirdPartySharing];
+    }
+
+    void _AdtraceTrackMeasurementConsent(int enabled) {
+        BOOL bEnabled = (BOOL)enabled;
+        [Adtrace trackMeasurementConsent:bEnabled];
+    }
+
+    void _AdtraceRequestTrackingAuthorizationWithCompletionHandler(const char* sceneName) {
+        NSString *stringSceneName = isStringValid(sceneName) == true ? [NSString stringWithUTF8String:sceneName] : nil;
+        if (stringSceneName == nil) {
+            return;
+        }
+
+        [Adtrace requestTrackingAuthorizationWithCompletionHandler:^(NSUInteger status) {
+            NSString *stringStatus = [NSString stringWithFormat:@"%tu", status];
+            const char* charStatus = [stringStatus UTF8String];
+            UnitySendMessage([stringSceneName UTF8String], "GetAuthorizationStatus", charStatus);
+        }];
+    }
+
+    void _AdtraceUpdateConversionValue(int conversionValue) {
+        [Adtrace updateConversionValue:conversionValue];
+    }
+
+    int _AdtraceGetAppTrackingAuthorizationStatus() {
+        return [Adtrace appTrackingAuthorizationStatus];
+    }
+
+    void _AdtraceSetTestOptions(const char* baseUrl,
                                const char* gdprUrl,
-                               const char* gdprPath,
+                               const char* subscriptionUrl,
+                               const char* extraPath,
                                long timerIntervalInMilliseconds,
                                long timerStartInMilliseconds,
                                long sessionIntervalInMilliseconds,
@@ -417,8 +715,9 @@ extern "C"
                                int teardown,
                                int deleteState,
                                int noBackoffWait,
-                               int iAdFrameworkEnabled) {
-        AdTraceTestOptions *testOptions = [[AdTraceTestOptions alloc] init];
+                               int iAdFrameworkEnabled,
+                               int adServicesFrameworkEnabled) {
+        AdtraceTestOptions *testOptions = [[AdtraceTestOptions alloc] init];
 
         NSString *stringBaseUrl = isStringValid(baseUrl) == true ? [NSString stringWithUTF8String:baseUrl] : nil;
         if (stringBaseUrl != nil) {
@@ -430,14 +729,14 @@ extern "C"
             [testOptions setGdprUrl:stringGdprUrl];
         }
 
-        NSString *stringBasePath = isStringValid(basePath) == true ? [NSString stringWithUTF8String:basePath] : nil;
-        if (stringBasePath != nil && [stringBasePath length] > 0) {
-            [testOptions setBasePath:stringBasePath];
+        NSString *stringSubscriptionUrl = isStringValid(baseUrl) == true ? [NSString stringWithUTF8String:subscriptionUrl] : nil;
+        if (stringSubscriptionUrl != nil) {
+            [testOptions setSubscriptionUrl:stringSubscriptionUrl];
         }
 
-        NSString *stringGdprPath = isStringValid(gdprPath) == true ? [NSString stringWithUTF8String:gdprPath] : nil;
-        if (stringGdprPath != nil && [stringGdprPath length] > 0) {
-            [testOptions setGdprPath:stringGdprPath];
+        NSString *stringExtraPath = isStringValid(extraPath) == true ? [NSString stringWithUTF8String:extraPath] : nil;
+        if (stringExtraPath != nil && [stringExtraPath length] > 0) {
+            [testOptions setExtraPath:stringExtraPath];
         }
 
         testOptions.timerIntervalInMilliseconds = [NSNumber numberWithLong:timerIntervalInMilliseconds];
@@ -446,7 +745,7 @@ extern "C"
         testOptions.subsessionIntervalInMilliseconds = [NSNumber numberWithLong:subsessionIntervalInMilliseconds];
 
         if (teardown != -1) {
-            [AdTraceUnityDelegate teardown];
+            [AdtraceUnityDelegate teardown];
             [testOptions setTeardown:(BOOL)teardown];
         }
         if (deleteState != -1) {
@@ -458,7 +757,10 @@ extern "C"
         if (iAdFrameworkEnabled != -1) {
             [testOptions setIAdFrameworkEnabled:(BOOL)iAdFrameworkEnabled];
         }
+        if (adServicesFrameworkEnabled != -1) {
+            [testOptions setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled];
+        }
 
-        [AdTrace setTestOptions:testOptions];
+        [Adtrace setTestOptions:testOptions];
     }
 }

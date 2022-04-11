@@ -1,7 +1,11 @@
-﻿using System;
+﻿//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
+
+using System;
 using System.Collections.Generic;
 
-namespace com.adtrace.sdk
+namespace io.adtrace.sdk
 {
     public class AdTraceEventSuccess
     {

@@ -1,7 +1,6 @@
 //
-//  ADTLogger.h
-//  AdTrace
-//
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
 
 #import <Foundation/Foundation.h>
 
@@ -16,7 +15,7 @@ typedef enum {
 } ADTLogLevel;
 
 /**
- * @brief AdTrace logger protocol.
+ * @brief Adtrace logger protocol.
  */
 @protocol ADTLogger
 
@@ -66,7 +65,7 @@ typedef enum {
 @end
 
 /**
- * @brief AdTrace logger class.
+ * @brief Adtrace logger class.
  */
 @interface ADTLogger : NSObject<ADTLogger>
 

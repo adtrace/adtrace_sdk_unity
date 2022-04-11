@@ -1,8 +1,6 @@
 //
-//  ADTFailureResponseData.h
-//  adtrace
-//
-
+//  Created by Nasser Amini (namini40@github.com) on April 2022.
+//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
 
 #import <Foundation/Foundation.h>
 
@@ -19,7 +17,7 @@
 @property (nonatomic, copy, nullable) NSString *timeStamp;
 
 /**
- * @brief AdTrace identifier of the device.
+ * @brief Adtrace identifier of the device.
  */
 @property (nonatomic, copy, nullable) NSString *adid;
 
