@@ -126,7 +126,7 @@ You can edit the AdTrace script parameters in the prefab `Inspector menu` to set
 * [Log Level](#adtrace-logging)
 * [Environment](#environment)
 
-<img src="../doc/assets/import_package.jpg">
+<img src="./doc/assets/import_package.jpg">
 
  Replace `{YourAppToken}` with your actual App Token. you can access it in [adtrace panel](https://panel.adtrace.io). 
 
