@@ -247,14 +247,14 @@ namespace io.adtrace.sdk
                 }
             }
 
-            // Check if user has added any partner parameters to the event.
-            if (adtraceEvent.partnerList != null)
+            // Check if user has added any event value parameters to the event.
+            if (adtraceEvent.eventValueList != null)
             {
-                for (int i = 0; i < adtraceEvent.partnerList.Count; i += 2)
+                for (int i = 0; i < adtraceEvent.eventValueList.Count; i += 2)
                 {
-                    string key = adtraceEvent.partnerList[i];
-                    string value = adtraceEvent.partnerList[i + 1];
-                    ajoAdTraceEvent.Call("addPartnerParameter", key, value);
+                    string key = adtraceEvent.eventValueList[i];
+                    string value = adtraceEvent.eventValueList[i + 1];
+                    ajoAdTraceEvent.Call("addEventParameter", key, value);
                 }
             }
 
