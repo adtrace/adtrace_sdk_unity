@@ -192,7 +192,7 @@ You can now add only the part of the Google Play Services library that the AdTra
 With Google Play Services library 15.0.0, Google has moved the classes needed to get the Google advertising ID into a  `play-services-ads-identifier` package. Add this package to your app if you are using library version 15.0.0 or later. When you’re finished, please test to make sure the AdTrace SDK correctly obtains the Google advertising ID; we have noticed some inconsistencies, depending upon which Unity integrated development environment (IDE) version you use. 
 
 
-**Download Google play sevices ads identifier:** [maven](https://mvnrepository.com/artifact/com.google.android.gms/play-services-ads-identifier) , [direct link](../Extras/Android/play-services-basement-18.0.0.aar)
+<span style="color:yellow">Download Google play sevices ads identifier:</span> [maven](https://mvnrepository.com/artifact/com.google.android.gms/play-services-ads-identifier) , [direct link](../Extras/Android/play-services-basement-18.0.0.aar)
 
 
 #### <a id="gps-adid-permission"></a>Add permission to gather Google advertising ID
@@ -238,8 +238,7 @@ Google introduced the Google Play Referrer API in order to provide a more reliab
 
 The AdTrace post-build process catches the Google Play Store intent; you can take a few additional steps to add support for the new Google Play Referrer API.
 
-
-To add support for the Google Play Referrer API, download the [install referrer library](https://mvnrepository.com/artifact/com.android.installreferrer/installreferrer) from Maven repository or via [direct link](../Extras/Android/installreferrer-2.2.aar) and place the AAR file into your `Plugins/Android` folder.
+<span style="color:yellow">To add support for the Google Play Referrer API</span>, download the [install referrer library](https://mvnrepository.com/artifact/com.android.installreferrer/installreferrer) from Maven repository or via [direct link](../Extras/Android/installreferrer-2.2.aar) and place the AAR file into your `Plugins/Android` folder.
 
 #### <a id="qs-huawei-referrer-api"></a>Huawei Referrer API
 
