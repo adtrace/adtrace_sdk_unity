@@ -1,8 +1,4 @@
-﻿//
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace io.adtrace.sdk
@@ -14,7 +10,7 @@ namespace io.adtrace.sdk
         internal string callbackId;
         internal string transactionId;
         internal double? revenue;
-        internal List<string> eventValueList;
+        internal List<string> partnerList;
         internal List<string> callbackList;
         // iOS specific members
         internal string receipt;
@@ -42,14 +38,14 @@ namespace io.adtrace.sdk
             callbackList.Add(value);
         }
 
-        public void addEventParameter(string key, string value)
+        public void addPartnerParameter(string key, string value)
         {
-            if (eventValueList == null)
+            if (partnerList == null)
             {
-                eventValueList = new List<string>();
+                partnerList = new List<string>();
             }
-            eventValueList.Add(key);
-            eventValueList.Add(value);
+            partnerList.Add(key);
+            partnerList.Add(value);
         }
 
         public void setTransactionId(string transactionId)

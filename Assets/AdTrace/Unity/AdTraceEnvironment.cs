@@ -1,8 +1,4 @@
-﻿//
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
-namespace io.adtrace.sdk
+﻿namespace io.adtrace.sdk
 {
     public enum AdTraceEnvironment
     {
