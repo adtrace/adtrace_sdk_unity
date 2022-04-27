@@ -1,6 +1,10 @@
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//
+//  ADTEvent.h
+//  adtrace
+//
+//  Created by Pedro Filipe on 15/10/14.
+//  Copyright (c) 2014 adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 
@@ -78,12 +82,12 @@
 - (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
- * @brief Add a key-pair to be sent with event.
+ * @brief Add a key-pair to be fowarded to a partner.
  *
- * @param key String key to be sent with event.
- * @param value String value of the key to be sent with even.
+ * @param key String key to be fowarded to the partner.
+ * @param value String value of the key to be fowarded to the partner.
  */
-- (void)addEventValueParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+- (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
  * @brief Set the revenue and associated currency of the event.

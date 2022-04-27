@@ -8,7 +8,7 @@ namespace io.adtrace.sdk
 #if UNITY_IOS
     public class AdtraceiOS
     {
-        private const string sdkPrefix = "unity4.29.7";
+        private const string sdkPrefix = "unity2.0.1";
 
         [DllImport("__Internal")]
         private static extern void _AdtraceLaunchApp(
@@ -177,7 +177,7 @@ namespace io.adtrace.sdk
 
         public AdtraceiOS() {}
 
-        public static void Start(AdtraceConfig adtraceConfig)
+        public static void Start(AdTraceConfig adtraceConfig)
         {
             string appToken = adtraceConfig.appToken != null ? adtraceConfig.appToken : "ADT_INVALID";
             string sceneName = adtraceConfig.sceneName != null ? adtraceConfig.sceneName : "ADT_INVALID";
@@ -186,30 +186,30 @@ namespace io.adtrace.sdk
             string externalDeviceId = adtraceConfig.externalDeviceId != null ? adtraceConfig.externalDeviceId : "ADT_INVALID";
             string urlStrategy = adtraceConfig.urlStrategy != null ? adtraceConfig.urlStrategy : "ADT_INVALID";
             string environment = adtraceConfig.environment.ToLowercaseString();
-            long info1 = AdtraceUtils.ConvertLong(adtraceConfig.info1);
-            long info2 = AdtraceUtils.ConvertLong(adtraceConfig.info2);
-            long info3 = AdtraceUtils.ConvertLong(adtraceConfig.info3);
-            long info4 = AdtraceUtils.ConvertLong(adtraceConfig.info4);
-            long secretId = AdtraceUtils.ConvertLong(adtraceConfig.secretId);
-            double delayStart = AdtraceUtils.ConvertDouble(adtraceConfig.delayStart);
-            int logLevel = AdtraceUtils.ConvertLogLevel(adtraceConfig.logLevel);
-            int isDeviceKnown = AdtraceUtils.ConvertBool(adtraceConfig.isDeviceKnown);
-            int sendInBackground = AdtraceUtils.ConvertBool(adtraceConfig.sendInBackground);
-            int eventBufferingEnabled = AdtraceUtils.ConvertBool(adtraceConfig.eventBufferingEnabled);
-            int allowiAdInfoReading = AdtraceUtils.ConvertBool(adtraceConfig.allowiAdInfoReading);
-            int allowAdServicesInfoReading = AdtraceUtils.ConvertBool(adtraceConfig.allowAdServicesInfoReading);
-            int allowIdfaReading = AdtraceUtils.ConvertBool(adtraceConfig.allowIdfaReading);
-            int allowSuppressLogLevel = AdtraceUtils.ConvertBool(adtraceConfig.allowSuppressLogLevel);
-            int launchDeferredDeeplink = AdtraceUtils.ConvertBool(adtraceConfig.launchDeferredDeeplink);
-            int deactivateSkAdNetworkHandling = AdtraceUtils.ConvertBool(adtraceConfig.skAdNetworkHandling);
-            int needsCost = AdtraceUtils.ConvertBool(adtraceConfig.needsCost);
-            int isAttributionCallbackImplemented = AdtraceUtils.ConvertBool(adtraceConfig.getAttributionChangedDelegate() != null);
-            int isEventSuccessCallbackImplemented = AdtraceUtils.ConvertBool(adtraceConfig.getEventSuccessDelegate() != null);
-            int isEventFailureCallbackImplemented = AdtraceUtils.ConvertBool(adtraceConfig.getEventFailureDelegate() != null);
-            int isSessionSuccessCallbackImplemented = AdtraceUtils.ConvertBool(adtraceConfig.getSessionSuccessDelegate() != null);
-            int isSessionFailureCallbackImplemented = AdtraceUtils.ConvertBool(adtraceConfig.getSessionFailureDelegate() != null);
-            int isDeferredDeeplinkCallbackImplemented = AdtraceUtils.ConvertBool(adtraceConfig.getDeferredDeeplinkDelegate() != null);
-            int isConversionValueUpdatedCallbackImplemented = AdtraceUtils.ConvertBool(adtraceConfig.getConversionValueUpdatedDelegate() != null);
+            long info1 = AdTraceUtils.ConvertLong(adtraceConfig.info1);
+            long info2 = AdTraceUtils.ConvertLong(adtraceConfig.info2);
+            long info3 = AdTraceUtils.ConvertLong(adtraceConfig.info3);
+            long info4 = AdTraceUtils.ConvertLong(adtraceConfig.info4);
+            long secretId = AdTraceUtils.ConvertLong(adtraceConfig.secretId);
+            double delayStart = AdTraceUtils.ConvertDouble(adtraceConfig.delayStart);
+            int logLevel = AdTraceUtils.ConvertLogLevel(adtraceConfig.logLevel);
+            int isDeviceKnown = AdTraceUtils.ConvertBool(adtraceConfig.isDeviceKnown);
+            int sendInBackground = AdTraceUtils.ConvertBool(adtraceConfig.sendInBackground);
+            int eventBufferingEnabled = AdTraceUtils.ConvertBool(adtraceConfig.eventBufferingEnabled);
+            int allowiAdInfoReading = AdTraceUtils.ConvertBool(adtraceConfig.allowiAdInfoReading);
+            int allowAdServicesInfoReading = AdTraceUtils.ConvertBool(adtraceConfig.allowAdServicesInfoReading);
+            int allowIdfaReading = AdTraceUtils.ConvertBool(adtraceConfig.allowIdfaReading);
+            int allowSuppressLogLevel = AdTraceUtils.ConvertBool(adtraceConfig.allowSuppressLogLevel);
+            int launchDeferredDeeplink = AdTraceUtils.ConvertBool(adtraceConfig.launchDeferredDeeplink);
+            int deactivateSkAdNetworkHandling = AdTraceUtils.ConvertBool(adtraceConfig.skAdNetworkHandling);
+            int needsCost = AdTraceUtils.ConvertBool(adtraceConfig.needsCost);
+            int isAttributionCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getAttributionChangedDelegate() != null);
+            int isEventSuccessCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getEventSuccessDelegate() != null);
+            int isEventFailureCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getEventFailureDelegate() != null);
+            int isSessionSuccessCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getSessionSuccessDelegate() != null);
+            int isSessionFailureCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getSessionFailureDelegate() != null);
+            int isDeferredDeeplinkCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getDeferredDeeplinkDelegate() != null);
+            int isConversionValueUpdatedCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getConversionValueUpdatedDelegate() != null);
 
             _AdtraceLaunchApp(
                 appToken,
@@ -246,24 +246,24 @@ namespace io.adtrace.sdk
                 isConversionValueUpdatedCallbackImplemented);
         }
 
-        public static void TrackEvent(AdtraceEvent adtraceEvent)
+        public static void TrackEvent(AdTraceEvent adtraceEvent)
         {
-            int isReceiptSet = AdtraceUtils.ConvertBool(adtraceEvent.isReceiptSet);
-            double revenue = AdtraceUtils.ConvertDouble(adtraceEvent.revenue);
+            int isReceiptSet = AdTraceUtils.ConvertBool(adtraceEvent.isReceiptSet);
+            double revenue = AdTraceUtils.ConvertDouble(adtraceEvent.revenue);
             string eventToken = adtraceEvent.eventToken;
             string currency = adtraceEvent.currency;
             string receipt = adtraceEvent.receipt;
             string transactionId = adtraceEvent.transactionId;
             string callbackId = adtraceEvent.callbackId;
-            string stringJsonCallbackParameters = AdtraceUtils.ConvertListToJson(adtraceEvent.callbackList);
-            string stringJsonPartnerParameters = AdtraceUtils.ConvertListToJson(adtraceEvent.partnerList);
+            string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.callbackList);
+            string stringJsonPartnerParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.partnerList);
 
             _AdtraceTrackEvent(eventToken, revenue, currency, receipt, transactionId, callbackId, isReceiptSet, stringJsonCallbackParameters, stringJsonPartnerParameters);
         }        
 
         public static void SetEnabled(bool enabled)
         {
-            _AdtraceSetEnabled(AdtraceUtils.ConvertBool(enabled));
+            _AdtraceSetEnabled(AdTraceUtils.ConvertBool(enabled));
         }
 
         public static bool IsEnabled()
@@ -274,7 +274,7 @@ namespace io.adtrace.sdk
 
         public static void SetOfflineMode(bool enabled)
         {
-            _AdtraceSetOfflineMode(AdtraceUtils.ConvertBool(enabled));
+            _AdtraceSetOfflineMode(AdTraceUtils.ConvertBool(enabled));
         }
 
         public static void SendFirstPackages()
@@ -322,17 +322,17 @@ namespace io.adtrace.sdk
             _AdtraceTrackAdRevenue(source, payload);
         }
 
-        public static void TrackAdRevenue(AdtraceAdRevenue adRevenue)
+        public static void TrackAdRevenue(AdTraceAdRevenue adRevenue)
         {
             string source = adRevenue.source;
-            double revenue = AdtraceUtils.ConvertDouble(adRevenue.revenue);
+            double revenue = AdTraceUtils.ConvertDouble(adRevenue.revenue);
             string currency = adRevenue.currency;
-            int adImpressionsCount = AdtraceUtils.ConvertInt(adRevenue.adImpressionsCount);
+            int adImpressionsCount = AdTraceUtils.ConvertInt(adRevenue.adImpressionsCount);
             string adRevenueNetwork = adRevenue.adRevenueNetwork;
             string adRevenueUnit = adRevenue.adRevenueUnit;
             string adRevenuePlacement = adRevenue.adRevenuePlacement;
-            string stringJsonCallbackParameters = AdtraceUtils.ConvertListToJson(adRevenue.callbackList);
-            string stringJsonPartnerParameters = AdtraceUtils.ConvertListToJson(adRevenue.partnerList);
+            string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(adRevenue.callbackList);
+            string stringJsonPartnerParameters = AdTraceUtils.ConvertListToJson(adRevenue.partnerList);
 
             _AdtraceTrackAdRevenueNew(
                 source,
@@ -346,7 +346,7 @@ namespace io.adtrace.sdk
                 stringJsonPartnerParameters);
         }
 
-        public static void TrackAppStoreSubscription(AdtraceAppStoreSubscription subscription)
+        public static void TrackAppStoreSubscription(AdTraceAppStoreSubscription subscription)
         {
             string price = subscription.price;
             string currency = subscription.currency;
@@ -355,8 +355,8 @@ namespace io.adtrace.sdk
             string billingStore = subscription.billingStore;
             string transactionDate = subscription.transactionDate;
             string salesRegion = subscription.salesRegion;
-            string stringJsonCallbackParameters = AdtraceUtils.ConvertListToJson(subscription.callbackList);
-            string stringJsonPartnerParameters = AdtraceUtils.ConvertListToJson(subscription.partnerList);
+            string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(subscription.callbackList);
+            string stringJsonPartnerParameters = AdTraceUtils.ConvertListToJson(subscription.partnerList);
             
             _AdtraceTrackAppStoreSubscription(
                 price,
@@ -370,22 +370,22 @@ namespace io.adtrace.sdk
                 stringJsonPartnerParameters);
         }
 
-        public static void TrackThirdPartySharing(AdtraceThirdPartySharing thirdPartySharing)
+        public static void TrackThirdPartySharing(AdTraceThirdPartySharing thirdPartySharing)
         {
-            int enabled = AdtraceUtils.ConvertBool(thirdPartySharing.isEnabled);
+            int enabled = AdTraceUtils.ConvertBool(thirdPartySharing.isEnabled);
             List<string> jsonGranularOptions = new List<string>();
             foreach (KeyValuePair<string, List<string>> entry in thirdPartySharing.granularOptions)
             {
                 jsonGranularOptions.Add(entry.Key);
-                jsonGranularOptions.Add(AdtraceUtils.ConvertListToJson(entry.Value));
+                jsonGranularOptions.Add(AdTraceUtils.ConvertListToJson(entry.Value));
             }
 
-            _AdtraceTrackThirdPartySharing(enabled, AdtraceUtils.ConvertListToJson(jsonGranularOptions));
+            _AdtraceTrackThirdPartySharing(enabled, AdTraceUtils.ConvertListToJson(jsonGranularOptions));
         }
 
         public static void TrackMeasurementConsent(bool enabled)
         {
-            _AdtraceTrackMeasurementConsent(AdtraceUtils.ConvertBool(enabled));
+            _AdtraceTrackMeasurementConsent(AdTraceUtils.ConvertBool(enabled));
         }
 
         public static void RequestTrackingAuthorizationWithCompletionHandler(string sceneName)
@@ -434,7 +434,7 @@ namespace io.adtrace.sdk
             _AdtraceDisableThirdPartySharing();
         }
 
-        public static AdtraceAttribution GetAttribution()
+        public static AdTraceAttribution GetAttribution()
         {
             string attributionString = _AdtraceGetAttribution();
             if (null == attributionString)
@@ -442,17 +442,17 @@ namespace io.adtrace.sdk
                 return null;
             }
 
-            var attribution = new AdtraceAttribution(attributionString);
+            var attribution = new AdTraceAttribution(attributionString);
             return attribution;
         }
 
         // Used for testing only.
         public static void SetTestOptions(Dictionary<string, string> testOptions)
         {
-            string baseUrl = testOptions[AdtraceUtils.KeyTestOptionsBaseUrl];
-            string gdprUrl = testOptions[AdtraceUtils.KeyTestOptionsGdprUrl];
-            string subscriptionUrl = testOptions[AdtraceUtils.KeyTestOptionsSubscriptionUrl];
-            string extraPath = testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsExtraPath) ? testOptions[AdtraceUtils.KeyTestOptionsExtraPath] : null;
+            string baseUrl = testOptions[AdTraceUtils.KeyTestOptionsBaseUrl];
+            string gdprUrl = testOptions[AdTraceUtils.KeyTestOptionsGdprUrl];
+            string subscriptionUrl = testOptions[AdTraceUtils.KeyTestOptionsSubscriptionUrl];
+            string extraPath = testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsExtraPath) ? testOptions[AdTraceUtils.KeyTestOptionsExtraPath] : null;
             long timerIntervalMilis = -1;
             long timerStartMilis = -1;
             long sessionIntMilis = -1;
@@ -463,41 +463,41 @@ namespace io.adtrace.sdk
             bool iAdFrameworkEnabled = false;
             bool adServicesFrameworkEnabled = false;
 
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsTimerIntervalInMilliseconds)) 
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsTimerIntervalInMilliseconds)) 
             {
-                timerIntervalMilis = long.Parse(testOptions[AdtraceUtils.KeyTestOptionsTimerIntervalInMilliseconds]);
+                timerIntervalMilis = long.Parse(testOptions[AdTraceUtils.KeyTestOptionsTimerIntervalInMilliseconds]);
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsTimerStartInMilliseconds)) 
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsTimerStartInMilliseconds)) 
             {
-                timerStartMilis = long.Parse(testOptions[AdtraceUtils.KeyTestOptionsTimerStartInMilliseconds]);
+                timerStartMilis = long.Parse(testOptions[AdTraceUtils.KeyTestOptionsTimerStartInMilliseconds]);
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsSessionIntervalInMilliseconds))
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsSessionIntervalInMilliseconds))
             {
-                sessionIntMilis = long.Parse(testOptions[AdtraceUtils.KeyTestOptionsSessionIntervalInMilliseconds]);
+                sessionIntMilis = long.Parse(testOptions[AdTraceUtils.KeyTestOptionsSessionIntervalInMilliseconds]);
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsSubsessionIntervalInMilliseconds))
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsSubsessionIntervalInMilliseconds))
             {
-                subsessionIntMilis = long.Parse(testOptions[AdtraceUtils.KeyTestOptionsSubsessionIntervalInMilliseconds]);
+                subsessionIntMilis = long.Parse(testOptions[AdTraceUtils.KeyTestOptionsSubsessionIntervalInMilliseconds]);
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsTeardown))
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsTeardown))
             {
-                teardown = testOptions[AdtraceUtils.KeyTestOptionsTeardown].ToLower() == "true";
+                teardown = testOptions[AdTraceUtils.KeyTestOptionsTeardown].ToLower() == "true";
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsDeleteState))
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsDeleteState))
             {
-                deleteState = testOptions[AdtraceUtils.KeyTestOptionsDeleteState].ToLower() == "true";
+                deleteState = testOptions[AdTraceUtils.KeyTestOptionsDeleteState].ToLower() == "true";
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsNoBackoffWait))
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsNoBackoffWait))
             {
-                noBackoffWait = testOptions[AdtraceUtils.KeyTestOptionsNoBackoffWait].ToLower() == "true";
+                noBackoffWait = testOptions[AdTraceUtils.KeyTestOptionsNoBackoffWait].ToLower() == "true";
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsiAdFrameworkEnabled))
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsiAdFrameworkEnabled))
             {
-                iAdFrameworkEnabled = testOptions[AdtraceUtils.KeyTestOptionsiAdFrameworkEnabled].ToLower() == "true";
+                iAdFrameworkEnabled = testOptions[AdTraceUtils.KeyTestOptionsiAdFrameworkEnabled].ToLower() == "true";
             }
-            if (testOptions.ContainsKey(AdtraceUtils.KeyTestOptionsAdServicesFrameworkEnabled))
+            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsAdServicesFrameworkEnabled))
             {
-                adServicesFrameworkEnabled = testOptions[AdtraceUtils.KeyTestOptionsAdServicesFrameworkEnabled].ToLower() == "true";
+                adServicesFrameworkEnabled = testOptions[AdTraceUtils.KeyTestOptionsAdServicesFrameworkEnabled].ToLower() == "true";
             }
 
             _AdtraceSetTestOptions(
@@ -509,11 +509,11 @@ namespace io.adtrace.sdk
                 timerStartMilis,
                 sessionIntMilis,
                 subsessionIntMilis, 
-                AdtraceUtils.ConvertBool(teardown),
-                AdtraceUtils.ConvertBool(deleteState),
-                AdtraceUtils.ConvertBool(noBackoffWait),
-                AdtraceUtils.ConvertBool(iAdFrameworkEnabled),
-                AdtraceUtils.ConvertBool(adServicesFrameworkEnabled));
+                AdTraceUtils.ConvertBool(teardown),
+                AdTraceUtils.ConvertBool(deleteState),
+                AdTraceUtils.ConvertBool(noBackoffWait),
+                AdTraceUtils.ConvertBool(iAdFrameworkEnabled),
+                AdTraceUtils.ConvertBool(adServicesFrameworkEnabled));
         }
 
         public static void TrackSubsessionStart(string testingArgument = null)

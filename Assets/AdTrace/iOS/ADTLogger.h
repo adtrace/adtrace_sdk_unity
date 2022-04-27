@@ -1,7 +1,10 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//  ADTLogger.h
+//  Adtrace
+//
+//  Created by Christian Wellenbrock on 2012-11-15.
+//  Copyright (c) 2012-2014 adtrace GmbH. All rights reserved.
+//
 #import <Foundation/Foundation.h>
 
 typedef enum {

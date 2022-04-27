@@ -1,5 +1,10 @@
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
+//
+//  ADTAdRevenue.h
+//  Adtrace SDK
+//
+//  Created by Uglješa Erceg (@uerceg) on 13th April 2021
+//  Copyright (c) 2021 Adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 

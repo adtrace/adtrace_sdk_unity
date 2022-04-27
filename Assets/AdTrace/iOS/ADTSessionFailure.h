@@ -1,6 +1,10 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
+//  ADTFailureResponseData.h
+//  adtrace
+//
+//  Created by Pedro Filipe on 05/01/16.
+//  Copyright © 2016 adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 

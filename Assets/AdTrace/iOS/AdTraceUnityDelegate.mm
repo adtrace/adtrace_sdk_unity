@@ -1,7 +1,10 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//  AdtraceUnityDelegate.mm
+//  Adtrace SDK
+//
+//  Created by Uglješa Erceg (@uerceg) on 5th December 2016.
+//  Copyright © 2012-2018 Adtrace GmbH. All rights reserved.
+//
 
 #import <objc/runtime.h>
 #import "AdtraceUnityDelegate.h"

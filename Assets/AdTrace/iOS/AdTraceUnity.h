@@ -1,7 +1,10 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//  AdtraceUnity.h
+//  Adtrace SDK
+//
+//  Created by Pedro Silva (@nonelse) on 27th March 2014.
+//  Copyright © 2012-2018 Adtrace GmbH. All rights reserved.
+//
 
 /**
  * @brief The main interface to Adtrace Unity bridge.

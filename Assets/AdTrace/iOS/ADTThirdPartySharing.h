@@ -1,7 +1,10 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//  ADTThirdPartySharing.h
+//  AdtraceSdk
+//
+//  Created by Pedro S. on 02.12.20.
+//  Copyright © 2020 adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 

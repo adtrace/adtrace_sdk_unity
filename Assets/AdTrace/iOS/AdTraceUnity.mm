@@ -1,7 +1,10 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//  AdtraceUnity.mm
+//  Adtrace SDK
+//
+//  Created by Pedro Silva (@nonelse) on 27th March 2014.
+//  Copyright © 2012-2018 Adtrace GmbH. All rights reserved.
+//
 
 #import "Adtrace.h"
 #import "ADTEvent.h"
@@ -254,7 +257,7 @@ extern "C"
                            const char* callbackId,
                            int isReceiptSet,
                            const char* jsonCallbackParameters,
-                           const char* jsonEventValueParameters) {
+                           const char* jsonPartnerParameters) {
         NSString *stringEventToken = isStringValid(eventToken) == true ? [NSString stringWithUTF8String:eventToken] : nil;
         ADTEvent *event = [ADTEvent eventWithEventToken:stringEventToken];
 
@@ -275,13 +278,13 @@ extern "C"
             }
         }
 
-        NSArray *arrayEventValueParameters = convertArrayParameters(jsonEventValueParameters);
-        if (arrayEventValueParameters != nil) {
-            NSUInteger count = [arrayEventValueParameters count];
+        NSArray *arrayPartnerParameters = convertArrayParameters(jsonPartnerParameters);
+        if (arrayPartnerParameters != nil) {
+            NSUInteger count = [arrayPartnerParameters count];
             for (int i = 0; i < count;) {
-                NSString *key = arrayEventValueParameters[i++];
-                NSString *value = arrayEventValueParameters[i++];
-                [event addEventValueParameter:key value:value];
+                NSString *key = arrayPartnerParameters[i++];
+                NSString *value = arrayPartnerParameters[i++];
+                [event addPartnerParameter:key value:value];
             }
         }
 

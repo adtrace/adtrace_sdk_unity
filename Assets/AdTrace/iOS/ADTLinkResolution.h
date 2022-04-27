@@ -1,7 +1,10 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//  ADTLinkResolution.h
+//  Adtrace
+//
+//  Created by Pedro S. on 26.04.21.
+//  Copyright © 2021 adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 

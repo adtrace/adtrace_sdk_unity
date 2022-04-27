@@ -1,6 +1,10 @@
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//
+//  ADTAttribution.h
+//  adtrace
+//
+//  Created by Pedro Filipe on 29/10/14.
+//  Copyright (c) 2014 adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 

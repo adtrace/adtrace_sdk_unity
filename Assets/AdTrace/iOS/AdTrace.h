@@ -1,7 +1,11 @@
 //
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
+//  Adtrace.h
+//  Adtrace SDK
+//
+//  V4.29.7
+//  Created by Christian Wellenbrock (@wellle) on 23rd July 2013.
+//  Copyright (c) 2012-2021 Adtrace GmbH. All rights reserved.
+//
 
 #import "ADTEvent.h"
 #import "ADTConfig.h"
