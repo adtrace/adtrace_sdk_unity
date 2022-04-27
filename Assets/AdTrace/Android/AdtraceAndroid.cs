@@ -1,9 +1,3 @@
-//
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
-
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -27,7 +21,10 @@ namespace io.adtrace.sdk
 
         public static void Start(AdTraceConfig adtraceConfig)
         {
-            new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("ENVIRONMENT_PRODUCTION");
+            // Thank you, Unity 2019.2.0, for breaking this.
+            // AndroidJavaObject ajoEnvironment = adtraceConfig.environment == AdTraceEnvironment.Sandbox ? 
+            //     new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("ENVIRONMENT_SANDBOX") :
+            //         new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("ENVIRONMENT_PRODUCTION");
 
             // Get environment variable.
             string ajoEnvironment = adtraceConfig.environment == AdTraceEnvironment.Production ? "production" : "sandbox";
@@ -247,14 +244,14 @@ namespace io.adtrace.sdk
                 }
             }
 
-            // Check if user has added any event value parameters to the event.
-            if (adtraceEvent.eventValueList != null)
+            // Check if user has added any partner parameters to the event.
+            if (adtraceEvent.partnerList != null)
             {
-                for (int i = 0; i < adtraceEvent.eventValueList.Count; i += 2)
+                for (int i = 0; i < adtraceEvent.partnerList.Count; i += 2)
                 {
-                    string key = adtraceEvent.eventValueList[i];
-                    string value = adtraceEvent.eventValueList[i + 1];
-                    ajoAdTraceEvent.Call("addEventParameter", key, value);
+                    string key = adtraceEvent.partnerList[i];
+                    string value = adtraceEvent.partnerList[i + 1];
+                    ajoAdTraceEvent.Call("addPartnerParameter", key, value);
                 }
             }
 
