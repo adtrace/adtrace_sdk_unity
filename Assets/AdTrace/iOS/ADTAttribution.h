@@ -2,12 +2,14 @@
 //  ADTAttribution.h
 //  adtrace
 //
-
+//  Created by Pedro Filipe on 29/10/14.
+//  Copyright (c) 2014 adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 
 /**
- * @brief AdTrace attribution object.
+ * @brief Adtrace attribution object.
  */
 @interface ADTAttribution : NSObject <NSCoding, NSCopying>
 
@@ -47,17 +49,32 @@
 @property (nonatomic, copy, nullable) NSString *clickLabel;
 
 /**
- * @brief AdTrace identifier value.
+ * @brief Adtrace identifier value.
  */
 @property (nonatomic, copy, nullable) NSString *adid;
+
+/**
+ * @brief Cost type.
+ */
+@property (nonatomic, copy, nullable) NSString *costType;
+
+/**
+ * @brief Cost amount.
+ */
+@property (nonatomic, copy, nullable) NSNumber *costAmount;
+
+/**
+ * @brief Cost currency.
+ */
+@property (nonatomic, copy, nullable) NSString *costCurrency;
 
 /**
  * @brief Make attribution object.
  * 
  * @param jsonDict Dictionary holding attribution key value pairs.
- * @param adid AdTrace identifier value.
+ * @param adid Adtrace identifier value.
  * 
- * @return AdTrace attribution object.
+ * @return Adtrace attribution object.
  */
 + (nullable ADTAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
 

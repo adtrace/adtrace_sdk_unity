@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace com.adtrace.sdk
+namespace io.adtrace.sdk
 {
 #if UNITY_ANDROID
     public class AdTraceAndroid
     {
-        private const string sdkPrefix = "unity1.0.3";
+        private const string sdkPrefix = "unity2.0.1";
         private static bool launchDeferredDeeplink = true;
         private static AndroidJavaClass ajcAdTrace = new AndroidJavaClass("io.adtrace.sdk.AdTrace");
         private static AndroidJavaObject ajoCurrentActivity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
@@ -21,10 +21,13 @@ namespace com.adtrace.sdk
 
         public static void Start(AdTraceConfig adtraceConfig)
         {
+            // Thank you, Unity 2019.2.0, for breaking this.
+            // AndroidJavaObject ajoEnvironment = adtraceConfig.environment == AdTraceEnvironment.Sandbox ? 
+            //     new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("ENVIRONMENT_SANDBOX") :
+            //         new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("ENVIRONMENT_PRODUCTION");
+
             // Get environment variable.
-            AndroidJavaObject ajoEnvironment = adtraceConfig.environment == AdTraceEnvironment.Sandbox ? 
-                new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("ENVIRONMENT_SANDBOX") :
-                    new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("ENVIRONMENT_PRODUCTION");
+            string ajoEnvironment = adtraceConfig.environment == AdTraceEnvironment.Production ? "production" : "sandbox";
             
             // Create adtrace config object.
             AndroidJavaObject ajoAdTraceConfig;
@@ -83,10 +86,16 @@ namespace com.adtrace.sdk
                 ajoAdTraceConfig.Call("setSendInBackground", adtraceConfig.sendInBackground.Value);
             }
 
-            // Check if user enabled send installed apps.
-            if (adtraceConfig.enableSendInstalledApps != null)
+            // Check if user wants to get cost data in attribution callback.
+            if (adtraceConfig.needsCost != null)
             {
-                ajoAdTraceConfig.Call("enableSendInstalledApps", adtraceConfig.enableSendInstalledApps.Value);
+                ajoAdTraceConfig.Call("setNeedsCost", adtraceConfig.needsCost.Value);
+            }
+
+            // Check if user wants to run preinstall campaigns.
+            if (adtraceConfig.preinstallTrackingEnabled != null)
+            {
+                ajoAdTraceConfig.Call("setPreinstallTrackingEnabled", adtraceConfig.preinstallTrackingEnabled.Value);
             }
 
             // Check if user has set user agent value.
@@ -105,6 +114,42 @@ namespace com.adtrace.sdk
             if (adtraceConfig.defaultTracker != null)
             {
                 ajoAdTraceConfig.Call("setDefaultTracker", adtraceConfig.defaultTracker);
+            }
+
+            // Check if user has set external device identifier.
+            if (adtraceConfig.externalDeviceId != null)
+            {
+                ajoAdTraceConfig.Call("setExternalDeviceId", adtraceConfig.externalDeviceId);
+            }
+
+            // Check if user has set custom URL strategy.
+            if (adtraceConfig.urlStrategy != null)
+            {
+                if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceUrlStrategyChina)
+                {
+                    AndroidJavaObject ajoUrlStrategyChina = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("URL_STRATEGY_CHINA");
+                    ajoAdTraceConfig.Call("setUrlStrategy", ajoUrlStrategyChina);
+                }
+                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceUrlStrategyIndia)
+                {
+                    AndroidJavaObject ajoUrlStrategyIndia = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("URL_STRATEGY_INDIA");
+                    ajoAdTraceConfig.Call("setUrlStrategy", ajoUrlStrategyIndia);
+                }
+                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceDataResidencyEU)
+                {
+                    AndroidJavaObject ajoDataResidencyEU = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("DATA_RESIDENCY_EU");
+                    ajoAdTraceConfig.Call("setUrlStrategy", ajoDataResidencyEU);
+                }
+                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceDataResidencyTR)
+                {
+                    AndroidJavaObject ajoDataResidencyTR = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("DATA_RESIDENCY_TR");
+                    ajoAdTraceConfig.Call("setUrlStrategy", ajoDataResidencyTR);
+                }
+                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceDataResidencyUS)
+                {
+                    AndroidJavaObject ajoDataResidencyUS = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("DATA_RESIDENCY_US");
+                    ajoAdTraceConfig.Call("setUrlStrategy", ajoDataResidencyUS);
+                }
             }
 
             // Check if user has set app secret.
@@ -222,12 +267,6 @@ namespace com.adtrace.sdk
                 ajoAdTraceEvent.Call("setCallbackId", adtraceEvent.callbackId);
             }
 
-            // Check if user has added event value to the event.
-            if (adtraceEvent.eventValue != null)
-            {
-                ajoAdTraceEvent.Call("setEventValue", adtraceEvent.eventValue);
-            }
-
             // Track the event.
             ajcAdTrace.CallStatic("trackEvent", ajoAdTraceEvent);
         }
@@ -245,11 +284,6 @@ namespace com.adtrace.sdk
         public static void SetOfflineMode(bool enabled)
         {
             ajcAdTrace.CallStatic("setOfflineMode", enabled);
-        }
-
-        public static void SetEnableLocation(bool enabled)
-        {
-            ajcAdTrace.CallStatic("enableLocation", enabled);
         }
 
         public static void SendFirstPackages()
@@ -270,6 +304,11 @@ namespace com.adtrace.sdk
         public static void GdprForgetMe()
         {
             ajcAdTrace.CallStatic("gdprForgetMe", ajoCurrentActivity);
+        }
+
+        public static void DisableThirdPartySharing()
+        {
+            ajcAdTrace.CallStatic("disableThirdPartySharing", ajoCurrentActivity);
         }
 
         public static AdTraceAttribution GetAttribution()
@@ -299,6 +338,21 @@ namespace com.adtrace.sdk
                     null : ajoAttribution.Get<string>(AdTraceUtils.KeyClickLabel);
                 adtraceAttribution.adid = ajoAttribution.Get<string>(AdTraceUtils.KeyAdid) == "" ?
                     null : ajoAttribution.Get<string>(AdTraceUtils.KeyAdid);
+                adtraceAttribution.costType = ajoAttribution.Get<string>(AdTraceUtils.KeyCostType) == "" ?
+                    null : ajoAttribution.Get<string>(AdTraceUtils.KeyCostType);
+                AndroidJavaObject ajoCostAmount = ajoAttribution.Get<AndroidJavaObject>(AdTraceUtils.KeyCostAmount) == null ?
+                    null : ajoAttribution.Get<AndroidJavaObject>(AdTraceUtils.KeyCostAmount);
+                if (ajoCostAmount == null)
+                {
+                    adtraceAttribution.costAmount = null;
+                }
+                else
+                {
+                    double costAmount = ajoCostAmount.Call<double>("doubleValue");
+                    adtraceAttribution.costAmount = costAmount;
+                }
+                adtraceAttribution.costCurrency = ajoAttribution.Get<string>(AdTraceUtils.KeyCostCurrency) == "" ?
+                    null : ajoAttribution.Get<string>(AdTraceUtils.KeyCostCurrency);
                 return adtraceAttribution;
             }
             catch (Exception) {}
@@ -365,6 +419,154 @@ namespace com.adtrace.sdk
             AndroidJavaClass ajcUri = new AndroidJavaClass("android.net.Uri");
             AndroidJavaObject ajoUri = ajcUri.CallStatic<AndroidJavaObject>("parse", url);
             ajcAdTrace.CallStatic("appWillOpenUrl", ajoUri, ajoCurrentActivity);
+        }
+
+        public static void TrackAdRevenue(string source, string payload)
+        {
+            if (ajcAdTrace == null)
+            {
+                ajcAdTrace = new AndroidJavaClass("io.adtrace.sdk.AdTrace");
+            }
+            AndroidJavaObject jsonPayload = new AndroidJavaObject("org.json.JSONObject", payload);
+            ajcAdTrace.CallStatic("trackAdRevenue", source, jsonPayload);
+        }
+
+        public static void TrackAdRevenue(AdTraceAdRevenue adRevenue)
+        {
+            AndroidJavaObject ajoAdTraceAdRevenue = new AndroidJavaObject("io.adtrace.sdk.AdTraceAdRevenue", adRevenue.source);
+
+            // Check if user has set revenue.
+            if (adRevenue.revenue != null)
+            {
+                AndroidJavaObject ajoRevenue = new AndroidJavaObject("java.lang.Double", adRevenue.revenue);
+                ajoAdTraceAdRevenue.Call("setRevenue", ajoRevenue, adRevenue.currency);
+            }
+
+            // Check if user has set ad impressions count.
+            if (adRevenue.adImpressionsCount != null)
+            {
+                AndroidJavaObject ajoAdImpressionsCount = new AndroidJavaObject("java.lang.Integer", adRevenue.adImpressionsCount);
+                ajoAdTraceAdRevenue.Call("setAdImpressionsCount", ajoAdImpressionsCount);
+            }
+
+            // Check if user has set ad revenue network.
+            if (adRevenue.adRevenueNetwork != null)
+            {
+                ajoAdTraceAdRevenue.Call("setAdRevenueNetwork", adRevenue.adRevenueNetwork);
+            }
+
+            // Check if user has set ad revenue unit.
+            if (adRevenue.adRevenueUnit != null)
+            {
+                ajoAdTraceAdRevenue.Call("setAdRevenueUnit", adRevenue.adRevenueUnit);
+            }
+
+            // Check if user has set ad revenue placement.
+            if (adRevenue.adRevenuePlacement != null)
+            {
+                ajoAdTraceAdRevenue.Call("setAdRevenuePlacement", adRevenue.adRevenuePlacement);
+            }
+
+            // Check if user has added any callback parameters.
+            if (adRevenue.callbackList != null)
+            {
+                for (int i = 0; i < adRevenue.callbackList.Count; i += 2)
+                {
+                    string key = adRevenue.callbackList[i];
+                    string value = adRevenue.callbackList[i + 1];
+                    ajoAdTraceAdRevenue.Call("addCallbackParameter", key, value);
+                }
+            }
+
+            // Check if user has added any partner parameters.
+            if (adRevenue.partnerList != null)
+            {
+                for (int i = 0; i < adRevenue.partnerList.Count; i += 2)
+                {
+                    string key = adRevenue.partnerList[i];
+                    string value = adRevenue.partnerList[i + 1];
+                    ajoAdTraceAdRevenue.Call("addPartnerParameter", key, value);
+                }
+            }
+
+            // Track ad revenue.
+            ajcAdTrace.CallStatic("trackAdRevenue", ajoAdTraceAdRevenue);
+        }
+
+        public static void TrackPlayStoreSubscription(AdTracePlayStoreSubscription subscription)
+        {
+            AndroidJavaObject ajoSubscription = new AndroidJavaObject("io.adtrace.sdk.AdTracePlayStoreSubscription",
+                Convert.ToInt64(subscription.price),
+                subscription.currency,
+                subscription.sku,
+                subscription.orderId,
+                subscription.signature,
+                subscription.purchaseToken);
+
+            // Check if user has set purchase time for subscription.
+            if (subscription.purchaseTime != null)
+            {
+                ajoSubscription.Call("setPurchaseTime", Convert.ToInt64(subscription.purchaseTime));
+            }
+
+            // Check if user has added any callback parameters to the subscription.
+            if (subscription.callbackList != null)
+            {
+                for (int i = 0; i < subscription.callbackList.Count; i += 2)
+                {
+                    string key = subscription.callbackList[i];
+                    string value = subscription.callbackList[i + 1];
+                    ajoSubscription.Call("addCallbackParameter", key, value);
+                }
+            }
+
+            // Check if user has added any partner parameters to the subscription.
+            if (subscription.partnerList != null)
+            {
+                for (int i = 0; i < subscription.partnerList.Count; i += 2)
+                {
+                    string key = subscription.partnerList[i];
+                    string value = subscription.partnerList[i + 1];
+                    ajoSubscription.Call("addPartnerParameter", key, value);
+                }
+            }
+
+            // Track the subscription.
+            ajcAdTrace.CallStatic("trackPlayStoreSubscription", ajoSubscription);
+        }
+
+        public static void TrackThirdPartySharing(AdTraceThirdPartySharing thirdPartySharing)
+        {
+            AndroidJavaObject ajoIsEnabled;
+            AndroidJavaObject ajoAdTraceThirdPartySharing;
+            if (thirdPartySharing.isEnabled != null)
+            {
+                ajoIsEnabled = new AndroidJavaObject("java.lang.Boolean", thirdPartySharing.isEnabled.Value);
+                ajoAdTraceThirdPartySharing = new AndroidJavaObject("io.adtrace.sdk.AdTraceThirdPartySharing", ajoIsEnabled);
+            }
+            else
+            {
+                string[] parameters = null;
+                ajoAdTraceThirdPartySharing = new AndroidJavaObject("io.adtrace.sdk.AdTraceThirdPartySharing", parameters);
+            }
+
+            if (thirdPartySharing.granularOptions != null)
+            {
+                foreach (KeyValuePair<string, List<string>> entry in thirdPartySharing.granularOptions)
+                {
+                    for (int i = 0; i < entry.Value.Count;)
+                    {
+                        ajoAdTraceThirdPartySharing.Call("addGranularOption", entry.Key, entry.Value[i++], entry.Value[i++]);
+                    }
+                }
+            }
+
+            ajcAdTrace.CallStatic("trackThirdPartySharing", ajoAdTraceThirdPartySharing);
+        }
+
+        public static void TrackMeasurementConsent(bool measurementConsent)
+        {
+            ajcAdTrace.CallStatic("trackMeasurementConsent", measurementConsent);
         }
 
         // Android specific methods.
@@ -442,6 +644,21 @@ namespace com.adtrace.sdk
                     null : attribution.Get<string>(AdTraceUtils.KeyClickLabel);
                 adtraceAttribution.adid = attribution.Get<string>(AdTraceUtils.KeyAdid) == "" ?
                     null : attribution.Get<string>(AdTraceUtils.KeyAdid);
+                adtraceAttribution.costType = attribution.Get<string>(AdTraceUtils.KeyCostType) == "" ?
+                    null : attribution.Get<string>(AdTraceUtils.KeyCostType);
+                AndroidJavaObject ajoCostAmount = attribution.Get<AndroidJavaObject>(AdTraceUtils.KeyCostAmount) == null ?
+                    null : attribution.Get<AndroidJavaObject>(AdTraceUtils.KeyCostAmount);
+                if (ajoCostAmount == null)
+                {
+                    adtraceAttribution.costAmount = null;
+                }
+                else
+                {
+                    double costAmount = ajoCostAmount.Call<double>("doubleValue");
+                    adtraceAttribution.costAmount = costAmount;
+                }
+                adtraceAttribution.costCurrency = attribution.Get<string>(AdTraceUtils.KeyCostCurrency) == "" ?
+                    null : attribution.Get<string>(AdTraceUtils.KeyCostCurrency);
                 callback(adtraceAttribution);
             }
         }

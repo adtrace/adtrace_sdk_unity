@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace com.adtrace.sdk
+namespace io.adtrace.sdk
 {
     public class AdTraceEvent
     {
@@ -9,7 +9,6 @@ namespace com.adtrace.sdk
         internal string eventToken;
         internal string callbackId;
         internal string transactionId;
-        internal string eventValue;
         internal double? revenue;
         internal List<string> partnerList;
         internal List<string> callbackList;
@@ -57,11 +56,6 @@ namespace com.adtrace.sdk
         public void setCallbackId(string callbackId)
         {
             this.callbackId = callbackId;
-        }
-
-        public void setEventValue(string eventValue)
-        {
-            this.eventValue = eventValue;
         }
 
         // iOS specific methods

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace com.adtrace.sdk
+namespace io.adtrace.sdk
 {
     public class AdTraceEventFailure
     {

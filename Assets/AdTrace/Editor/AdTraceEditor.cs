@@ -12,41 +12,54 @@ using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 #endif
 
-public class AdTraceEditor
+public class AdTraceEditor : AssetPostprocessor
 {
-    private static bool isPostProcessingEnabled = true;
-
-    [MenuItem("Assets/AdTrace/Check post processing status")]
-    public static void CheckPostProcessingPermission()
+    [MenuItem("Assets/AdTrace/Check iOS 14 Support Status")]
+    public static void CheckIOS14SupportStatus()
     {
-        EditorUtility.DisplayDialog("[AdTrace]", "The post processing for AdTrace SDK is " + (isPostProcessingEnabled ? "enabled." : "disabled."), "OK");
+        EditorUtility.DisplayDialog("AdTrace SDK", "iOS 14 support is " + (AdTraceSettings.IsiOS14ProcessingEnabled ? "enabled." : "disabled."), "OK");
     }
 
-    [MenuItem("Assets/AdTrace/Change post processing status")]
-    public static void ChangePostProcessingPermission()
+    [MenuItem("Assets/AdTrace/Toggle iOS 14 Support Status")]
+    public static void ToggleiOS14SupportStatus()
     {
-        isPostProcessingEnabled = !isPostProcessingEnabled;
-        EditorUtility.DisplayDialog("[AdTrace]", "The post processing for AdTrace SDK is now " + (isPostProcessingEnabled ? "enabled." : "disabled."), "OK");
+        AdTraceSettings.IsiOS14ProcessingEnabled = !AdTraceSettings.IsiOS14ProcessingEnabled;
+        EditorUtility.SetDirty(AdTraceSettings.Instance);
+        EditorUtility.DisplayDialog("AdTrace SDK", "iOS 14 support is now " + (AdTraceSettings.IsiOS14ProcessingEnabled ? "enabled." : "disabled.") +
+            "\nNote: Make sure to save your project files in order for this change to take effect.", "OK");
+    }
+
+    [MenuItem("Assets/AdTrace/Check Post Processing Status")]
+    public static void CheckPostProcessingStatus()
+    {
+        EditorUtility.DisplayDialog("AdTrace SDK", "The post processing for AdTrace SDK is " + (AdTraceSettings.IsPostProcessingEnabled ? "enabled." : "disabled."), "OK");
+    }
+
+    [MenuItem("Assets/AdTrace/Toggle Post Processing Status")]
+    public static void TogglePostProcessingStatus()
+    {
+        AdTraceSettings.IsPostProcessingEnabled = !AdTraceSettings.IsPostProcessingEnabled;
+        EditorUtility.SetDirty(AdTraceSettings.Instance);
+        EditorUtility.DisplayDialog("AdTrace SDK", "The post processing for AdTrace SDK is now " + (AdTraceSettings.IsPostProcessingEnabled ? "enabled." : "disabled.") +
+            "\nNote: Make sure to save your project files in order for this change to take effect.", "OK");
     }
 
     [MenuItem("Assets/AdTrace/Export Unity Package")]
-    static void ExportAdTraceUnityPackage()
+    public static void ExportAdTraceUnityPackage()
     {
         string exportedFileName = "AdTrace.unitypackage";
         string assetsPath = "Assets/AdTrace";
         List<string> assetsToExport = new List<string>();
 
-        // AdTrace Editor script.
-        assetsToExport.Add(assetsPath + "/Editor/AdTraceEditor.cs");
-
         // AdTrace Assets.
-        assetsToExport.Add(assetsPath + "/Prefab/AdTrace.prefab");
-
         assetsToExport.Add(assetsPath + "/3rd Party/SimpleJSON.cs");
 
         assetsToExport.Add(assetsPath + "/Android/adtrace-android.jar");
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroid.cs");
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroidManifest.xml");
+
+        assetsToExport.Add(assetsPath + "/Editor/AdTraceEditor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdTraceSettings.cs");
 
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.cs");
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.prefab");
@@ -60,6 +73,7 @@ public class AdTraceEditor
         assetsToExport.Add(assetsPath + "/iOS/ADTLogger.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionFailure.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionSuccess.h");
+        assetsToExport.Add(assetsPath + "/iOS/ADTSubscription.h");
         assetsToExport.Add(assetsPath + "/iOS/AdTrace.h");
         assetsToExport.Add(assetsPath + "/iOS/AdTraceiOS.cs");
         assetsToExport.Add(assetsPath + "/iOS/AdTraceSdk.a");
@@ -68,7 +82,10 @@ public class AdTraceEditor
         assetsToExport.Add(assetsPath + "/iOS/AdTraceUnityDelegate.h");
         assetsToExport.Add(assetsPath + "/iOS/AdTraceUnityDelegate.mm");
 
+        assetsToExport.Add(assetsPath + "/Prefab/AdTrace.prefab");
+
         assetsToExport.Add(assetsPath + "/Unity/AdTrace.cs");
+        assetsToExport.Add(assetsPath + "/Unity/AdTraceAppStoreSubscription.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceAttribution.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceConfig.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceEnvironment.cs");
@@ -76,9 +93,24 @@ public class AdTraceEditor
         assetsToExport.Add(assetsPath + "/Unity/AdTraceEventFailure.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceEventSuccess.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceLogLevel.cs");
+        assetsToExport.Add(assetsPath + "/Unity/AdTracePlayStoreSubscription.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceSessionFailure.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceSessionSuccess.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceUtils.cs");
+
+        assetsToExport.Add(assetsPath + "/Windows/AdTraceWindows.cs");
+        assetsToExport.Add(assetsPath + "/Windows/WindowsPcl.dll");
+        assetsToExport.Add(assetsPath + "/Windows/WindowsUap.dll");
+        assetsToExport.Add(assetsPath + "/Windows/Stubs/Win10Interface.dll");
+        assetsToExport.Add(assetsPath + "/Windows/Stubs/Win81Interface.dll");
+        assetsToExport.Add(assetsPath + "/Windows/Stubs/WinWsInterface.dll");
+        assetsToExport.Add(assetsPath + "/Windows/W81/AdTraceWP81.dll");
+        assetsToExport.Add(assetsPath + "/Windows/W81/Win81Interface.dll");
+        assetsToExport.Add(assetsPath + "/Windows/WS/AdTraceWS.dll");
+        assetsToExport.Add(assetsPath + "/Windows/WS/WinWsInterface.dll");
+        assetsToExport.Add(assetsPath + "/Windows/WU10/AdTraceUAP10.dll");
+        assetsToExport.Add(assetsPath + "/Windows/WU10/Win10Interface.dll");
+        assetsToExport.Add(assetsPath + "/Windows/Newtonsoft.Json.dll");
 
         AssetDatabase.ExportPackage(
             assetsToExport.ToArray(),
@@ -91,14 +123,14 @@ public class AdTraceEditor
     {
         // Check what is user setting about allowing AdTrace SDK to perform post build tasks.
         // If user disabled it, oh well, we won't do a thing.
-        if (!isPostProcessingEnabled)
+        if (!AdTraceSettings.IsPostProcessingEnabled)
         {
             UnityEngine.Debug.Log("[AdTrace]: You have forbidden the AdTrace SDK to perform post processing tasks.");
             UnityEngine.Debug.Log("[AdTrace]: Skipping post processing tasks.");
             return;
         }
 
-        RunPostBuildScript(target: target, preBuild: false, projectPath: projectPath);
+        RunPostBuildScript(target:target, preBuild:false, projectPath:projectPath);
     }
 
     private static void RunPostBuildScript(BuildTarget target, bool preBuild, string projectPath = "")
@@ -118,9 +150,15 @@ public class AdTraceEditor
             PBXProject xcodeProject = new PBXProject();
             xcodeProject.ReadFromFile(xcodeProjectPath);
 
-            // The AdTrace SDK needs two frameworks to be added to the project:
-            // - AdSupport.framework
-            // - iAd.framework
+            // The AdTrace SDK will try to add following frameworks to your project:
+            // - AdSupport.framework (needed for access to IDFA value)
+            // - iAd.framework (needed in case you are running ASA campaigns)
+            // - AdServices.framework (needed in case you are running ASA campaigns)
+            // - CoreTelephony.framework (needed to get information about network type user is connected to)
+            // - StoreKit.framework (needed for communication with SKAdNetwork framework)
+            // - AppTrackingTransparency.framework (needed for information about user's consent to be tracked)
+
+            // In case you don't need any of these, feel free to remove them from your app.
 
 #if UNITY_2019_3_OR_NEWER
             string xcodeTarget = xcodeProject.GetUnityFrameworkTargetGuid();
@@ -136,9 +174,26 @@ public class AdTraceEditor
             xcodeProject.AddFrameworkToProject(xcodeTarget, "iAd.framework", true);
             UnityEngine.Debug.Log("[AdTrace]: iAd.framework added successfully.");
 
+            UnityEngine.Debug.Log("[AdTrace]: Adding AdServices.framework to Xcode project.");
+            xcodeProject.AddFrameworkToProject(xcodeTarget, "AdServices.framework", true);
+            UnityEngine.Debug.Log("[AdTrace]: AdServices.framework added successfully.");
+
             UnityEngine.Debug.Log("[AdTrace]: Adding CoreTelephony.framework to Xcode project.");
             xcodeProject.AddFrameworkToProject(xcodeTarget, "CoreTelephony.framework", true);
             UnityEngine.Debug.Log("[AdTrace]: CoreTelephony.framework added successfully.");
+
+            if (AdTraceSettings.IsiOS14ProcessingEnabled)
+            {
+                UnityEngine.Debug.Log("[AdTrace]: Xcode project being built with iOS 14 support.");
+
+                UnityEngine.Debug.Log("[AdTrace]: Adding StoreKit.framework to Xcode project.");
+                xcodeProject.AddFrameworkToProject(xcodeTarget, "StoreKit.framework", true);
+                UnityEngine.Debug.Log("[AdTrace]: StoreKit.framework added successfully.");
+
+                UnityEngine.Debug.Log("[AdTrace]: Adding AppTrackingTransparency.framework to Xcode project.");
+                xcodeProject.AddFrameworkToProject(xcodeTarget, "AppTrackingTransparency.framework", true);
+                UnityEngine.Debug.Log("[AdTrace]: AppTrackingTransparency.framework added successfully.");
+            }
 
             // The AdTrace SDK needs to have Obj-C exceptions enabled.
             // GCC_ENABLE_OBJC_EXCEPTIONS=YES
@@ -156,13 +211,18 @@ public class AdTraceEditor
 
             UnityEngine.Debug.Log("[AdTrace]: -ObjC successfully added to other linker flags.");
 
+            if (xcodeProject.ContainsFileByProjectPath("Libraries/AdTrace/iOS/AdTraceSigSdk.a"))
+            {
+                xcodeProject.AddBuildProperty(xcodeTarget, "OTHER_LDFLAGS", "-force_load $(PROJECT_DIR)/Libraries/AdTrace/iOS/AdTraceSigSdk.a");
+            }
+
             // Save the changes to Xcode project file.
             xcodeProject.WriteToFile(xcodeProjectPath);
 #endif
         }
     }
 
-    private static void RunPostProcessTasksiOS(string projectPath) { }
+    private static void RunPostProcessTasksiOS(string projectPath) {}
 
     private static void RunPostProcessTasksAndroid()
     {
@@ -202,26 +262,36 @@ public class AdTraceEditor
             // Let's open the app's AndroidManifest.xml file.
             XmlDocument manifestFile = new XmlDocument();
             manifestFile.Load(appManifestPath);
-
+            
+            bool manifestHasChanged = false;
+            
             // Add needed permissions if they are missing.
-            AddPermissions(manifestFile);
+            manifestHasChanged |= AddPermissions(manifestFile);
 
             // Add intent filter to main activity if it is missing.
-            AddBroadcastReceiver(manifestFile);
+            manifestHasChanged |= AddBroadcastReceiver(manifestFile);
 
-            // Save the changes.
-            manifestFile.Save(appManifestPath);
+            if (manifestHasChanged)
+            {
+                // Save the changes.
+                manifestFile.Save(appManifestPath);
 
-            // Clean the manifest file.
-            CleanManifestFile(appManifestPath);
+                // Clean the manifest file.
+                CleanManifestFile(appManifestPath);
 
-            UnityEngine.Debug.Log("[AdTrace]: App's AndroidManifest.xml file check and potential modification completed.");
-            UnityEngine.Debug.Log("[AdTrace]: Please check if any error message was displayed during this process "
-                + "and make sure to fix all issues in order to properly use the AdTrace SDK in your app.");
+                UnityEngine.Debug.Log("[AdTrace]: App's AndroidManifest.xml file check and potential modification completed.");
+                UnityEngine.Debug.Log("[AdTrace]: Please check if any error message was displayed during this process " 
+                                      + "and make sure to fix all issues in order to properly use the AdTrace SDK in your app.");                
+            }
+            else
+            {
+                UnityEngine.Debug.Log("[AdTrace]: App's AndroidManifest.xml file check completed.");
+                UnityEngine.Debug.Log("[AdTrace]: No modifications performed due to app's AndroidManifest.xml file compatibility.");
+            }
         }
     }
 
-    private static void AddPermissions(XmlDocument manifest)
+    private static bool AddPermissions(XmlDocument manifest)
     {
         // The AdTrace SDK needs two permissions to be added to you app's manifest file:
         // <uses-permission android:name="android.permission.INTERNET" />
@@ -265,6 +335,8 @@ public class AdTraceEditor
             }
         }
 
+        bool manifestHasChanged = false;
+
         // If android.permission.INTERNET permission is missing, add it.
         if (!hasInternetPermission)
         {
@@ -272,6 +344,7 @@ public class AdTraceEditor
             element.SetAttribute("android__name", "android.permission.INTERNET");
             manifestRoot.AppendChild(element);
             UnityEngine.Debug.Log("[AdTrace]: android.permission.INTERNET permission successfully added to your app's AndroidManifest.xml file.");
+            manifestHasChanged = true;
         }
         else
         {
@@ -285,6 +358,7 @@ public class AdTraceEditor
             element.SetAttribute("android__name", "android.permission.ACCESS_WIFI_STATE");
             manifestRoot.AppendChild(element);
             UnityEngine.Debug.Log("[AdTrace]: android.permission.ACCESS_WIFI_STATE permission successfully added to your app's AndroidManifest.xml file.");
+            manifestHasChanged = true;
         }
         else
         {
@@ -298,6 +372,7 @@ public class AdTraceEditor
             element.SetAttribute("android__name", "android.permission.ACCESS_NETWORK_STATE");
             manifestRoot.AppendChild(element);
             UnityEngine.Debug.Log("[AdTrace]: android.permission.ACCESS_NETWORK_STATE permission successfully added to your app's AndroidManifest.xml file.");
+            manifestHasChanged = true;
         }
         else
         {
@@ -311,14 +386,17 @@ public class AdTraceEditor
             element.SetAttribute("android__name", "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE");
             manifestRoot.AppendChild(element);
             UnityEngine.Debug.Log("[AdTrace]: com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE permission successfully added to your app's AndroidManifest.xml file.");
+            manifestHasChanged = true;
         }
         else
         {
             UnityEngine.Debug.Log("[AdTrace]: Your app's AndroidManifest.xml file already contains com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE permission.");
         }
+
+        return manifestHasChanged;
     }
 
-    private static void AddBroadcastReceiver(XmlDocument manifest)
+    private static bool AddBroadcastReceiver(XmlDocument manifest)
     {
         // We're looking for existance of broadcast receiver in the AndroidManifest.xml
         // Check out the example below how that usually looks like:
@@ -356,7 +434,7 @@ public class AdTraceEditor
         XmlNode applicationNode = null;
 
         // Let's find the application node.
-        foreach (XmlNode node in manifestRoot.ChildNodes)
+        foreach(XmlNode node in manifestRoot.ChildNodes)
         {
             if (node.Name == "application")
             {
@@ -370,7 +448,7 @@ public class AdTraceEditor
         {
             UnityEngine.Debug.LogError("[AdTrace]: Your app's AndroidManifest.xml file does not contain \"<application>\" node.");
             UnityEngine.Debug.LogError("[AdTrace]: Unable to add the AdTrace broadcast receiver to AndroidManifest.xml.");
-            return;
+            return false;
         }
 
         // Okay, there's an application node in the AndroidManifest.xml file.
@@ -402,6 +480,8 @@ public class AdTraceEditor
             {
                 UnityEngine.Debug.Log("[AdTrace]: It seems like you are already using AdTrace broadcast receiver. Yay.");
             }
+
+            return false;
         }
         else
         {
@@ -420,6 +500,8 @@ public class AdTraceEditor
             applicationNode.AppendChild(receiverElement);
 
             UnityEngine.Debug.Log("[AdTrace]: AdTrace broadcast receiver successfully added to your app's AndroidManifest.xml file.");
+
+            return true;
         }
     }
 

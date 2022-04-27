@@ -2,7 +2,9 @@
 //  ADTEventSuccess.h
 //  adtrace
 //
-
+//  Created by Pedro Filipe on 17/02/16.
+//  Copyright © 2016 adtrace GmbH. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 
@@ -19,7 +21,7 @@
 @property (nonatomic, copy) NSString *timeStamp;
 
 /**
- * @brief AdTrace identifier of the device.
+ * @brief Adtrace identifier of the device.
  */
 @property (nonatomic, copy) NSString *adid;
 

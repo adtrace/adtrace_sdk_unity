@@ -48,7 +48,7 @@ using System.Collections.Generic;
 using System.Linq;
  
  
-namespace com.adtrace.sdk
+namespace io.adtrace.sdk
 {
     public enum JSONBinaryTag
     {

@@ -1,13 +1,30 @@
 ﻿using System;
 
-namespace com.adtrace.sdk
+namespace io.adtrace.sdk
 {
     public class AdTraceConfig
     {
+        public const string AdTraceUrlStrategyChina = "china";
+        public const string AdTraceUrlStrategyIndia = "india";
+
+        public const string AdTraceDataResidencyEU = "data-residency-eu";
+        public const string AdTraceDataResidencyTR = "data-residency-tr";
+        public const string AdTraceDataResidencyUS = "data-residency-us";
+
+        public const string AdTraceAdRevenueSourceAppLovinMAX = "applovin_max_sdk";
+        public const string AdTraceAdRevenueSourceMopub = "mopub";
+        public const string AdTraceAdRevenueSourceAdMob = "admob_sdk";
+        public const string AdTraceAdRevenueSourceIronSource = "ironsource_sdk";
+        public const string AdTraceAdRevenueSourceAdmost = "admost_sdk";
+        public const string AdTraceAdRevenueSourceUnity = "unity_sdk";
+        public const string AdTraceAdRevenueSourceHeliumChartboost = "helium_chartboost_sdk";
+
         internal string appToken;
         internal string sceneName;
         internal string userAgent;
         internal string defaultTracker;
+        internal string externalDeviceId;
+        internal string urlStrategy;
         internal long? info1;
         internal long? info2;
         internal long? info3;
@@ -17,8 +34,8 @@ namespace com.adtrace.sdk
         internal bool? isDeviceKnown;
         internal bool? sendInBackground;
         internal bool? eventBufferingEnabled;
-        internal bool? enableSendInstalledApps;
         internal bool? allowSuppressLogLevel;
+        internal bool? needsCost;
         internal bool launchDeferredDeeplink;
         internal AdTraceLogLevel? logLevel;
         internal AdTraceEnvironment environment;
@@ -28,13 +45,17 @@ namespace com.adtrace.sdk
         internal Action<AdTraceSessionSuccess> sessionSuccessDelegate;
         internal Action<AdTraceSessionFailure> sessionFailureDelegate;
         internal Action<AdTraceAttribution> attributionChangedDelegate;
+        internal Action<int> conversionValueUpdatedDelegate;
 
         // Android specific members
         internal bool? readImei;
+        internal bool? preinstallTrackingEnabled;
         internal string processName;
         // iOS specific members
         internal bool? allowiAdInfoReading;
+        internal bool? allowAdServicesInfoReading;
         internal bool? allowIdfaReading;
+        internal bool? skAdNetworkHandling;
         // Windows specific members
         internal Action<String> logDelegate;
 
@@ -65,6 +86,11 @@ namespace com.adtrace.sdk
             this.defaultTracker = defaultTracker;
         }
 
+        public void setExternalDeviceId(string externalDeviceId)
+        {
+            this.externalDeviceId = externalDeviceId;
+        }
+
         public void setLaunchDeferredDeeplink(bool launchDeferredDeeplink)
         {
             this.launchDeferredDeeplink = launchDeferredDeeplink;
@@ -80,9 +106,9 @@ namespace com.adtrace.sdk
             this.eventBufferingEnabled = eventBufferingEnabled;
         }
 
-        public void setEnableSendInstalledApps(bool enableSendInstalledApps)
+        public void setNeedsCost(bool needsCost)
         {
-            this.enableSendInstalledApps = enableSendInstalledApps;
+            this.needsCost = needsCost;
         }
 
         public void setDelayStart(double delayStart)
@@ -98,6 +124,16 @@ namespace com.adtrace.sdk
         public void setIsDeviceKnown(bool isDeviceKnown)
         {
             this.isDeviceKnown = isDeviceKnown;
+        }
+
+        public void setUrlStrategy(String urlStrategy)
+        {
+            this.urlStrategy = urlStrategy;
+        }
+
+        public void deactivateSKAdNetworkHandling()
+        {
+            this.skAdNetworkHandling = true;
         }
 
         public void setDeferredDeeplinkDelegate(Action<string> deferredDeeplinkDelegate, string sceneName = "AdTrace")
@@ -166,6 +202,17 @@ namespace com.adtrace.sdk
             return this.sessionFailureDelegate;
         }
 
+        public void setConversionValueUpdatedDelegate(Action<int> conversionValueUpdatedDelegate, string sceneName = "AdTrace")
+        {
+            this.conversionValueUpdatedDelegate = conversionValueUpdatedDelegate;
+            this.sceneName = sceneName;
+        }
+
+        public Action<int> getConversionValueUpdatedDelegate()
+        {
+            return this.conversionValueUpdatedDelegate;
+        }
+
         public void setAppSecret(long secretId, long info1, long info2, long info3, long info4)
         {
             this.secretId = secretId;
@@ -179,6 +226,11 @@ namespace com.adtrace.sdk
         public void setAllowiAdInfoReading(bool allowiAdInfoReading)
         {
             this.allowiAdInfoReading = allowiAdInfoReading;
+        }
+
+        public void setAllowAdServicesInfoReading(bool allowAdServicesInfoReading)
+        {
+            this.allowAdServicesInfoReading = allowAdServicesInfoReading;
         }
 
         public void setAllowIdfaReading(bool allowIdfaReading)
@@ -196,6 +248,11 @@ namespace com.adtrace.sdk
         public void setReadMobileEquipmentIdentity(bool readMobileEquipmentIdentity)
         {
             // this.readImei = readMobileEquipmentIdentity;
+        }
+
+        public void setPreinstallTrackingEnabled(bool preinstallTrackingEnabled)
+        {
+            this.preinstallTrackingEnabled = preinstallTrackingEnabled;
         }
 
         // Windows specific methods.
