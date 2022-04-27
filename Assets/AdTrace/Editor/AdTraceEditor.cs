@@ -1,8 +1,4 @@
-﻿//
-//  Created by Nasser Amini (namini40@github.com) on April 2022.
-//  Copyright (c) AdTrace (adtrace.io) . All rights reserved.
-
-using System;
+﻿using System;
 using System.IO;
 using System.Xml;
 using System.Collections;
