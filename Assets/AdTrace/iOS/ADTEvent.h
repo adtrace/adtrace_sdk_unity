@@ -44,9 +44,9 @@
 @property (nonatomic, copy, readonly, nonnull) NSData *receipt;
 
 /**
- * @brief List of partner parameters.
+ * @brief List of value parameters.
  */
-@property (nonatomic, readonly, nonnull) NSDictionary *partnerParameters;
+@property (nonatomic, readonly, nonnull) NSDictionary *valueParameters;
 
 /**
  * @brief List of callback parameters.
@@ -82,12 +82,12 @@
 - (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
- * @brief Add a key-pair to be fowarded to a partner.
+ * @brief Add a key-pair to be sent with the event.
  *
- * @param key String key to be fowarded to the partner.
- * @param value String value of the key to be fowarded to the partner.
+ * @param key String key to be with the event.
+ * @param value String value of the key to be with the event.
  */
-- (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+- (void)addEventValueParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
  * @brief Set the revenue and associated currency of the event.
