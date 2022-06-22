@@ -257,7 +257,7 @@ extern "C"
                            const char* callbackId,
                            int isReceiptSet,
                            const char* jsonCallbackParameters,
-                           const char* jsonPartnerParameters) {
+                           const char* jsonValueParameters) {
         NSString *stringEventToken = isStringValid(eventToken) == true ? [NSString stringWithUTF8String:eventToken] : nil;
         ADTEvent *event = [ADTEvent eventWithEventToken:stringEventToken];
 
@@ -278,13 +278,13 @@ extern "C"
             }
         }
 
-        NSArray *arrayPartnerParameters = convertArrayParameters(jsonPartnerParameters);
-        if (arrayPartnerParameters != nil) {
-            NSUInteger count = [arrayPartnerParameters count];
+        NSArray *arrayValueParameters = convertArrayParameters(jsonValueParameters);
+        if (arrayValueParameters != nil) {
+            NSUInteger count = [arrayValueParameters count];
             for (int i = 0; i < count;) {
-                NSString *key = arrayPartnerParameters[i++];
-                NSString *value = arrayPartnerParameters[i++];
-                [event addPartnerParameter:key value:value];
+                NSString *key = arrayValueParameters[i++];
+                NSString *value = arrayValueParameters[i++];
+                [event addEventValueParameter:key value:value];
             }
         }
 

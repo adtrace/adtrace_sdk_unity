@@ -10,7 +10,7 @@ namespace io.adtrace.sdk
         internal string callbackId;
         internal string transactionId;
         internal double? revenue;
-        internal List<string> partnerList;
+        internal List<string> valueList;
         internal List<string> callbackList;
         // iOS specific members
         internal string receipt;
@@ -38,14 +38,14 @@ namespace io.adtrace.sdk
             callbackList.Add(value);
         }
 
-        public void addPartnerParameter(string key, string value)
+        public void addValueParameter(string key, string value)
         {
-            if (partnerList == null)
+            if (valueList == null)
             {
-                partnerList = new List<string>();
+                valueList = new List<string>();
             }
-            partnerList.Add(key);
-            partnerList.Add(value);
+            valueList.Add(key);
+            valueList.Add(value);
         }
 
         public void setTransactionId(string transactionId)
