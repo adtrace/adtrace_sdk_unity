@@ -448,8 +448,8 @@ You can send events with desired values. This works the same way as callback par
 ```cs
 AdTraceEvent adtraceEvent = new AdTraceEvent("abc123");
 
-adtraceEvent.addEventParameter("key", "value");
-adtraceEvent.addEventParameter("foo", "bar");
+adtraceEvent.addValueParameter("key", "value");
+adtraceEvent.addValueParameter("foo", "bar");
 
 AdTrace.trackEvent(adtraceEvent);
 ```
