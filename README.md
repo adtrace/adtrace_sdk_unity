@@ -663,7 +663,7 @@ To send us a push notification token, call the `setDeviceToken` method on the `A
 ```cs
 AdTrace.setDeviceToken("YourPushNotificationToken");
 ```
-
+**Note:** in order to handle the case where a silent push sent, check [this link](https://github.com/adtrace/adtrace_sdk_android#uninstall-tracking).
 ### <a id="ad-attribution-callback"></a>Attribution callback
 
 You can set up a callback to be notified about attribution changes. We consider a variety of different sources for attribution, so we provide this information asynchronously. Make sure to consider [applicable attribution data policies][attribution_data] before sharing any of your data with third-parties. 
