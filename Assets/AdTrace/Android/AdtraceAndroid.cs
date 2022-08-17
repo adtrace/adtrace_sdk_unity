@@ -8,7 +8,7 @@ namespace io.adtrace.sdk
 #if UNITY_ANDROID
     public class AdTraceAndroid
     {
-        private const string sdkPrefix = "unity2.0.1";
+        private const string sdkPrefix = "unity2.1.0";
         private static bool launchDeferredDeeplink = true;
         private static AndroidJavaClass ajcAdTrace = new AndroidJavaClass("io.adtrace.sdk.AdTrace");
         private static AndroidJavaObject ajoCurrentActivity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
