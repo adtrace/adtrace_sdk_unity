@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class AdjustSettings : ScriptableObject
+public class AdTraceSettings : ScriptableObject
 {
-    private static AdjustSettings instance;
+    private static AdTraceSettings instance;
 
     [SerializeField]
     private bool _iOSFrameworkAdSupport = true;
@@ -37,7 +37,7 @@ public class AdjustSettings : ScriptableObject
     [SerializeField]
     private string[] androidUriSchemes = new string[0];
 
-    public static AdjustSettings Instance
+    public static AdTraceSettings Instance
     {
         get
         {
@@ -45,14 +45,14 @@ public class AdjustSettings : ScriptableObject
 
             if (instance == null)
             {
-                // Create AdjustSettings.asset inside the folder in which AdjustSettings.cs reside.
-                instance = ScriptableObject.CreateInstance<AdjustSettings>();
-                var guids = AssetDatabase.FindAssets(string.Format("{0} t:script", "AdjustSettings"));
+                // Create AdTraceSettings.asset inside the folder in which AdTraceSettings.cs reside.
+                instance = ScriptableObject.CreateInstance<AdTraceSettings>();
+                var guids = AssetDatabase.FindAssets(string.Format("{0} t:script", "AdTraceSettings"));
                 if (guids == null || guids.Length <= 0)
                 {
                     return instance;
                 }
-                var assetPath = AssetDatabase.GUIDToAssetPath(guids[0]).Replace("AdjustSettings.cs", "AdjustSettings.asset");
+                var assetPath = AssetDatabase.GUIDToAssetPath(guids[0]).Replace("AdTraceSettings.cs", "AdTraceSettings.asset");
                 AssetDatabase.CreateAsset(instance, assetPath);
             }
 
@@ -60,19 +60,19 @@ public class AdjustSettings : ScriptableObject
         }
     }
 
-    public static AdjustSettings NullableInstance
+    public static AdTraceSettings NullableInstance
     {
         get
         {
             if (instance == null)
             {
-                var guids = AssetDatabase.FindAssets(string.Format("{0} t:ScriptableObject", "AdjustSettings"));
+                var guids = AssetDatabase.FindAssets(string.Format("{0} t:ScriptableObject", "AdTraceSettings"));
                 if (guids == null || guids.Length <= 0)
                 {
                     return instance;
                 }
                 var assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-                instance = (AdjustSettings)AssetDatabase.LoadAssetAtPath(assetPath, typeof(AdjustSettings));
+                instance = (AdTraceSettings)AssetDatabase.LoadAssetAtPath(assetPath, typeof(AdTraceSettings));
             }
 
             return instance;
