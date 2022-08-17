@@ -13,41 +13,11 @@ using UnityEditor.iOS.Xcode;
 
 public class AdTraceEditor : AssetPostprocessor
 {
-    [MenuItem("Assets/AdTrace/Check iOS 14 Support Status")]
-    public static void CheckIOS14SupportStatus()
-    {
-        EditorUtility.DisplayDialog("AdTrace SDK", "iOS 14 support is " + (AdTraceSettings.IsiOS14ProcessingEnabled ? "enabled." : "disabled."), "OK");
-    }
-
-    [MenuItem("Assets/AdTrace/Toggle iOS 14 Support Status")]
-    public static void ToggleiOS14SupportStatus()
-    {
-        AdTraceSettings.IsiOS14ProcessingEnabled = !AdTraceSettings.IsiOS14ProcessingEnabled;
-        EditorUtility.SetDirty(AdTraceSettings.Instance);
-        EditorUtility.DisplayDialog("AdTrace SDK", "iOS 14 support is now " + (AdTraceSettings.IsiOS14ProcessingEnabled ? "enabled." : "disabled.") +
-            "\nNote: Make sure to save your project files in order for this change to take effect.", "OK");
-    }
-
-    [MenuItem("Assets/AdTrace/Check Post Processing Status")]
-    public static void CheckPostProcessingStatus()
-    {
-        EditorUtility.DisplayDialog("AdTrace SDK", "The post processing for AdTrace SDK is " + (AdTraceSettings.IsPostProcessingEnabled ? "enabled." : "disabled."), "OK");
-    }
-
-    [MenuItem("Assets/AdTrace/Toggle Post Processing Status")]
-    public static void TogglePostProcessingStatus()
-    {
-        AdTraceSettings.IsPostProcessingEnabled = !AdTraceSettings.IsPostProcessingEnabled;
-        EditorUtility.SetDirty(AdTraceSettings.Instance);
-        EditorUtility.DisplayDialog("AdTrace SDK", "The post processing for AdTrace SDK is now " + (AdTraceSettings.IsPostProcessingEnabled ? "enabled." : "disabled.") +
-            "\nNote: Make sure to save your project files in order for this change to take effect.", "OK");
-    }
-
-    [MenuItem("Assets/AdTrace/Export Unity Package")]
-    public static void ExportAdTraceUnityPackage()
-    {
+   [MenuItem("Assets/AdTrace/Export Unity Package")]
+    public static void ExportAdTraceUnityPackage(){
         string exportedFileName = "AdTrace.unitypackage";
         string assetsPath = "Assets/AdTrace";
+
         List<string> assetsToExport = new List<string>();
 
         // AdTrace Assets.
@@ -57,8 +27,11 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroid.cs");
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroidManifest.xml");
 
-        assetsToExport.Add(assetsPath + "/Editor/AdTraceEditor.cs");
-        assetsToExport.Add(assetsPath + "/Editor/AdTraceSettings.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdjustEditor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdjustSettings.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdjustSettingsEditor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdjustCustomEditor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdjustEditorPreprocessor.cs");
 
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.cs");
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.prefab");
@@ -120,16 +93,7 @@ public class AdTraceEditor : AssetPostprocessor
     [PostProcessBuild]
     public static void OnPostprocessBuild(BuildTarget target, string projectPath)
     {
-        // Check what is user setting about allowing AdTrace SDK to perform post build tasks.
-        // If user disabled it, oh well, we won't do a thing.
-        if (!AdTraceSettings.IsPostProcessingEnabled)
-        {
-            UnityEngine.Debug.Log("[AdTrace]: You have forbidden the AdTrace SDK to perform post processing tasks.");
-            UnityEngine.Debug.Log("[AdTrace]: Skipping post processing tasks.");
-            return;
-        }
-
-        RunPostBuildScript(target:target, preBuild:false, projectPath:projectPath);
+        RunPostBuildScript(target: target, projectPath: projectPath);
     }
 
     private static void RunPostBuildScript(BuildTarget target, bool preBuild, string projectPath = "")
