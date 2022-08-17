@@ -81,15 +81,15 @@ namespace io.adtrace.sdk
             }
 
             // Check COPPA setting.
-            if (adjustConfig.coppaCompliantEnabled != null)
+            if (adtraceConfig.coppaCompliantEnabled != null)
             {
-                ajoAdjustConfig.Call("setCoppaCompliantEnabled", adjustConfig.coppaCompliantEnabled.Value);
+                ajoAdTraceConfig.Call("setCoppaCompliantEnabled", adtraceConfig.coppaCompliantEnabled.Value);
             }
 
             // Check Play Store Kids Apps setting.
-            if (adjustConfig.playStoreKidsAppEnabled != null)
+            if (adtraceConfig.playStoreKidsAppEnabled != null)
             {
-                ajoAdjustConfig.Call("setPlayStoreKidsAppEnabled", adjustConfig.playStoreKidsAppEnabled.Value);
+                ajoAdTraceConfig.Call("setPlayStoreKidsAppEnabled", adtraceConfig.playStoreKidsAppEnabled.Value);
             }
 
 
@@ -112,9 +112,9 @@ namespace io.adtrace.sdk
             }
 
             // Check if user has set custom preinstall file path.
-            if (adjustConfig.preinstallFilePath != null)
+            if (adtraceConfig.preinstallFilePath != null)
             {
-                ajoAdjustConfig.Call("setPreinstallFilePath", adjustConfig.preinstallFilePath);
+                ajoAdTraceConfig.Call("setPreinstallFilePath", adtraceConfig.preinstallFilePath);
             }
 
             // Check if user has set user agent value.
