@@ -80,6 +80,19 @@ namespace io.adtrace.sdk
                 ajoAdTraceConfig.Call("setEventBufferingEnabled", ajoIsEnabled);
             }
 
+            // Check COPPA setting.
+            if (adjustConfig.coppaCompliantEnabled != null)
+            {
+                ajoAdjustConfig.Call("setCoppaCompliantEnabled", adjustConfig.coppaCompliantEnabled.Value);
+            }
+
+            // Check Play Store Kids Apps setting.
+            if (adjustConfig.playStoreKidsAppEnabled != null)
+            {
+                ajoAdjustConfig.Call("setPlayStoreKidsAppEnabled", adjustConfig.playStoreKidsAppEnabled.Value);
+            }
+
+
             // Check if user enabled tracking in the background.
             if (adtraceConfig.sendInBackground != null)
             {
