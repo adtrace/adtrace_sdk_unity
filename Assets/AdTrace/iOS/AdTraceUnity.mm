@@ -1,27 +1,16 @@
-//
-//  AdtraceUnity.mm
-//  Adtrace SDK
-//
-//  Created by Pedro Silva (@nonelse) on 27th March 2014.
-//  Copyright © 2012-2018 Adtrace GmbH. All rights reserved.
-//
-
 #import "Adtrace.h"
 #import "ADTEvent.h"
 #import "ADTConfig.h"
-#import "AdtraceUnity.h"
-#import "AdtraceUnityDelegate.h"
-
+#import "AdTraceUnity.h"
+#import "AdTraceUnityDelegate.h"
+#import "AdTraceUnityDelegate.h"
 @implementation AdtraceUnity
 
 #pragma mark - Object lifecycle methods
 
-- (id)init {
-    self = [super init];
-    if (nil == self) {
-        return nil;
-    }
-    return self;
++ (void)load {
+    // Swizzle AppDelegate on the load. It should be done as early as possible.
+    [AdTraceUnityAppDelegate swizzleAppDelegateCallbacks];
 }
 
 @end
@@ -101,7 +90,9 @@ extern "C"
                           int allowAdServicesInfoReading,
                           int allowIdfaReading,
                           int deactivateSkAdNetworkHandling,
+                          int linkMeEnabled,
                           int needsCost,
+                          int coppaCompliant,
                           int64_t secretId,
                           int64_t info1,
                           int64_t info2,
@@ -192,6 +183,11 @@ extern "C"
         // Allow IDFA reading.
         if (allowIdfaReading != -1) {
             [adtraceConfig setAllowIdfaReading:(BOOL)allowIdfaReading];
+        }
+
+        // Enable LinkMe feature.
+        if (linkMeEnabled != -1) {
+            [adtraceConfig setLinkMeEnabled:(BOOL)linkMeEnabled];
         }
 
         // Device known.
@@ -701,6 +697,10 @@ extern "C"
 
     void _AdtraceUpdateConversionValue(int conversionValue) {
         [Adtrace updateConversionValue:conversionValue];
+    }
+
+    void _AdtraceCheckForNewAttStatus() {
+        [Adtrace checkForNewAttStatus];
     }
 
     int _AdtraceGetAppTrackingAuthorizationStatus() {

@@ -1,11 +1,3 @@
-//
-//  ADTEventSuccess.h
-//  adtrace
-//
-//  Created by Pedro Filipe on 17/02/16.
-//  Copyright © 2016 adtrace GmbH. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 @interface ADTEventSuccess : NSObject

@@ -1,11 +1,3 @@
-//
-//  ADTAttribution.h
-//  adtrace
-//
-//  Created by Pedro Filipe on 29/10/14.
-//  Copyright (c) 2014 adtrace GmbH. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 /**

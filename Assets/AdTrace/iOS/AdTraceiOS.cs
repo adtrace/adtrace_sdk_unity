@@ -29,7 +29,9 @@ namespace io.adtrace.sdk
             int allowAdServicesInfoReading,
             int allowIdfaReading,
             int deactivateSkAdNetworkHandling,
+            int linkMeEnabled,
             int needsCost,
+            int coppaCompliant,
             long secretId,
             long info1,
             long info2,
@@ -167,6 +169,9 @@ namespace io.adtrace.sdk
         private static extern void _AdtraceUpdateConversionValue(int conversionValue);
 
         [DllImport("__Internal")]
+        private static extern void _AdtraceCheckForNewAttStatus();
+
+        [DllImport("__Internal")]
         private static extern int _AdtraceGetAppTrackingAuthorizationStatus();
 
         [DllImport("__Internal")]
@@ -202,7 +207,9 @@ namespace io.adtrace.sdk
             int allowSuppressLogLevel = AdTraceUtils.ConvertBool(adtraceConfig.allowSuppressLogLevel);
             int launchDeferredDeeplink = AdTraceUtils.ConvertBool(adtraceConfig.launchDeferredDeeplink);
             int deactivateSkAdNetworkHandling = AdTraceUtils.ConvertBool(adtraceConfig.skAdNetworkHandling);
+            int linkMeEnabled = AdTracetUtils.ConvertBool(adtraceConfig.linkMeEnabled);
             int needsCost = AdTraceUtils.ConvertBool(adtraceConfig.needsCost);
+            int coppaCompliant = AdTraceUtils.ConvertBool(adtraceConfig.coppaCompliantEnabled);
             int isAttributionCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getAttributionChangedDelegate() != null);
             int isEventSuccessCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getEventSuccessDelegate() != null);
             int isEventFailureCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getEventFailureDelegate() != null);
@@ -229,7 +236,9 @@ namespace io.adtrace.sdk
                 allowAdServicesInfoReading,
                 allowIdfaReading,
                 deactivateSkAdNetworkHandling,
+                linkMeEnabled,
                 needsCost,
+                coppaCompliant,
                 secretId,
                 info1,
                 info2,
@@ -397,6 +406,11 @@ namespace io.adtrace.sdk
         public static void UpdateConversionValue(int conversionValue)
         {
             _AdtraceUpdateConversionValue(conversionValue);
+        }
+
+        public static void CheckForNewAttStatus()
+        {
+            _AdtraceCheckForNewAttStatus();
         }
 
         public static int GetAppTrackingAuthorizationStatus()

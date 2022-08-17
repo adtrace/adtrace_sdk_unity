@@ -1,11 +1,3 @@
-//
-//  ADTEvent.h
-//  adtrace
-//
-//  Created by Pedro Filipe on 15/10/14.
-//  Copyright (c) 2014 adtrace GmbH. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 /**

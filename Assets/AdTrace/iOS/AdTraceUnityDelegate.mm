@@ -1,11 +1,3 @@
-//
-//  AdtraceUnityDelegate.mm
-//  Adtrace SDK
-//
-//  Created by Uglješa Erceg (@uerceg) on 5th December 2016.
-//  Copyright © 2012-2018 Adtrace GmbH. All rights reserved.
-//
-
 #import <objc/runtime.h>
 #import "AdtraceUnityDelegate.h"
 

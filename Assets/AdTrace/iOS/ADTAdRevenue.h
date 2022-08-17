@@ -1,11 +1,3 @@
-//
-//  ADTAdRevenue.h
-//  Adtrace SDK
-//
-//  Created by Uglješa Erceg (@uerceg) on 13th April 2021
-//  Copyright (c) 2021 Adtrace GmbH. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 /**
