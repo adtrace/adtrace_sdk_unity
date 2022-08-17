@@ -111,6 +111,12 @@ namespace io.adtrace.sdk
                 ajoAdTraceConfig.Call("setPreinstallTrackingEnabled", adtraceConfig.preinstallTrackingEnabled.Value);
             }
 
+            // Check if user has set custom preinstall file path.
+            if (adjustConfig.preinstallFilePath != null)
+            {
+                ajoAdjustConfig.Call("setPreinstallFilePath", adjustConfig.preinstallFilePath);
+            }
+
             // Check if user has set user agent value.
             if (adtraceConfig.userAgent != null)
             {
