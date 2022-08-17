@@ -27,11 +27,11 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroid.cs");
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroidManifest.xml");
 
-        assetsToExport.Add(assetsPath + "/Editor/AdjustEditor.cs");
-        assetsToExport.Add(assetsPath + "/Editor/AdjustSettings.cs");
-        assetsToExport.Add(assetsPath + "/Editor/AdjustSettingsEditor.cs");
-        assetsToExport.Add(assetsPath + "/Editor/AdjustCustomEditor.cs");
-        assetsToExport.Add(assetsPath + "/Editor/AdjustEditorPreprocessor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdTraceEditor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdTraceSettings.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdTraceSettingsEditor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdTraceCustomEditor.cs");
+        assetsToExport.Add(assetsPath + "/Editor/AdTraceEditorPreprocessor.cs");
 
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.cs");
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.prefab");
@@ -96,83 +96,115 @@ public class AdTraceEditor : AssetPostprocessor
         RunPostBuildScript(target: target, projectPath: projectPath);
     }
 
-    private static void RunPostBuildScript(BuildTarget target, bool preBuild, string projectPath = "")
-    {
-        if (target == BuildTarget.Android)
-        {
-            UnityEngine.Debug.Log("[AdTrace]: Starting to perform post build tasks for Android platform.");
-            RunPostProcessTasksAndroid();
-        }
-        else if (target == BuildTarget.iOS)
+    private static void RunPostBuildScript(BuildTarget target, string projectPath = "")    {
+        if (target == BuildTarget.iOS)
         {
 #if UNITY_IOS
-            UnityEngine.Debug.Log("[AdTrace]: Starting to perform post build tasks for iOS platform.");
+            Debug.Log("[AdTrace]: Starting to perform post build tasks for iOS platform.");
             
             string xcodeProjectPath = projectPath + "/Unity-iPhone.xcodeproj/project.pbxproj";
 
             PBXProject xcodeProject = new PBXProject();
             xcodeProject.ReadFromFile(xcodeProjectPath);
 
-            // The AdTrace SDK will try to add following frameworks to your project:
-            // - AdSupport.framework (needed for access to IDFA value)
-            // - iAd.framework (needed in case you are running ASA campaigns)
-            // - AdServices.framework (needed in case you are running ASA campaigns)
-            // - CoreTelephony.framework (needed to get information about network type user is connected to)
-            // - StoreKit.framework (needed for communication with SKAdNetwork framework)
-            // - AppTrackingTransparency.framework (needed for information about user's consent to be tracked)
-
-            // In case you don't need any of these, feel free to remove them from your app.
+        
 
 #if UNITY_2019_3_OR_NEWER
-            string xcodeTarget = xcodeProject.GetUnityFrameworkTargetGuid();
+            string xcodeTarget = xcodeProject.GetUnityMainTargetGuid();
 #else
             string xcodeTarget = xcodeProject.TargetGuidByName("Unity-iPhone");
 #endif
             
-            UnityEngine.Debug.Log("[AdTrace]: Adding AdSupport.framework to Xcode project.");
-            xcodeProject.AddFrameworkToProject(xcodeTarget, "AdSupport.framework", true);
-            UnityEngine.Debug.Log("[AdTrace]: AdSupport.framework added successfully.");
+            HandlePlistIosChanges(projectPath);
 
-            UnityEngine.Debug.Log("[AdTrace]: Adding iAd.framework to Xcode project.");
-            xcodeProject.AddFrameworkToProject(xcodeTarget, "iAd.framework", true);
-            UnityEngine.Debug.Log("[AdTrace]: iAd.framework added successfully.");
-
-            UnityEngine.Debug.Log("[AdTrace]: Adding AdServices.framework to Xcode project.");
-            xcodeProject.AddFrameworkToProject(xcodeTarget, "AdServices.framework", true);
-            UnityEngine.Debug.Log("[AdTrace]: AdServices.framework added successfully.");
-
-            UnityEngine.Debug.Log("[AdTrace]: Adding CoreTelephony.framework to Xcode project.");
-            xcodeProject.AddFrameworkToProject(xcodeTarget, "CoreTelephony.framework", true);
-            UnityEngine.Debug.Log("[AdTrace]: CoreTelephony.framework added successfully.");
-
-            if (AdTraceSettings.IsiOS14ProcessingEnabled)
+            if (AdTraceSettings.iOSUniversalLinksDomains.Length > 0)
             {
-                UnityEngine.Debug.Log("[AdTrace]: Xcode project being built with iOS 14 support.");
+                AddUniversalLinkDomains(xcodeProject, xcodeProjectPath, xcodeTarget);
+            }
 
-                UnityEngine.Debug.Log("[AdTrace]: Adding StoreKit.framework to Xcode project.");
+            // If enabled by the user, AdTrace SDK will try to add following frameworks to your project:
+            // - AdSupport.framework (needed for access to IDFA value)
+            // - iAd.framework (needed in case you are running ASA campaigns)
+            // - AdServices.framework (needed in case you are running ASA campaigns)
+            // - StoreKit.framework (needed for communication with SKAdNetwork framework)
+            // - AppTrackingTransparency.framework (needed for information about user's consent to be tracked)
+            // In case you don't need any of these, feel free to remove them from your app.
+
+            if (AdTraceSettings.iOSFrameworkAdSupport)
+            {
+                Debug.Log("[AdTrace]: Adding AdSupport.framework to Xcode project.");
+                xcodeProject.AddFrameworkToProject(xcodeTarget, "AdSupport.framework", true);
+                Debug.Log("[AdTrace]: AdSupport.framework added successfully.");
+            }
+            else
+            {
+                                Debug.Log("[AdTrace]: Skipping AdSupport.framework linking.");
+            }
+            if (AdTraceSettings.iOSFrameworkiAd)
+            {
+                Debug.Log("[AdTrace]: Adding iAd.framework to Xcode project.");
+                xcodeProject.AddFrameworkToProject(xcodeTarget, "iAd.framework", true);
+                Debug.Log("[AdTrace]: iAd.framework added successfully.");
+            }
+            else
+            {
+                Debug.Log("[AdTrace]: Skipping iAd.framework linking.");
+            }
+            if (AdTraceSettings.iOSFrameworkAdServices)
+            {
+                Debug.Log("[AdTrace]: Adding AdServices.framework to Xcode project.");
+                xcodeProject.AddFrameworkToProject(xcodeTarget, "AdServices.framework", true);
+                Debug.Log("[AdTrace]: AdServices.framework added successfully.");
+            }
+            else
+            {
+                Debug.Log("[AdTrace]: Skipping AdServices.framework linking.");
+            }
+            if (AdTraceSettings.iOSFrameworkStoreKit)
+            {
+                Debug.Log("[AdTrace]: Adding StoreKit.framework to Xcode project.");
                 xcodeProject.AddFrameworkToProject(xcodeTarget, "StoreKit.framework", true);
-                UnityEngine.Debug.Log("[AdTrace]: StoreKit.framework added successfully.");
-
-                UnityEngine.Debug.Log("[AdTrace]: Adding AppTrackingTransparency.framework to Xcode project.");
+               Debug.Log("[AdTrace]: StoreKit.framework added successfully.");
+            }
+            else
+            {
+                Debug.Log("[AdTrace]: Skipping StoreKit.framework linking.");
+            }
+            if (AdTraceSettings.iOSFrameworkAppTrackingTransparency)
+            {
+                Debug.Log("[AdTrace]: Adding AppTrackingTransparency.framework to Xcode project.");
                 xcodeProject.AddFrameworkToProject(xcodeTarget, "AppTrackingTransparency.framework", true);
-                UnityEngine.Debug.Log("[AdTrace]: AppTrackingTransparency.framework added successfully.");
+                                Debug.Log("[AdTrace]: AppTrackingTransparency.framework added successfully.");
+            }
+            else
+            {
+                Debug.Log("[AdTrace]: Skipping AppTrackingTransparency.framework linking.");
             }
 
             // The AdTrace SDK needs to have Obj-C exceptions enabled.
             // GCC_ENABLE_OBJC_EXCEPTIONS=YES
 
-            UnityEngine.Debug.Log("[AdTrace]: Enabling Obj-C exceptions by setting GCC_ENABLE_OBJC_EXCEPTIONS value to YES.");
+            Debug.Log("[AdTrace]: Enabling Obj-C exceptions by setting GCC_ENABLE_OBJC_EXCEPTIONS value to YES.");
             xcodeProject.AddBuildProperty(xcodeTarget, "GCC_ENABLE_OBJC_EXCEPTIONS", "YES");
 
-            UnityEngine.Debug.Log("[AdTrace]: Obj-C exceptions enabled successfully.");
-
+            Debug.Log("[AdTrace]: Obj-C exceptions enabled successfully.");
             // The AdTrace SDK needs to have -ObjC flag set in other linker flags section because of it's categories.
             // OTHER_LDFLAGS -ObjC
-            
-            UnityEngine.Debug.Log("[AdTrace]: Adding -ObjC flag to other linker flags (OTHER_LDFLAGS).");
+            //
+            // Seems that in newer Unity IDE versions adding -ObjC flag to Unity-iPhone target doesn't do the trick.
+            // Adding -ObjC to UnityFramework target however does make things work nicely again.
+            // This happens because Unity is linking SDK's static library into UnityFramework target.
+            // Check for presence of UnityFramework target and if there, include -ObjC flag inside of it.
+            Debug.Log("[AdTrace]: Adding -ObjC flag to other linker flags (OTHER_LDFLAGS) of Unity-iPhone target.");;
             xcodeProject.AddBuildProperty(xcodeTarget, "OTHER_LDFLAGS", "-ObjC");
-
-            UnityEngine.Debug.Log("[AdTrace]: -ObjC successfully added to other linker flags.");
+            Debug.Log("[AdTrace]: -ObjC successfully added to other linker flags.");
+            string xcodeTargetUnityFramework = xcodeProject.TargetGuidByName("UnityFramework");
+            if (!string.IsNullOrEmpty(xcodeTargetUnityFramework))
+            {
+                Debug.Log("[AdTrace]: Adding -ObjC flag to other linker flags (OTHER_LDFLAGS) of UnityFramework target.");
+                xcodeProject.AddBuildProperty(xcodeTargetUnityFramework, "OTHER_LDFLAGS", "-ObjC");
+                Debug.Log("[AdTrace]: -ObjC successfully added to other linker flags.");
+            }
 
             if (xcodeProject.ContainsFileByProjectPath("Libraries/AdTrace/iOS/AdTraceSigSdk.a"))
             {
