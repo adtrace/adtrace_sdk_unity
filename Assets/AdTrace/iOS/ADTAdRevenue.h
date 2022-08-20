@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- * @brief Adtrace ad revenue class.
+ * @brief AdTrace ad revenue class.
  */
 @interface ADTAdRevenue : NSObject<NSCopying>
 

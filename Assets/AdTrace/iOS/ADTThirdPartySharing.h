@@ -1,6 +1,6 @@
 //
 //  ADTThirdPartySharing.h
-//  AdtraceSdk
+//  AdTraceSdk
 //
 //  Created by Pedro S. on 02.12.20.
 //  Copyright © 2020 adtrace GmbH. All rights reserved.

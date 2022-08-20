@@ -1,10 +1,10 @@
 #import <objc/runtime.h>
-#import "AdtraceUnityDelegate.h"
+#import "AdTraceUnityDelegate.h"
 
 static dispatch_once_t onceToken;
-static AdtraceUnityDelegate *defaultInstance = nil;
+static AdTraceUnityDelegate *defaultInstance = nil;
 
-@implementation AdtraceUnityDelegate
+@implementation AdTraceUnityDelegate
 
 #pragma mark - Object lifecycle methods
 
@@ -26,9 +26,9 @@ static AdtraceUnityDelegate *defaultInstance = nil;
                          deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
                    conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
-                         withAdtraceUnitySceneName:(NSString *)adtraceUnitySceneName; {
+                         withAdTraceUnitySceneName:(NSString *)adtraceUnitySceneName; {
     dispatch_once(&onceToken, ^{
-        defaultInstance = [[AdtraceUnityDelegate alloc] init];
+        defaultInstance = [[AdTraceUnityDelegate alloc] init];
 
         // Do the swizzling where and if needed.
         if (swizzleAttributionCallback) {
@@ -61,7 +61,7 @@ static AdtraceUnityDelegate *defaultInstance = nil;
         }
 
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
-        [defaultInstance setAdtraceUnitySceneName:adtraceUnitySceneName];
+        [defaultInstance setAdTraceUnitySceneName:adtraceUnitySceneName];
     });
     
     return defaultInstance;

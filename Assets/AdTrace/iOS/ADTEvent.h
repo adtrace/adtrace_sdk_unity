@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- * @brief Adtrace event class.
+ * @brief AdTrace event class.
  */
 @interface ADTEvent : NSObject<NSCopying>
 

@@ -13,7 +13,7 @@
 @property (nonatomic, copy) NSString *timeStamp;
 
 /**
- * @brief Adtrace identifier of the device.
+ * @brief AdTrace identifier of the device.
  */
 @property (nonatomic, copy) NSString *adid;
 

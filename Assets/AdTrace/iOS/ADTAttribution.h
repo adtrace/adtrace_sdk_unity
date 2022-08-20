@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- * @brief Adtrace attribution object.
+ * @brief AdTrace attribution object.
  */
 @interface ADTAttribution : NSObject <NSCoding, NSCopying>
 
@@ -41,7 +41,7 @@
 @property (nonatomic, copy, nullable) NSString *clickLabel;
 
 /**
- * @brief Adtrace identifier value.
+ * @brief AdTrace identifier value.
  */
 @property (nonatomic, copy, nullable) NSString *adid;
 
@@ -64,9 +64,9 @@
  * @brief Make attribution object.
  * 
  * @param jsonDict Dictionary holding attribution key value pairs.
- * @param adid Adtrace identifier value.
+ * @param adid AdTrace identifier value.
  * 
- * @return Adtrace attribution object.
+ * @return AdTrace attribution object.
  */
 + (nullable ADTAttribution *)dataWithJsonDict:(nonnull NSDictionary *)jsonDict adid:(nonnull NSString *)adid;
 

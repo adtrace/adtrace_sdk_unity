@@ -11,7 +11,7 @@ typedef enum {
 } ADTLogLevel;
 
 /**
- * @brief Adtrace logger protocol.
+ * @brief AdTrace logger protocol.
  */
 @protocol ADTLogger
 
@@ -61,7 +61,7 @@ typedef enum {
 @end
 
 /**
- * @brief Adtrace logger class.
+ * @brief AdTrace logger class.
  */
 @interface ADTLogger : NSObject<ADTLogger>
 

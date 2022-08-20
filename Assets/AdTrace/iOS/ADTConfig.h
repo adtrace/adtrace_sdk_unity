@@ -10,7 +10,7 @@
 /**
  * @brief Optional delegate that will get informed about tracking results.
  */
-@protocol AdtraceDelegate
+@protocol AdTraceDelegate
 
 @optional
 
@@ -69,16 +69,16 @@
 - (BOOL)adtraceDeeplinkResponse:(nullable NSURL *)deeplink;
 
 /**
- * @brief Optional delegate method that gets called when Adtrace SDK sets conversion value for the user.
+ * @brief Optional delegate method that gets called when AdTrace SDK sets conversion value for the user.
  *
- * @param conversionValue Conversion value used by Adtrace SDK to invoke updateConversionValue: API.
+ * @param conversionValue Conversion value used by AdTrace SDK to invoke updateConversionValue: API.
  */
 - (void)adtraceConversionValueUpdated:(nullable NSNumber *)conversionValue;
 
 @end
 
 /**
- * @brief Adtrace configuration object class.
+ * @brief AdTrace configuration object class.
  */
 @interface ADTConfig : NSObject<NSCopying>
 
@@ -97,19 +97,19 @@
 @property (nonatomic, copy, nullable) NSString *externalDeviceId;
 
 /**
- * @brief Adtrace app token.
+ * @brief AdTrace app token.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *appToken;
 
 /**
- * @brief Adtrace environment variable.
+ * @brief AdTrace environment variable.
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *environment;
 
 /**
- * @brief Change the verbosity of Adtrace's logs.
+ * @brief Change the verbosity of AdTrace's logs.
  *
- * @note You can increase or reduce the amount of logs from Adtrace by passing
+ * @note You can increase or reduce the amount of logs from AdTrace by passing
  *       one of the following parameters. Use ADTLogLevelSuppress to disable all logging.
  *       The desired minimum log level (default: info)
  *       Must be one of the following:
@@ -133,9 +133,9 @@
 /**
  * @brief Set the optional delegate that will inform you about attribution or events.
  *
- * @note See the AdtraceDelegate declaration above for details.
+ * @note See the AdTraceDelegate declaration above for details.
  */
-@property (nonatomic, weak, nullable) NSObject<AdtraceDelegate> *delegate;
+@property (nonatomic, weak, nullable) NSObject<AdTraceDelegate> *delegate;
 
 /**
  * @brief Enables sending in the background.
@@ -178,17 +178,17 @@
 @property (nonatomic, assign) BOOL needsCost;
 
 /**
- * @brief Adtrace app secret id.
+ * @brief AdTrace app secret id.
  */
 @property (nonatomic, copy, readonly, nullable) NSString *secretId;
 
 /**
- * @brief Adtrace app secret.
+ * @brief AdTrace app secret.
  */
 @property (nonatomic, copy, readonly, nullable) NSString *appSecret;
 
 /**
- * @brief Adtrace set app secret.
+ * @brief AdTrace set app secret.
  */
 - (void)setAppSecret:(NSUInteger)secretId
                info1:(NSUInteger)info1
@@ -202,12 +202,12 @@
 - (void)deactivateSKAdNetworkHandling;
 
 /**
- * @brief Adtrace url strategy.
+ * @brief AdTrace url strategy.
  */
 @property (nonatomic, copy, readwrite, nullable) NSString *urlStrategy;
 
 /**
- * @brief Get configuration object for the initialization of the Adtrace SDK.
+ * @brief Get configuration object for the initialization of the AdTrace SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can
  *                 be found it in your dashboard at http://adtrace.com and should always
@@ -217,7 +217,7 @@
  *                    It is very important that you keep this value meaningful at all times!
  *                    Especially if you are tracking revenue.
  *
- * @returns Adtrace configuration object.
+ * @returns AdTrace configuration object.
  */
 + (nullable ADTConfig *)configWithAppToken:(nonnull NSString *)appToken
                                environment:(nonnull NSString *)environment;
@@ -226,7 +226,7 @@
                     environment:(nonnull NSString *)environment;
 
 /**
- * @brief Configuration object for the initialization of the Adtrace SDK.
+ * @brief Configuration object for the initialization of the AdTrace SDK.
  *
  * @param appToken The App Token of your app. This unique identifier can
  *                 be found it in your dashboard at http://adtrace.com and should always
@@ -238,7 +238,7 @@
  * @param allowSuppressLogLevel If set to true, it allows usage of ADTLogLevelSuppress
  *                              and replaces the default value for production environment.
  *
- * @returns Adtrace configuration object.
+ * @returns AdTrace configuration object.
  */
 + (nullable ADTConfig *)configWithAppToken:(nonnull NSString *)appToken
                                environment:(nonnull NSString *)environment

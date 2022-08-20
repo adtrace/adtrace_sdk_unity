@@ -6,12 +6,12 @@ using UnityEngine;
 namespace io.adtrace.sdk
 {
 #if UNITY_IOS
-    public class AdtraceiOS
+    public class AdTraceiOS
     {
         private const string sdkPrefix = "unity2.0.1";
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceLaunchApp(
+        private static extern void _AdTraceLaunchApp(
             string appToken,
             string environment,
             string sdkPrefix,
@@ -48,7 +48,7 @@ namespace io.adtrace.sdk
             int isConversionValueUpdatedCallbackImplemented);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackEvent(
+        private static extern void _AdTraceTrackEvent(
             string eventToken,
             double revenue,
             string currency,
@@ -60,64 +60,64 @@ namespace io.adtrace.sdk
             string jsonValueParameters);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceSetEnabled(int enabled);
+        private static extern void _AdTraceSetEnabled(int enabled);
 
         [DllImport("__Internal")]
-        private static extern int _AdtraceIsEnabled();
+        private static extern int _AdTraceIsEnabled();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceSetOfflineMode(int enabled);
+        private static extern void _AdTraceSetOfflineMode(int enabled);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceSetDeviceToken(string deviceToken);
+        private static extern void _AdTraceSetDeviceToken(string deviceToken);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceAppWillOpenUrl(string url);
+        private static extern void _AdTraceAppWillOpenUrl(string url);
 
         [DllImport("__Internal")]
-        private static extern string _AdtraceGetIdfa();
+        private static extern string _AdTraceGetIdfa();
 
         [DllImport("__Internal")]
-        private static extern string _AdtraceGetAdid();
+        private static extern string _AdTraceGetAdid();
 
         [DllImport("__Internal")]
-        private static extern string _AdtraceGetSdkVersion();
+        private static extern string _AdTraceGetSdkVersion();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceGdprForgetMe();
+        private static extern void _AdTraceGdprForgetMe();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceDisableThirdPartySharing();
+        private static extern void _AdTraceDisableThirdPartySharing();
 
         [DllImport("__Internal")]
-        private static extern string _AdtraceGetAttribution();
+        private static extern string _AdTraceGetAttribution();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceSendFirstPackages();
+        private static extern void _AdTraceSendFirstPackages();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceAddSessionPartnerParameter(string key, string value);
+        private static extern void _AdTraceAddSessionPartnerParameter(string key, string value);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceAddSessionCallbackParameter(string key, string value);
+        private static extern void _AdTraceAddSessionCallbackParameter(string key, string value);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceRemoveSessionPartnerParameter(string key);
+        private static extern void _AdTraceRemoveSessionPartnerParameter(string key);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceRemoveSessionCallbackParameter(string key);
+        private static extern void _AdTraceRemoveSessionCallbackParameter(string key);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceResetSessionPartnerParameters();
+        private static extern void _AdTraceResetSessionPartnerParameters();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceResetSessionCallbackParameters();
+        private static extern void _AdTraceResetSessionCallbackParameters();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackAdRevenue(string source, string payload);
+        private static extern void _AdTraceTrackAdRevenue(string source, string payload);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackAdRevenueNew(
+        private static extern void _AdTraceTrackAdRevenueNew(
             string source,
             double revenue,
             string currency,
@@ -129,7 +129,7 @@ namespace io.adtrace.sdk
             string jsonPartnerParameters);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackAppStoreSubscription(
+        private static extern void _AdTraceTrackAppStoreSubscription(
             string price,
             string currency,
             string transactionId,
@@ -141,13 +141,13 @@ namespace io.adtrace.sdk
             string jsonPartnerParameters);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackThirdPartySharing(int enabled, string jsonGranularOptions);
+        private static extern void _AdTraceTrackThirdPartySharing(int enabled, string jsonGranularOptions);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackMeasurementConsent(int enabled);
+        private static extern void _AdTraceTrackMeasurementConsent(int enabled);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceSetTestOptions(
+        private static extern void _AdTraceSetTestOptions(
             string baseUrl,
             string gdprUrl,
             string subscriptionUrl,
@@ -163,24 +163,24 @@ namespace io.adtrace.sdk
             int adServicesFrameworkEnabled);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceRequestTrackingAuthorizationWithCompletionHandler(string sceneName);
+        private static extern void _AdTraceRequestTrackingAuthorizationWithCompletionHandler(string sceneName);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceUpdateConversionValue(int conversionValue);
+        private static extern void _AdTraceUpdateConversionValue(int conversionValue);
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceCheckForNewAttStatus();
+        private static extern void _AdTraceCheckForNewAttStatus();
 
         [DllImport("__Internal")]
-        private static extern int _AdtraceGetAppTrackingAuthorizationStatus();
+        private static extern int _AdTraceGetAppTrackingAuthorizationStatus();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackSubsessionStart();
+        private static extern void _AdTraceTrackSubsessionStart();
 
         [DllImport("__Internal")]
-        private static extern void _AdtraceTrackSubsessionEnd();
+        private static extern void _AdTraceTrackSubsessionEnd();
 
-        public AdtraceiOS() {}
+        public AdTraceiOS() {}
 
         public static void Start(AdTraceConfig adtraceConfig)
         {
@@ -218,7 +218,7 @@ namespace io.adtrace.sdk
             int isDeferredDeeplinkCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getDeferredDeeplinkDelegate() != null);
             int isConversionValueUpdatedCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getConversionValueUpdatedDelegate() != null);
 
-            _AdtraceLaunchApp(
+            _AdTraceLaunchApp(
                 appToken,
                 environment,
                 sdkPrefix,
@@ -267,68 +267,68 @@ namespace io.adtrace.sdk
             string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.callbackList);
             string stringJsonValueParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.valueList);
 
-            _AdtraceTrackEvent(eventToken, revenue, currency, receipt, transactionId, callbackId, isReceiptSet, stringJsonCallbackParameters, stringJsonValueParameters);
+            _AdTraceTrackEvent(eventToken, revenue, currency, receipt, transactionId, callbackId, isReceiptSet, stringJsonCallbackParameters, stringJsonValueParameters);
         }        
 
         public static void SetEnabled(bool enabled)
         {
-            _AdtraceSetEnabled(AdTraceUtils.ConvertBool(enabled));
+            _AdTraceSetEnabled(AdTraceUtils.ConvertBool(enabled));
         }
 
         public static bool IsEnabled()
         {
-            var iIsEnabled = _AdtraceIsEnabled();
+            var iIsEnabled = _AdTraceIsEnabled();
             return Convert.ToBoolean(iIsEnabled);
         }
 
         public static void SetOfflineMode(bool enabled)
         {
-            _AdtraceSetOfflineMode(AdTraceUtils.ConvertBool(enabled));
+            _AdTraceSetOfflineMode(AdTraceUtils.ConvertBool(enabled));
         }
 
         public static void SendFirstPackages()
         {
-            _AdtraceSendFirstPackages();
+            _AdTraceSendFirstPackages();
         }
 
         public static void AppWillOpenUrl(string url)
         {
-            _AdtraceAppWillOpenUrl(url);
+            _AdTraceAppWillOpenUrl(url);
         }
 
         public static void AddSessionPartnerParameter(string key, string value)
         {
-            _AdtraceAddSessionPartnerParameter(key, value);
+            _AdTraceAddSessionPartnerParameter(key, value);
         }
 
         public static void AddSessionCallbackParameter(string key, string value)
         {
-            _AdtraceAddSessionCallbackParameter(key, value);
+            _AdTraceAddSessionCallbackParameter(key, value);
         }
 
         public static void RemoveSessionPartnerParameter(string key)
         {
-            _AdtraceRemoveSessionPartnerParameter(key);
+            _AdTraceRemoveSessionPartnerParameter(key);
         }
 
         public static void RemoveSessionCallbackParameter(string key)
         {
-            _AdtraceRemoveSessionCallbackParameter(key);
+            _AdTraceRemoveSessionCallbackParameter(key);
         }
 
         public static void ResetSessionPartnerParameters()
         {
-            _AdtraceResetSessionPartnerParameters();
+            _AdTraceResetSessionPartnerParameters();
         }
 
         public static void ResetSessionCallbackParameters()
         {
-            _AdtraceResetSessionCallbackParameters();
+            _AdTraceResetSessionCallbackParameters();
         }
 
         public static void TrackAdRevenue(string source, string payload)
         {
-            _AdtraceTrackAdRevenue(source, payload);
+            _AdTraceTrackAdRevenue(source, payload);
         }
 
         public static void TrackAdRevenue(AdTraceAdRevenue adRevenue)
@@ -343,7 +343,7 @@ namespace io.adtrace.sdk
             string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(adRevenue.callbackList);
             string stringJsonPartnerParameters = AdTraceUtils.ConvertListToJson(adRevenue.partnerList);
 
-            _AdtraceTrackAdRevenueNew(
+            _AdTraceTrackAdRevenueNew(
                 source,
                 revenue,
                 currency,
@@ -367,7 +367,7 @@ namespace io.adtrace.sdk
             string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(subscription.callbackList);
             string stringJsonPartnerParameters = AdTraceUtils.ConvertListToJson(subscription.partnerList);
             
-            _AdtraceTrackAppStoreSubscription(
+            _AdTraceTrackAppStoreSubscription(
                 price,
                 currency,
                 transactionId,
@@ -389,68 +389,68 @@ namespace io.adtrace.sdk
                 jsonGranularOptions.Add(AdTraceUtils.ConvertListToJson(entry.Value));
             }
 
-            _AdtraceTrackThirdPartySharing(enabled, AdTraceUtils.ConvertListToJson(jsonGranularOptions));
+            _AdTraceTrackThirdPartySharing(enabled, AdTraceUtils.ConvertListToJson(jsonGranularOptions));
         }
 
         public static void TrackMeasurementConsent(bool enabled)
         {
-            _AdtraceTrackMeasurementConsent(AdTraceUtils.ConvertBool(enabled));
+            _AdTraceTrackMeasurementConsent(AdTraceUtils.ConvertBool(enabled));
         }
 
         public static void RequestTrackingAuthorizationWithCompletionHandler(string sceneName)
         {
             string cSceneName = sceneName != null ? sceneName : "ADT_INVALID";
-            _AdtraceRequestTrackingAuthorizationWithCompletionHandler(cSceneName);
+            _AdTraceRequestTrackingAuthorizationWithCompletionHandler(cSceneName);
         }
 
         public static void UpdateConversionValue(int conversionValue)
         {
-            _AdtraceUpdateConversionValue(conversionValue);
+            _AdTraceUpdateConversionValue(conversionValue);
         }
 
         public static void CheckForNewAttStatus()
         {
-            _AdtraceCheckForNewAttStatus();
+            _AdTraceCheckForNewAttStatus();
         }
 
         public static int GetAppTrackingAuthorizationStatus()
         {
-            return _AdtraceGetAppTrackingAuthorizationStatus();
+            return _AdTraceGetAppTrackingAuthorizationStatus();
         }
 
         public static void SetDeviceToken(string deviceToken)
         {
-            _AdtraceSetDeviceToken(deviceToken);
+            _AdTraceSetDeviceToken(deviceToken);
         }
 
         public static string GetIdfa()
         {
-            return _AdtraceGetIdfa();
+            return _AdTraceGetIdfa();
         }
 
         public static string GetAdid()
         {
-            return _AdtraceGetAdid();
+            return _AdTraceGetAdid();
         }
 
         public static string GetSdkVersion()
         {
-            return sdkPrefix + "@" + _AdtraceGetSdkVersion();
+            return sdkPrefix + "@" + _AdTraceGetSdkVersion();
         }
 
         public static void GdprForgetMe()
         {
-            _AdtraceGdprForgetMe();
+            _AdTraceGdprForgetMe();
         }
 
         public static void DisableThirdPartySharing()
         {
-            _AdtraceDisableThirdPartySharing();
+            _AdTraceDisableThirdPartySharing();
         }
 
         public static AdTraceAttribution GetAttribution()
         {
-            string attributionString = _AdtraceGetAttribution();
+            string attributionString = _AdTraceGetAttribution();
             if (null == attributionString)
             {
                 return null;
@@ -514,7 +514,7 @@ namespace io.adtrace.sdk
                 adServicesFrameworkEnabled = testOptions[AdTraceUtils.KeyTestOptionsAdServicesFrameworkEnabled].ToLower() == "true";
             }
 
-            _AdtraceSetTestOptions(
+            _AdTraceSetTestOptions(
                 baseUrl,
                 gdprUrl,
                 subscriptionUrl,
@@ -534,7 +534,7 @@ namespace io.adtrace.sdk
         {
             if (testingArgument == "test") 
             {
-                _AdtraceTrackSubsessionStart();
+                _AdTraceTrackSubsessionStart();
             }
         }
 
@@ -542,7 +542,7 @@ namespace io.adtrace.sdk
         {
             if (testingArgument == "test") 
             {
-                _AdtraceTrackSubsessionEnd();
+                _AdTraceTrackSubsessionEnd();
             }
         }
     }

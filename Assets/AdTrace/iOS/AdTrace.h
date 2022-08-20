@@ -6,7 +6,7 @@
 #import "ADTAdRevenue.h"
 #import "ADTLinkResolution.h"
 
-@interface AdtraceTestOptions : NSObject
+@interface AdTraceTestOptions : NSObject
 
 @property (nonatomic, copy, nullable) NSString *baseUrl;
 @property (nonatomic, copy, nullable) NSString *gdprUrl;
@@ -53,16 +53,16 @@ extern NSString * __nonnull const ADTDataResidencyTR;
 extern NSString * __nonnull const ADTDataResidencyUS;
 
 /**
- * @brief The main interface to Adtrace.
+ * @brief The main interface to AdTrace.
  *
- * @note Use the methods of this class to tell Adtrace about the usage of your app.
+ * @note Use the methods of this class to tell AdTrace about the usage of your app.
  *       See the README for details.
  */
-@interface Adtrace : NSObject
+@interface AdTrace : NSObject
 
 /**
- * @brief Tell Adtrace that the application did launch.
- *        This is required to initialize Adtrace. Call this in the didFinishLaunching
+ * @brief Tell AdTrace that the application did launch.
+ *        This is required to initialize AdTrace. Call this in the didFinishLaunching
  *        method of your AppDelegate.
  *
  * @note See ADTConfig.h for more configuration options
@@ -75,7 +75,7 @@ extern NSString * __nonnull const ADTDataResidencyUS;
 + (void)appDidLaunch:(nullable ADTConfig *)adtraceConfig;
 
 /**
- * @brief Tell Adtrace that a particular event has happened.
+ * @brief Tell AdTrace that a particular event has happened.
  *
  * @note See ADTEvent.h for more event options.
  *
@@ -130,7 +130,7 @@ extern NSString * __nonnull const ADTDataResidencyUS;
 
 /**
  * @brief Set the device token used by push notifications.
- *        This method is only used by Adtrace non native SDKs. Don't use it anywhere else.
+ *        This method is only used by AdTrace non native SDKs. Don't use it anywhere else.
  *
  * @param pushToken Apple push notification token for iOS device as NSString.
  */
@@ -154,7 +154,7 @@ extern NSString * __nonnull const ADTDataResidencyUS;
 /**
  * @brief Get current adtrace identifier for the user.
  *
- * @note Adtrace identifier is available only after installation has been successfully tracked.
+ * @note AdTrace identifier is available only after installation has been successfully tracked.
  *
  * @return Current adtrace identifier value for the user.
  */
@@ -171,9 +171,9 @@ extern NSString * __nonnull const ADTDataResidencyUS;
 + (nullable ADTAttribution *)attribution;
 
 /**
- * @brief Get current Adtrace SDK version string.
+ * @brief Get current AdTrace SDK version string.
  *
- * @return Adtrace SDK version string (iosX.Y.Z).
+ * @return AdTrace SDK version string (iosX.Y.Z).
  */
 + (nullable NSString *)sdkVersion;
 
@@ -289,7 +289,7 @@ extern NSString * __nonnull const ADTDataResidencyUS;
 + (void)trackSubscription:(nonnull ADTSubscription *)subscription;
 
 /**
- * @brief Adtrace wrapper for requestTrackingAuthorizationWithCompletionHandler: method.
+ * @brief AdTrace wrapper for requestTrackingAuthorizationWithCompletionHandler: method.
  *
  * @param completion Block which value of tracking authorization status will be delivered to.
  */
@@ -303,7 +303,7 @@ extern NSString * __nonnull const ADTDataResidencyUS;
 + (int)appTrackingAuthorizationStatus;
 
 /**
- * @brief Adtrace wrapper for updateConversionValue: method.
+ * @brief AdTrace wrapper for updateConversionValue: method.
  *
  * @param conversionValue Conversion value you would like SDK to set for given user.
  */
@@ -312,10 +312,10 @@ extern NSString * __nonnull const ADTDataResidencyUS;
 /**
  * @brief Method used for internal testing only. Don't use it in production.
  */
-+ (void)setTestOptions:(nullable AdtraceTestOptions *)testOptions;
++ (void)setTestOptions:(nullable AdTraceTestOptions *)testOptions;
 
 /**
- * Obtain singleton Adtrace object.
+ * Obtain singleton AdTrace object.
  */
 + (nullable instancetype)getInstance;
 

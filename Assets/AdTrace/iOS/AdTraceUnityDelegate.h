@@ -1,9 +1,9 @@
-#import "Adtrace.h"
+#import "AdTrace.h"
 
 /**
  * @brief The main interface to AdTrace Unity delegate. Used to do callback methods swizzling where needed.
  */
-@interface AdtracetUnityDelegate : NSObject<AdTraceDelegate>
+@interface AdTracetUnityDelegate : NSObject<AdTraceDelegate>
 
 /**
  * @brief Boolean indicating whether deferred deep link should be launched by SDK or not.

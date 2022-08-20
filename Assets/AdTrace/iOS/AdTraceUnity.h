@@ -1,7 +1,7 @@
 
 /**
- * @brief The main interface to Adtrace Unity bridge.
+ * @brief The main interface to AdTrace Unity bridge.
  */
-@interface AdtraceUnity : NSObject
+@interface AdTraceUnity : NSObject
 
 @end
