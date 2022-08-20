@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 415478}
   - component: {fileID: 114179903453641630}
   m_Layer: 0
-  m_Name: Adjust
+  m_Name: AdTrace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
