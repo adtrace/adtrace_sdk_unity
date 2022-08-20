@@ -16,6 +16,8 @@ namespace io.adtrace.sdk
         public string costType { get; set; }
         public double? costAmount { get; set; }
         public string costCurrency { get; set; }
+        // Android only
+        public string fbInstallReferrer {get; set;}
 
         public AdTraceAttribution() {}
 
@@ -47,6 +49,7 @@ namespace io.adtrace.sdk
                 // value will default to null
             }
             costCurrency = AdTraceUtils.GetJsonString(jsonNode, AdTraceUtils.KeyCostCurrency);
+            fbInstallReferrer = AdTraceUtils.GetJsonString(jsonNode, AdTraceUtils.KeyFbInstallReferrer);
         }
 
         public AdTraceAttribution(Dictionary<string, string> dicAttributionData)
@@ -76,6 +79,7 @@ namespace io.adtrace.sdk
                 // value will default to null
             }
             costCurrency = AdTraceUtils.TryGetValue(dicAttributionData, AdTraceUtils.KeyCostCurrency);
+            fbInstallReferrer = AdTraceUtils.TryGetValue(dicAttributionData, AdTraceUtils.KeyFbInstallReferrer);
         }
     }
 }
