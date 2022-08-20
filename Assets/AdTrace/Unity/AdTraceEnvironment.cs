@@ -1,5 +1,6 @@
 ﻿namespace io.adtrace.sdk
 {
+    [System.Serializable]
     public enum AdTraceEnvironment
     {
         Sandbox,
