@@ -34,6 +34,8 @@ namespace io.adtrace.sdk
         internal bool? isDeviceKnown;
         internal bool? sendInBackground;
         internal bool? eventBufferingEnabled;
+        internal bool? coppaCompliantEnabled;
+        internal bool? playStoreKidsAppEnabled;
         internal bool? allowSuppressLogLevel;
         internal bool? needsCost;
         internal bool launchDeferredDeeplink;
@@ -48,14 +50,16 @@ namespace io.adtrace.sdk
         internal Action<int> conversionValueUpdatedDelegate;
 
         // Android specific members
+        internal string processName;
         internal bool? readImei;
         internal bool? preinstallTrackingEnabled;
-        internal string processName;
+        internal string preinstallFilePath;
         // iOS specific members
         internal bool? allowiAdInfoReading;
         internal bool? allowAdServicesInfoReading;
         internal bool? allowIdfaReading;
         internal bool? skAdNetworkHandling;
+        internal bool? linkMeEnabled;
         // Windows specific members
         internal Action<String> logDelegate;
 
@@ -106,6 +110,16 @@ namespace io.adtrace.sdk
             this.eventBufferingEnabled = eventBufferingEnabled;
         }
 
+        public void setCoppaCompliantEnabled(bool coppaCompliantEnabled)
+        {
+            this.coppaCompliantEnabled = coppaCompliantEnabled;
+        }
+
+        public void setPlayStoreKidsAppEnabled(bool playStoreKidsAppEnabled)
+        {
+            this.playStoreKidsAppEnabled = playStoreKidsAppEnabled;
+        }
+
         public void setNeedsCost(bool needsCost)
         {
             this.needsCost = needsCost;
@@ -134,6 +148,11 @@ namespace io.adtrace.sdk
         public void deactivateSKAdNetworkHandling()
         {
             this.skAdNetworkHandling = true;
+        }
+
+        public void setLinkMeEnabled(bool linkMeEnabled)
+        {
+            this.linkMeEnabled = linkMeEnabled;
         }
 
         public void setDeferredDeeplinkDelegate(Action<string> deferredDeeplinkDelegate, string sceneName = "AdTrace")
@@ -253,6 +272,11 @@ namespace io.adtrace.sdk
         public void setPreinstallTrackingEnabled(bool preinstallTrackingEnabled)
         {
             this.preinstallTrackingEnabled = preinstallTrackingEnabled;
+        }
+
+        public void setPreinstallFilePath(string preinstallFilePath)
+        {
+            this.preinstallFilePath = preinstallFilePath;
         }
 
         // Windows specific methods.
