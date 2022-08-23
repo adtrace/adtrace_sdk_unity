@@ -1,16 +1,23 @@
+//
+//  AdtraceUnityAppDelegate.mm
+//  Adtrace SDK
+//
+//  Copyright © 2012-2021 Adtrace GmbH. All rights reserved.
+//
+
 #import <objc/runtime.h>
-#import "AdTrace.h"
-#import "AdTraceUnityAppDelegate.h"
+#import "Adtrace.h"
+#import "AdtraceUnityAppDelegate.h"
 
 typedef BOOL (*openURL_t)(id, SEL, UIApplication *, NSURL *, NSDictionary *);
 typedef BOOL (*continueUserActivity_t)(id, SEL, UIApplication *, NSUserActivity *, void (^)(NSArray *restorableObjects));
 static openURL_t original_openURL = NULL;
 static continueUserActivity_t original_continueUserActivity = NULL;
 
-@implementation AdTraceUnityAppDelegate
+@implementation AdtraceUnityAppDelegate
 
 + (void)swizzleAppDelegateCallbacks {
-    NSLog(@"[AdTrace] Swizzling AppDelegate callbacks...");
+    NSLog(@"[Adtrace] Swizzling AppDelegate callbacks...");
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         original_openURL = (openURL_t)[self swizzleOriginalSelector:@selector(application:openURL:options:)
@@ -38,18 +45,18 @@ static continueUserActivity_t original_continueUserActivity = NULL;
         Method swizzledMethod = class_getInstanceMethod(swizzledClass, swizzledSelector);
         BOOL methodAdded = class_addMethod(originalClass, originalSelector, swizzledImp, method_getTypeEncoding(swizzledMethod));
         if (!methodAdded) {
-            NSLog(@"[AdTrace] Cannot swizzle selector '%@' of class '%@'.", NSStringFromSelector(originalSelector), originalClass);
+            NSLog(@"[Adtrace] Cannot swizzle selector '%@' of class '%@'.", NSStringFromSelector(originalSelector), originalClass);
             return NULL;
         }
     }
-    NSLog(@"[AdTrace] Selector '%@' of class '%@' is swizzled.", NSStringFromSelector(originalSelector), originalClass);
+    NSLog(@"[Adtrace] Selector '%@' of class '%@' is swizzled.", NSStringFromSelector(originalSelector), originalClass);
     return originalImp;
 }
 
 - (BOOL)adtrace_application:(UIApplication *)application
                    openURL:(NSURL *)url
                    options:(NSDictionary *)options {
-    [AdTrace appWillOpenUrl:url];
+    [Adtrace appWillOpenUrl:url];
     return original_openURL ? original_openURL(self, _cmd, application, url, options) : YES;
 }
 
@@ -58,7 +65,7 @@ static continueUserActivity_t original_continueUserActivity = NULL;
         restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler {
     if ([[userActivity activityType] isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSURL *url = [userActivity webpageURL];
-        [AdTrace appWillOpenUrl:url];
+        [Adtrace appWillOpenUrl:url];
     }
     return original_continueUserActivity ? original_continueUserActivity(self, _cmd, application, userActivity, restorationHandler) : YES;
 }

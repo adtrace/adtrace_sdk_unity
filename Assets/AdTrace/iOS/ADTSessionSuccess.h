@@ -1,10 +1,4 @@
-//
-//  ADTSuccessResponseData.h
-//  adtrace
-//
-//  Created by Pedro Filipe on 05/01/16.
-//  Copyright © 2016 adtrace GmbH. All rights reserved.
-//
+
 
 #import <Foundation/Foundation.h>
 

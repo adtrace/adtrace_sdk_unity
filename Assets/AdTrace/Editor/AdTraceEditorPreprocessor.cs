@@ -311,7 +311,7 @@ public class AdTraceEditorPreprocessor : IPreprocessBuild
             else
             {
                 Debug.Log("[AdTrace]: It seems like you are using your own broadcast receiver.");
-                Debug.Log("[AdTrace]: Please, add the calls to the AdTrace broadcast receiver like described in here: https://github.com/adtrace/android_sdk/");
+                Debug.Log("[AdTrace]: Please, add the calls to the AdTrace broadcast receiver like described in here: https://github.com/adtrace/android_sdk/blob/master/doc/english/referrer.md");
             }
 
             return false;

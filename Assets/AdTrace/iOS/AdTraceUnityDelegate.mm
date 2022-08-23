@@ -1,10 +1,18 @@
+//
+//  AdtraceUnityDelegate.mm
+//  Adtrace SDK
+//
+//  Created by Uglješa Erceg (@uerceg) on 5th December 2016.
+//  Copyright © 2012-2018 Adtrace GmbH. All rights reserved.
+//
+
 #import <objc/runtime.h>
-#import "AdTraceUnityDelegate.h"
+#import "AdtraceUnityDelegate.h"
 
 static dispatch_once_t onceToken;
-static AdTraceUnityDelegate *defaultInstance = nil;
+static AdtraceUnityDelegate *defaultInstance = nil;
 
-@implementation AdTraceUnityDelegate
+@implementation AdtraceUnityDelegate
 
 #pragma mark - Object lifecycle methods
 
@@ -26,9 +34,9 @@ static AdTraceUnityDelegate *defaultInstance = nil;
                          deferredDeeplinkCallback:(BOOL)swizzleDeferredDeeplinkCallback
                    conversionValueUpdatedCallback:(BOOL)swizzleConversionValueUpdatedCallback
                      shouldLaunchDeferredDeeplink:(BOOL)shouldLaunchDeferredDeeplink
-                         withAdTraceUnitySceneName:(NSString *)adtraceUnitySceneName; {
+                         withAdtraceUnitySceneName:(NSString *)adtraceUnitySceneName; {
     dispatch_once(&onceToken, ^{
-        defaultInstance = [[AdTraceUnityDelegate alloc] init];
+        defaultInstance = [[AdtraceUnityDelegate alloc] init];
 
         // Do the swizzling where and if needed.
         if (swizzleAttributionCallback) {
@@ -61,7 +69,7 @@ static AdTraceUnityDelegate *defaultInstance = nil;
         }
 
         [defaultInstance setShouldLaunchDeferredDeeplink:shouldLaunchDeferredDeeplink];
-        [defaultInstance setAdTraceUnitySceneName:adtraceUnitySceneName];
+        [defaultInstance setAdtraceUnitySceneName:adtraceUnitySceneName];
     });
     
     return defaultInstance;

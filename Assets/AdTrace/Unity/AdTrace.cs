@@ -88,7 +88,7 @@ namespace io.adtrace.sdk
 
         void Awake()
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -134,7 +134,7 @@ namespace io.adtrace.sdk
 
         void OnApplicationPause(bool pauseStatus)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -160,13 +160,13 @@ namespace io.adtrace.sdk
                     AdTraceWindows.OnResume();
                 }
 #else
-            Debug.Log(errorMsgPlatform);
+                Debug.Log(errorMsgPlatform);
 #endif
         }
 
         public static void start(AdTraceConfig adtraceConfig)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -178,18 +178,18 @@ namespace io.adtrace.sdk
             }
 
 #if UNITY_IOS
-                AdTrace.eventSuccessDelegate = adtraceConfig.getEventSuccessDelegate();
-                AdTrace.eventFailureDelegate = adtraceConfig.getEventFailureDelegate();
-                AdTrace.sessionSuccessDelegate = adtraceConfig.getSessionSuccessDelegate();
-                AdTrace.sessionFailureDelegate = adtraceConfig.getSessionFailureDelegate();
-                AdTrace.deferredDeeplinkDelegate = adtraceConfig.getDeferredDeeplinkDelegate();
-                AdTrace.attributionChangedDelegate = adtraceConfig.getAttributionChangedDelegate();
-                AdTrace.conversionValueUpdatedDelegate = adtraceConfig.getConversionValueUpdatedDelegate();
-                AdTraceiOS.Start(adtraceConfig);
+            AdTrace.eventSuccessDelegate = adtraceConfig.getEventSuccessDelegate();
+            AdTrace.eventFailureDelegate = adtraceConfig.getEventFailureDelegate();
+            AdTrace.sessionSuccessDelegate = adtraceConfig.getSessionSuccessDelegate();
+            AdTrace.sessionFailureDelegate = adtraceConfig.getSessionFailureDelegate();
+            AdTrace.deferredDeeplinkDelegate = adtraceConfig.getDeferredDeeplinkDelegate();
+            AdTrace.attributionChangedDelegate = adtraceConfig.getAttributionChangedDelegate();
+            AdTrace.conversionValueUpdatedDelegate = adtraceConfig.getConversionValueUpdatedDelegate();
+            AdTraceiOS.Start(adtraceConfig);
 #elif UNITY_ANDROID
-                AdTraceAndroid.Start(adtraceConfig);
+            AdTraceAndroid.Start(adtraceConfig);
 #elif (UNITY_WSA || UNITY_WP8)
-                AdTraceWindows.Start(adtraceConfig);
+            AdTraceWindows.Start(adtraceConfig);
 #else
             Debug.Log(errorMsgPlatform);
 #endif
@@ -197,7 +197,7 @@ namespace io.adtrace.sdk
 
         public static void trackEvent(AdTraceEvent adtraceEvent)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -220,7 +220,7 @@ namespace io.adtrace.sdk
 
         public static void setEnabled(bool enabled)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -257,7 +257,7 @@ namespace io.adtrace.sdk
 
         public static void setOfflineMode(bool enabled)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -275,7 +275,7 @@ namespace io.adtrace.sdk
 
         public static void setDeviceToken(string deviceToken)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -293,7 +293,7 @@ namespace io.adtrace.sdk
 
         public static void gdprForgetMe()
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -311,7 +311,7 @@ namespace io.adtrace.sdk
 
         public static void disableThirdPartySharing()
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -329,7 +329,7 @@ namespace io.adtrace.sdk
 
         public static void appWillOpenUrl(string url)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -347,7 +347,7 @@ namespace io.adtrace.sdk
 
         public static void sendFirstPackages()
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -365,7 +365,7 @@ namespace io.adtrace.sdk
 
         public static void addSessionPartnerParameter(string key, string value)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -383,7 +383,7 @@ namespace io.adtrace.sdk
 
         public static void addSessionCallbackParameter(string key, string value)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -401,7 +401,7 @@ namespace io.adtrace.sdk
 
         public static void removeSessionPartnerParameter(string key)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -419,7 +419,7 @@ namespace io.adtrace.sdk
 
         public static void removeSessionCallbackParameter(string key)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -437,7 +437,7 @@ namespace io.adtrace.sdk
 
         public static void resetSessionPartnerParameters()
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -455,7 +455,7 @@ namespace io.adtrace.sdk
 
         public static void resetSessionCallbackParameters()
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -473,7 +473,7 @@ namespace io.adtrace.sdk
 
         public static void trackAdRevenue(string source, string payload)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -491,7 +491,7 @@ namespace io.adtrace.sdk
 
         public static void trackAdRevenue(AdTraceAdRevenue adRevenue)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -509,7 +509,7 @@ namespace io.adtrace.sdk
 
         public static void trackAppStoreSubscription(AdTraceAppStoreSubscription subscription)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -527,7 +527,7 @@ namespace io.adtrace.sdk
 
         public static void trackPlayStoreSubscription(AdTracePlayStoreSubscription subscription)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -545,7 +545,7 @@ namespace io.adtrace.sdk
 
         public static void trackThirdPartySharing(AdTraceThirdPartySharing thirdPartySharing)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -563,7 +563,7 @@ namespace io.adtrace.sdk
 
         public static void trackMeasurementConsent(bool measurementConsent)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -581,7 +581,7 @@ namespace io.adtrace.sdk
 
         public static void requestTrackingAuthorizationWithCompletionHandler(Action<int> statusCallback, string sceneName = "AdTrace")
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -608,6 +608,7 @@ namespace io.adtrace.sdk
             {
                 return;
             }
+
 #if UNITY_IOS
             AdTraceiOS.UpdateConversionValue(conversionValue);
 #elif UNITY_ANDROID
@@ -625,6 +626,7 @@ namespace io.adtrace.sdk
             {
                 return;
             }
+
 #if UNITY_IOS
             AdTraceiOS.CheckForNewAttStatus();
 #elif UNITY_ANDROID
@@ -759,7 +761,7 @@ namespace io.adtrace.sdk
         [Obsolete("This method is intended for testing purposes only. Do not use it.")]
         public static void setReferrer(string referrer)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -777,7 +779,7 @@ namespace io.adtrace.sdk
 
         public static void getGoogleAdId(Action<string> onDeviceIdsRead)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }
@@ -974,7 +976,7 @@ namespace io.adtrace.sdk
 
         public static void SetTestOptions(Dictionary<string, string> testOptions)
         {
-            if (IsEditor())
+            if (IsEditor()) 
             {
                 return;
             }

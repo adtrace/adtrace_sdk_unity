@@ -92,7 +92,6 @@ namespace io.adtrace.sdk
                 ajoAdTraceConfig.Call("setPlayStoreKidsAppEnabled", adtraceConfig.playStoreKidsAppEnabled.Value);
             }
 
-
             // Check if user enabled tracking in the background.
             if (adtraceConfig.sendInBackground != null)
             {
@@ -263,7 +262,7 @@ namespace io.adtrace.sdk
                 }
             }
 
-            // Check if user has added any value parameters to the event.
+            // Check if user has added any partner parameters to the event.
             if (adtraceEvent.valueList != null)
             {
                 for (int i = 0; i < adtraceEvent.valueList.Count; i += 2)
@@ -372,6 +371,8 @@ namespace io.adtrace.sdk
                 }
                 adtraceAttribution.costCurrency = ajoAttribution.Get<string>(AdTraceUtils.KeyCostCurrency) == "" ?
                     null : ajoAttribution.Get<string>(AdTraceUtils.KeyCostCurrency);
+                adtraceAttribution.fbInstallReferrer = ajoAttribution.Get<string>(AdTraceUtils.KeyFbInstallReferrer) == "" ?
+                    null : ajoAttribution.Get<string>(AdTraceUtils.KeyFbInstallReferrer);
                 return adtraceAttribution;
             }
             catch (Exception) {}
@@ -678,6 +679,8 @@ namespace io.adtrace.sdk
                 }
                 adtraceAttribution.costCurrency = attribution.Get<string>(AdTraceUtils.KeyCostCurrency) == "" ?
                     null : attribution.Get<string>(AdTraceUtils.KeyCostCurrency);
+                adtraceAttribution.fbInstallReferrer = attribution.Get<string>(AdTraceUtils.KeyFbInstallReferrer) == "" ?
+                    null : attribution.Get<string>(AdTraceUtils.KeyFbInstallReferrer);
                 callback(adtraceAttribution);
             }
         }

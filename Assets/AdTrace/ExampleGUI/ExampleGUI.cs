@@ -63,7 +63,7 @@ public class ExampleGUI : MonoBehaviour
             AdTrace.trackEvent(adtraceEvent);
         }
 
-        if (GUI.Button(new Rect(0, Screen.height * 4 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Value Event"))
+        if (GUI.Button(new Rect(0, Screen.height * 4 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Partner Event"))
         {
             AdTraceEvent adtraceEvent = new AdTraceEvent("w788qs");
             adtraceEvent.addValueParameter("key", "value");

@@ -1,3 +1,11 @@
+//
+//  ADTEvent.h
+//  adtrace
+//
+//  Created by Pedro Filipe on 15/10/14.
+//  Copyright (c) 2014 adtrace GmbH. All rights reserved.
+//
+
 #import <Foundation/Foundation.h>
 
 /**
@@ -36,7 +44,7 @@
 @property (nonatomic, copy, readonly, nonnull) NSData *receipt;
 
 /**
- * @brief List of value parameters.
+ * @brief List of partner parameters.
  */
 @property (nonatomic, readonly, nonnull) NSDictionary *valueParameters;
 
@@ -74,10 +82,10 @@
 - (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
- * @brief Add a key-pair to be sent with the event.
+ * @brief Add a key-pair to be fowarded to a partner.
  *
- * @param key String key to be with the event.
- * @param value String value of the key to be with the event.
+ * @param key String key to be fowarded to the partner.
+ * @param value String value of the key to be fowarded to the partner.
  */
 - (void)addEventValueParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
