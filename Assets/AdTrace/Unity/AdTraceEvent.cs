@@ -9,6 +9,7 @@ namespace io.adtrace.sdk
         internal string eventToken;
         internal string callbackId;
         internal string transactionId;
+        internal string productId;
         internal double? revenue;
         internal List<string> valueList;
         internal List<string> callbackList;
@@ -56,6 +57,11 @@ namespace io.adtrace.sdk
         public void setCallbackId(string callbackId)
         {
             this.callbackId = callbackId;
+        }
+
+        public void setProductId(string productId)
+        {
+            this.productId = productId;
         }
 
         // iOS specific methods

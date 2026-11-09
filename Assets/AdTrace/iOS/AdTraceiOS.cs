@@ -59,7 +59,8 @@ namespace io.adtrace.sdk
             string callbackId,
             int isReceiptSet,
             string jsonCallbackParameters,
-            string jsonValueParameters);
+            string jsonValueParameters,
+            string productId);
 
         [DllImport("__Internal")]
         private static extern void _AdtraceSetEnabled(int enabled);
@@ -282,10 +283,11 @@ namespace io.adtrace.sdk
             string receipt = adtraceEvent.receipt;
             string transactionId = adtraceEvent.transactionId;
             string callbackId = adtraceEvent.callbackId;
+            string productId = adtraceEvent.productId;
             string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.callbackList);
             string stringJsonValueParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.valueList);
 
-            _AdtraceTrackEvent(eventToken, revenue, currency, receipt, transactionId, callbackId, isReceiptSet, stringJsonCallbackParameters, stringJsonValueParameters);
+            _AdtraceTrackEvent(eventToken, revenue, currency, receipt, transactionId, callbackId, isReceiptSet, stringJsonCallbackParameters, stringJsonValueParameters, productId);
         }        
 
         public static void SetEnabled(bool enabled)

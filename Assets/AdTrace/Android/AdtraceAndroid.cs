@@ -293,6 +293,11 @@ namespace io.adtrace.sdk
                 ajoAdTraceEvent.Call("setCallbackId", adtraceEvent.callbackId);
             }
 
+            if (adtraceEvent.productId != null)
+            {
+                ajoAdTraceEvent.Call("setProductId", adtraceEvent.productId);
+            }
+
             // Track the event.
             ajcAdTrace.CallStatic("trackEvent", ajoAdTraceEvent);
         }

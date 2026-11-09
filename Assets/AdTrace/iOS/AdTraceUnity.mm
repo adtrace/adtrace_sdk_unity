@@ -273,7 +273,8 @@ extern "C"
                            const char* callbackId,
                            int isReceiptSet,
                            const char* jsonCallbackParameters,
-                           const char* jsonValueParameters) {
+                           const char* jsonValueParameters,
+                           const char* productId) {
         NSString *stringEventToken = isStringValid(eventToken) == true ? [NSString stringWithUTF8String:eventToken] : nil;
         ADTEvent *event = [ADTEvent eventWithEventToken:stringEventToken];
 
@@ -314,6 +315,12 @@ extern "C"
         if (callbackId != NULL) {
             NSString *stringCallbackId = [NSString stringWithUTF8String:callbackId];
             [event setCallbackId:stringCallbackId];
+        }
+
+        // Product ID.
+        if (productId != NULL) {
+            NSString *stringProductId = [NSString stringWithUTF8String:productId];
+            [event setProductId:stringProductId];
         }
 
         // Receipt (legacy).
