@@ -830,7 +830,6 @@ extern "C"
                                int teardown,
                                int deleteState,
                                int noBackoffWait,
-                               int iAdFrameworkEnabled,
                                int adServicesFrameworkEnabled) {
         AdtraceTestOptions *testOptions = [[AdtraceTestOptions alloc] init];
 
@@ -868,9 +867,6 @@ extern "C"
         }
         if (noBackoffWait != -1) {
             [testOptions setNoBackoffWait:(BOOL)noBackoffWait];
-        }
-        if (iAdFrameworkEnabled != -1) {
-            [testOptions setIAdFrameworkEnabled:(BOOL)iAdFrameworkEnabled];
         }
         if (adServicesFrameworkEnabled != -1) {
             [testOptions setAdServicesFrameworkEnabled:(BOOL)adServicesFrameworkEnabled];

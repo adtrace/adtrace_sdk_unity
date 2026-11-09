@@ -168,7 +168,6 @@ namespace io.adtrace.sdk
             int teardown,
             int deleteState,
             int noBackoffWait,
-            int iAdFrameworkEnabled,
             int adServicesFrameworkEnabled);
 
         [DllImport("__Internal")]
@@ -520,7 +519,6 @@ namespace io.adtrace.sdk
             bool teardown = false;
             bool deleteState = false;
             bool noBackoffWait = false;
-            bool iAdFrameworkEnabled = false;
             bool adServicesFrameworkEnabled = false;
 
             if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsTimerIntervalInMilliseconds)) 
@@ -551,10 +549,6 @@ namespace io.adtrace.sdk
             {
                 noBackoffWait = testOptions[AdTraceUtils.KeyTestOptionsNoBackoffWait].ToLower() == "true";
             }
-            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsiAdFrameworkEnabled))
-            {
-                iAdFrameworkEnabled = testOptions[AdTraceUtils.KeyTestOptionsiAdFrameworkEnabled].ToLower() == "true";
-            }
             if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsAdServicesFrameworkEnabled))
             {
                 adServicesFrameworkEnabled = testOptions[AdTraceUtils.KeyTestOptionsAdServicesFrameworkEnabled].ToLower() == "true";
@@ -572,7 +566,6 @@ namespace io.adtrace.sdk
                 AdTraceUtils.ConvertBool(teardown),
                 AdTraceUtils.ConvertBool(deleteState),
                 AdTraceUtils.ConvertBool(noBackoffWait),
-                AdTraceUtils.ConvertBool(iAdFrameworkEnabled),
                 AdTraceUtils.ConvertBool(adServicesFrameworkEnabled));
         }
 
