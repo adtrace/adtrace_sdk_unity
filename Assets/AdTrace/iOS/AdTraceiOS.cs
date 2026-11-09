@@ -8,7 +8,7 @@ namespace io.adtrace.sdk
 #if UNITY_IOS
     public class AdtraceiOS
     {
-        private const string sdkPrefix = "unity2.0.1";
+        private const string sdkPrefix = "unity3.0.0";
 
         [DllImport("__Internal")]
         private static extern void _AdtraceLaunchApp(
