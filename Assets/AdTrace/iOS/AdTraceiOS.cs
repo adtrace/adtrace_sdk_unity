@@ -43,7 +43,11 @@ namespace io.adtrace.sdk
             int isSessionSuccessCallbackImplemented,
             int isSessionFailureCallbackImplemented,
             int isDeferredDeeplinkCallbackImplemented,
-            int isConversionValueUpdatedCallbackImplemented);
+            int isConversionValueUpdatedCallbackImplemented,
+            int coppaCompliantEnabled,
+            int readDeviceInfoOnceEnabled,
+            int linkMeEnabled,
+            int attConsentWaitingInterval);
 
         [DllImport("__Internal")]
         private static extern void _AdtraceTrackEvent(
@@ -179,6 +183,9 @@ namespace io.adtrace.sdk
         private static extern void _AdtraceCheckForNewAttStatus();
 
         [DllImport("__Internal")]
+        private static extern void _AdtraceVerifyPurchase(string transactionId, string productId, string receipt, string sceneName);
+
+        [DllImport("__Internal")]
         private static extern int _AdtraceGetAppTrackingAuthorizationStatus();
 
         [DllImport("__Internal")]
@@ -222,6 +229,10 @@ namespace io.adtrace.sdk
             int isSessionFailureCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getSessionFailureDelegate() != null);
             int isDeferredDeeplinkCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getDeferredDeeplinkDelegate() != null);
             int isConversionValueUpdatedCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getConversionValueUpdatedDelegate() != null);
+            int coppaCompliantEnabled = AdTraceUtils.ConvertBool(adtraceConfig.coppaCompliantEnabled);
+            int readDeviceInfoOnceEnabled = AdTraceUtils.ConvertBool(adtraceConfig.readDeviceInfoOnceEnabled);
+            int linkMeEnabled = AdTraceUtils.ConvertBool(adtraceConfig.linkMeEnabled);
+            int attConsentWaitingInterval = adtraceConfig.attConsentWaitingInterval.HasValue ? adtraceConfig.attConsentWaitingInterval.Value : -1;
 
             _AdtraceLaunchApp(
                 appToken,
@@ -255,7 +266,11 @@ namespace io.adtrace.sdk
                 isSessionSuccessCallbackImplemented,
                 isSessionFailureCallbackImplemented,
                 isDeferredDeeplinkCallbackImplemented,
-                isConversionValueUpdatedCallbackImplemented);
+                isConversionValueUpdatedCallbackImplemented,
+                coppaCompliantEnabled,
+                readDeviceInfoOnceEnabled,
+                linkMeEnabled,
+                attConsentWaitingInterval);
         }
 
         public static void TrackEvent(AdTraceEvent adtraceEvent)
@@ -421,6 +436,15 @@ namespace io.adtrace.sdk
         public static void CheckForNewAttStatus()
         {
             _AdtraceCheckForNewAttStatus();
+        }
+
+        public static void VerifyPurchase(AdTracePurchase purchase, string sceneName)
+        {
+            string transactionId = purchase.transactionId != null ? purchase.transactionId : "ADT_INVALID";
+            string productId = purchase.productId != null ? purchase.productId : "ADT_INVALID";
+            string receipt = purchase.receipt != null ? purchase.receipt : "ADT_INVALID";
+            string cSceneName = sceneName != null ? sceneName : "ADT_INVALID";
+            _AdtraceVerifyPurchase(transactionId, productId, receipt, cSceneName);
         }
 
         public static int GetAppTrackingAuthorizationStatus()

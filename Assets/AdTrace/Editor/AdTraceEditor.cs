@@ -97,6 +97,8 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/Unity/AdTraceEventSuccess.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceLogLevel.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTracePlayStoreSubscription.cs");
+        assetsToExport.Add(assetsPath + "/Unity/AdTracePurchase.cs");
+        assetsToExport.Add(assetsPath + "/Unity/AdTracePurchaseVerificationResult.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceSessionFailure.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceSessionSuccess.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceUtils.cs");

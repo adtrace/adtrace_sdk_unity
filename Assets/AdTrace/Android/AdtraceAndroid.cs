@@ -14,6 +14,7 @@ namespace io.adtrace.sdk
         private static AndroidJavaObject ajoCurrentActivity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
         private static DeferredDeeplinkListener onDeferredDeeplinkListener;
         private static AttributionChangeListener onAttributionChangedListener;
+        private static List<PurchaseVerificationListener> purchaseVerificationListeners = new List<PurchaseVerificationListener>();
         private static EventTrackingFailedListener onEventTrackingFailedListener;
         private static EventTrackingSucceededListener onEventTrackingSucceededListener;
         private static SessionTrackingFailedListener onSessionTrackingFailedListener;
@@ -96,6 +97,41 @@ namespace io.adtrace.sdk
             if (adtraceConfig.preinstallTrackingEnabled != null)
             {
                 ajoAdTraceConfig.Call("setPreinstallTrackingEnabled", adtraceConfig.preinstallTrackingEnabled.Value);
+            }
+
+            if (adtraceConfig.preinstallFilePath != null)
+            {
+                ajoAdTraceConfig.Call("setPreinstallFilePath", adtraceConfig.preinstallFilePath);
+            }
+
+            if (adtraceConfig.readDeviceInfoOnceEnabled != null)
+            {
+                ajoAdTraceConfig.Call("setReadDeviceInfoOnceEnabled", adtraceConfig.readDeviceInfoOnceEnabled.Value);
+            }
+
+            if (adtraceConfig.coppaCompliantEnabled != null)
+            {
+                ajoAdTraceConfig.Call("setCoppaCompliantEnabled", adtraceConfig.coppaCompliantEnabled.Value);
+            }
+
+            if (adtraceConfig.playStoreKidsAppEnabled != null)
+            {
+                ajoAdTraceConfig.Call("setPlayStoreKidsAppEnabled", adtraceConfig.playStoreKidsAppEnabled.Value);
+            }
+
+            if (adtraceConfig.finalAttributionEnabled != null)
+            {
+                ajoAdTraceConfig.Call("setFinalAttributionEnabled", adtraceConfig.finalAttributionEnabled.Value);
+            }
+
+            if (adtraceConfig.fbAppId != null)
+            {
+                ajoAdTraceConfig.Call("setFbAppId", adtraceConfig.fbAppId);
+            }
+
+            if (adtraceConfig.appVersionAppTokenChanged != null)
+            {
+                ajoAdTraceConfig.Call("setAppVersionAppTokenChanged", adtraceConfig.appVersionAppTokenChanged);
             }
 
             // Check if user has set user agent value.
@@ -419,6 +455,19 @@ namespace io.adtrace.sdk
             }
             AndroidJavaObject jsonPayload = new AndroidJavaObject("org.json.JSONObject", payload);
             ajcAdTrace.CallStatic("trackAdRevenue", source, jsonPayload);
+        }
+
+        public static void VerifyPurchase(AdTracePurchase purchase, Action<AdTracePurchaseVerificationResult> callback)
+        {
+            if (purchase == null || callback == null)
+            {
+                return;
+            }
+
+            AndroidJavaObject ajoPurchase = new AndroidJavaObject("io.adtrace.sdk.AdTracePurchase", purchase.productId, purchase.purchaseToken);
+            PurchaseVerificationListener listener = new PurchaseVerificationListener(callback);
+            purchaseVerificationListeners.Add(listener);
+            ajcAdTrace.CallStatic("verifyPurchase", ajoPurchase, listener);
         }
 
         public static void TrackAdRevenue(AdTraceAdRevenue adRevenue)
@@ -867,6 +916,31 @@ namespace io.adtrace.sdk
                 }
 
                 callback(adtraceSessionFailure);
+            }
+        }
+
+        private class PurchaseVerificationListener : AndroidJavaProxy
+        {
+            private Action<AdTracePurchaseVerificationResult> callback;
+
+            public PurchaseVerificationListener(Action<AdTracePurchaseVerificationResult> pCallback) : base("io.adtrace.sdk.OnPurchaseVerificationFinishedListener")
+            {
+                this.callback = pCallback;
+            }
+
+            public void onVerificationFinished(AndroidJavaObject result)
+            {
+                purchaseVerificationListeners.Remove(this);
+                if (callback == null || result == null)
+                {
+                    return;
+                }
+
+                AdTracePurchaseVerificationResult verificationResult = new AdTracePurchaseVerificationResult(
+                    result.Call<string>("getVerificationStatus"),
+                    result.Call<int>("getCode"),
+                    result.Call<string>("getMessage"));
+                callback(verificationResult);
             }
         }
 

@@ -115,7 +115,11 @@ extern "C"
                           int isSessionSuccessCallbackImplemented,
                           int isSessionFailureCallbackImplemented,
                           int isDeferredDeeplinkCallbackImplemented,
-                          int isConversionValueUpdatedCallbackImplemented) {
+                          int isConversionValueUpdatedCallbackImplemented,
+                          int coppaCompliantEnabled,
+                          int readDeviceInfoOnceEnabled,
+                          int linkMeEnabled,
+                          int attConsentWaitingInterval) {
         NSString *stringAppToken = isStringValid(appToken) == true ? [NSString stringWithUTF8String:appToken] : nil;
         NSString *stringEnvironment = isStringValid(environment) == true ? [NSString stringWithUTF8String:environment] : nil;
         NSString *stringSdkPrefix = isStringValid(sdkPrefix) == true ? [NSString stringWithUTF8String:sdkPrefix] : nil;
@@ -207,6 +211,22 @@ extern "C"
         // Cost data in attribution callback.
         if (needsCost != -1) {
             [adtraceConfig setNeedsCost:(BOOL)needsCost];
+        }
+
+        if (coppaCompliantEnabled != -1) {
+            [adtraceConfig setCoppaCompliantEnabled:(BOOL)coppaCompliantEnabled];
+        }
+
+        if (readDeviceInfoOnceEnabled != -1) {
+            [adtraceConfig setReadDeviceInfoOnceEnabled:(BOOL)readDeviceInfoOnceEnabled];
+        }
+
+        if (linkMeEnabled != -1) {
+            [adtraceConfig setLinkMeEnabled:(BOOL)linkMeEnabled];
+        }
+
+        if (attConsentWaitingInterval >= 0) {
+            [adtraceConfig setAttConsentWaitingInterval:(NSUInteger)attConsentWaitingInterval];
         }
 
         // User agent.
@@ -753,6 +773,39 @@ extern "C"
 
     void _AdtraceCheckForNewAttStatus() {
         [Adtrace checkForNewAttStatus];
+    }
+
+    void _AdtraceVerifyPurchase(const char* transactionId, const char* productId, const char* receipt, const char* sceneName) {
+        NSString *stringTransactionId = isStringValid(transactionId) == true ? [NSString stringWithUTF8String:transactionId] : nil;
+        NSString *stringProductId = isStringValid(productId) == true ? [NSString stringWithUTF8String:productId] : nil;
+        NSString *stringReceipt = isStringValid(receipt) == true ? [NSString stringWithUTF8String:receipt] : nil;
+        NSString *stringSceneName = isStringValid(sceneName) == true ? [NSString stringWithUTF8String:sceneName] : nil;
+        if (stringTransactionId == nil || stringProductId == nil || stringReceipt == nil || stringSceneName == nil) {
+            return;
+        }
+
+        NSData *receiptData = [[NSData alloc] initWithBase64EncodedString:stringReceipt options:0];
+        if (receiptData == nil) {
+            receiptData = [stringReceipt dataUsingEncoding:NSUTF8StringEncoding];
+        }
+
+        ADTPurchase *purchase = [[ADTPurchase alloc] initWithTransactionId:stringTransactionId
+                                                                 productId:stringProductId
+                                                                andReceipt:receiptData];
+        [Adtrace verifyPurchase:purchase
+              completionHandler:^(ADTPurchaseVerificationResult * _Nonnull verificationResult) {
+            NSString *verificationStatus = verificationResult.verificationStatus != nil ? verificationResult.verificationStatus : @"";
+            NSString *message = verificationResult.message != nil ? verificationResult.message : @"";
+            NSDictionary *payload = @{
+                @"verificationStatus": verificationStatus,
+                @"code": [NSNumber numberWithInt:verificationResult.code],
+                @"message": message
+            };
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
+            NSString *json = jsonData != nil ? [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] : @"{}";
+            const char* charJson = [json UTF8String];
+            UnitySendMessage([stringSceneName UTF8String], "GetNativePurchaseVerification", charJson != NULL ? charJson : "{}");
+        }];
     }
 
     int _AdtraceGetAppTrackingAuthorizationStatus() {

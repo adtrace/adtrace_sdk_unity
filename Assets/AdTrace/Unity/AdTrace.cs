@@ -31,6 +31,7 @@ namespace io.adtrace.sdk
         private static Action<AdTraceAttribution> attributionChangedDelegate = null;
         private static Action<int> conversionValueUpdatedDelegate = null;
         private static Action<string> postbackConversionValueCompletionDelegate = null;
+        private static Queue<Action<AdTracePurchaseVerificationResult>> purchaseVerificationDelegates = null;
 #endif
 
         void Awake()
@@ -423,6 +424,48 @@ namespace io.adtrace.sdk
             AdTraceAndroid.TrackAdRevenue(adRevenue);
 #elif (UNITY_WSA || UNITY_WP8)
             Debug.Log("[AdTrace]: Ad revenue tracking is only supported for Android and iOS platforms.");
+#else
+            Debug.Log(errorMsgPlatform);
+#endif
+        }
+
+        public static void verifyPurchase(AdTracePurchase purchase, Action<AdTracePurchaseVerificationResult> callback, string sceneName = "AdTrace")
+        {
+            if (IsEditor())
+            {
+                return;
+            }
+
+            if (purchase == null || callback == null)
+            {
+                return;
+            }
+
+#if UNITY_IOS
+            if (string.IsNullOrEmpty(purchase.transactionId) || string.IsNullOrEmpty(purchase.productId) || string.IsNullOrEmpty(purchase.receipt))
+            {
+                Debug.Log("[AdTrace]: iOS purchase verification requires transactionId, productId, and receipt.");
+                return;
+            }
+#elif UNITY_ANDROID
+            if (string.IsNullOrEmpty(purchase.productId) || string.IsNullOrEmpty(purchase.purchaseToken))
+            {
+                Debug.Log("[AdTrace]: Android purchase verification requires productId and purchaseToken.");
+                return;
+            }
+#endif
+
+#if UNITY_IOS
+            if (AdTrace.purchaseVerificationDelegates == null)
+            {
+                AdTrace.purchaseVerificationDelegates = new Queue<Action<AdTracePurchaseVerificationResult>>();
+            }
+            AdTrace.purchaseVerificationDelegates.Enqueue(callback);
+            AdtraceiOS.VerifyPurchase(purchase, sceneName);
+#elif UNITY_ANDROID
+            AdTraceAndroid.VerifyPurchase(purchase, callback);
+#elif (UNITY_WSA || UNITY_WP8)
+            Debug.Log("[AdTrace]: Purchase verification is only supported for Android and iOS platforms.");
 #else
             Debug.Log(errorMsgPlatform);
 #endif
@@ -916,6 +959,23 @@ namespace io.adtrace.sdk
             }
 
             AdTrace.postbackConversionValueCompletionDelegate(string.IsNullOrEmpty(error) ? null : error);
+        }
+
+        public void GetNativePurchaseVerification(string verificationResultJson)
+        {
+            if (IsEditor())
+            {
+                return;
+            }
+
+            if (AdTrace.purchaseVerificationDelegates == null || AdTrace.purchaseVerificationDelegates.Count == 0)
+            {
+                Debug.Log("[AdTrace]: Purchase verification delegate was not set.");
+                return;
+            }
+
+            Action<AdTracePurchaseVerificationResult> callback = AdTrace.purchaseVerificationDelegates.Dequeue();
+            callback(new AdTracePurchaseVerificationResult(verificationResultJson));
         }
 
         public void GetNativeConversionValueUpdated(string conversionValue)
