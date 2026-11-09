@@ -358,6 +358,12 @@ public class AdTraceEditor : AssetPostprocessor
             // Add needed permissions if they are missing.
             manifestHasChanged |= AddPermissions(manifestFile);
 
+            // Add package visibility required to read Facebook and Instagram app ids.
+            manifestHasChanged |= AddPackageQueries(manifestFile);
+
+            // Add the provider that tracks sessions when the process starts.
+            manifestHasChanged |= AddLifecycleProvider(manifestFile);
+
             // Add intent filter to main activity if it is missing.
             manifestHasChanged |= AddBroadcastReceiver(manifestFile);
 
@@ -388,6 +394,7 @@ public class AdTraceEditor : AssetPostprocessor
         // <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
         // <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         // <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+        // <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
         UnityEngine.Debug.Log("[AdTrace]: Checking if all permissions needed for the AdTrace SDK are present in the app's AndroidManifest.xml file.");
 
@@ -395,6 +402,7 @@ public class AdTraceEditor : AssetPostprocessor
         bool hasAccessWifiStatePermission = false;
         bool hasAccessNetworkStatePermission = false;
         bool hasInstallReferrerServicePermission = false;
+        bool hasAdIdPermission = false;
 
         XmlElement manifestRoot = manifest.DocumentElement;
 
@@ -420,6 +428,10 @@ public class AdTraceEditor : AssetPostprocessor
                     else if (attribute.Value.Contains("com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"))
                     {
                         hasInstallReferrerServicePermission = true;
+                    }
+                    else if (attribute.Value.Contains("com.google.android.gms.permission.AD_ID"))
+                    {
+                        hasAdIdPermission = true;
                     }
                 }
             }
@@ -483,7 +495,125 @@ public class AdTraceEditor : AssetPostprocessor
             UnityEngine.Debug.Log("[AdTrace]: Your app's AndroidManifest.xml file already contains com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE permission.");
         }
 
+        // If com.google.android.gms.permission.AD_ID permission is missing, add it.
+        if (!hasAdIdPermission)
+        {
+            XmlElement element = manifest.CreateElement("uses-permission");
+            element.SetAttribute("android__name", "com.google.android.gms.permission.AD_ID");
+            manifestRoot.AppendChild(element);
+            UnityEngine.Debug.Log("[AdTrace]: com.google.android.gms.permission.AD_ID permission successfully added to your app's AndroidManifest.xml file.");
+            manifestHasChanged = true;
+        }
+        else
+        {
+            UnityEngine.Debug.Log("[AdTrace]: Your app's AndroidManifest.xml file already contains com.google.android.gms.permission.AD_ID permission.");
+        }
+
         return manifestHasChanged;
+    }
+
+    private static bool AddPackageQueries(XmlDocument manifest)
+    {
+        XmlElement manifestRoot = manifest.DocumentElement;
+        bool hasFacebookPackage = false;
+        bool hasInstagramPackage = false;
+
+        foreach (XmlNode node in manifestRoot.ChildNodes)
+        {
+            if (node.Name != "queries")
+            {
+                continue;
+            }
+
+            foreach (XmlNode packageNode in node.ChildNodes)
+            {
+                if (packageNode.Name != "package" || packageNode.Attributes == null)
+                {
+                    continue;
+                }
+
+                foreach (XmlAttribute attribute in packageNode.Attributes)
+                {
+                    if (attribute.Value.Contains("com.facebook.katana"))
+                    {
+                        hasFacebookPackage = true;
+                    }
+                    else if (attribute.Value.Contains("com.instagram.android"))
+                    {
+                        hasInstagramPackage = true;
+                    }
+                }
+            }
+        }
+
+        if (hasFacebookPackage && hasInstagramPackage)
+        {
+            return false;
+        }
+
+        XmlElement queriesElement = manifest.CreateElement("queries");
+        if (!hasFacebookPackage)
+        {
+            XmlElement facebookPackage = manifest.CreateElement("package");
+            facebookPackage.SetAttribute("android__name", "com.facebook.katana");
+            queriesElement.AppendChild(facebookPackage);
+        }
+        if (!hasInstagramPackage)
+        {
+            XmlElement instagramPackage = manifest.CreateElement("package");
+            instagramPackage.SetAttribute("android__name", "com.instagram.android");
+            queriesElement.AppendChild(instagramPackage);
+        }
+
+        manifestRoot.AppendChild(queriesElement);
+        UnityEngine.Debug.Log("[AdTrace]: Facebook and Instagram package queries added to your app's AndroidManifest.xml file.");
+        return true;
+    }
+
+    private static bool AddLifecycleProvider(XmlDocument manifest)
+    {
+        XmlElement manifestRoot = manifest.DocumentElement;
+        XmlNode applicationNode = null;
+
+        foreach (XmlNode node in manifestRoot.ChildNodes)
+        {
+            if (node.Name == "application")
+            {
+                applicationNode = node;
+                break;
+            }
+        }
+
+        if (applicationNode == null)
+        {
+            UnityEngine.Debug.LogError("[AdTrace]: Your app's AndroidManifest.xml file does not contain \"<application>\" node.");
+            UnityEngine.Debug.LogError("[AdTrace]: Unable to add the AdTrace lifecycle provider to AndroidManifest.xml.");
+            return false;
+        }
+
+        foreach (XmlNode node in applicationNode.ChildNodes)
+        {
+            if (node.Name != "provider" || node.Attributes == null)
+            {
+                continue;
+            }
+
+            foreach (XmlAttribute attribute in node.Attributes)
+            {
+                if (attribute.Value.Contains("io.adtrace.sdk.SystemLifecycleContentProvider"))
+                {
+                    return false;
+                }
+            }
+        }
+
+        XmlElement providerElement = manifest.CreateElement("provider");
+        providerElement.SetAttribute("android__name", "io.adtrace.sdk.SystemLifecycleContentProvider");
+        providerElement.SetAttribute("android__authorities", "${applicationId}.adtrace-lifecycle-provider");
+        providerElement.SetAttribute("android__exported", "false");
+        applicationNode.AppendChild(providerElement);
+        UnityEngine.Debug.Log("[AdTrace]: SystemLifecycleContentProvider successfully added to your app's AndroidManifest.xml file.");
+        return true;
     }
 
     private static bool AddBroadcastReceiver(XmlDocument manifest)
