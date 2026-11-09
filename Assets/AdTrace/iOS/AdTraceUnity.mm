@@ -226,16 +226,12 @@ extern "C"
 
         // URL strategy.
         if (stringUrlStrategy != nil) {
-            if ([stringUrlStrategy isEqualToString:@"china"]) {
-                [adtraceConfig setUrlStrategy:ADTUrlStrategyChina];
-            } else if ([stringUrlStrategy isEqualToString:@"india"]) {
-                [adtraceConfig setUrlStrategy:ADTUrlStrategyIndia];
-            } else if ([stringUrlStrategy isEqualToString:@"data-residency-eu"]) {
-                [adtraceConfig setUrlStrategy:ADTDataResidencyEU];
-            } else if ([stringUrlStrategy isEqualToString:@"data-residency-tr"]) {
-                [adtraceConfig setUrlStrategy:ADTDataResidencyTR];
-            } else if ([stringUrlStrategy isEqualToString:@"data-residency-us"]) {
-                [adtraceConfig setUrlStrategy:ADTDataResidencyUS];
+            if ([stringUrlStrategy isEqualToString:@"url_strategy_ir"]) {
+                [adtraceConfig setUrlStrategy:ADTUrlStrategyIR];
+            } else if ([stringUrlStrategy isEqualToString:@"url_strategy_mobi"]) {
+                [adtraceConfig setUrlStrategy:ADTUrlStrategyMobi];
+            } else if ([stringUrlStrategy isEqualToString:@"data_residency_ir"]) {
+                [adtraceConfig setUrlStrategy:ADTDataResidencyIR];
             }
         }
 

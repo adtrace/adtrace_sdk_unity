@@ -125,30 +125,20 @@ namespace io.adtrace.sdk
             // Check if user has set custom URL strategy.
             if (adtraceConfig.urlStrategy != null)
             {
-                if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceUrlStrategyChina)
+                if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceUrlStrategyIR)
                 {
-                    AndroidJavaObject ajoUrlStrategyChina = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("URL_STRATEGY_CHINA");
-                    ajoAdTraceConfig.Call("setUrlStrategy", ajoUrlStrategyChina);
+                    string urlStrategyIr = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<string>("URL_STRATEGY_IR");
+                    ajoAdTraceConfig.Call("setUrlStrategy", urlStrategyIr);
                 }
-                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceUrlStrategyIndia)
+                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceUrlStrategyMobi)
                 {
-                    AndroidJavaObject ajoUrlStrategyIndia = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("URL_STRATEGY_INDIA");
-                    ajoAdTraceConfig.Call("setUrlStrategy", ajoUrlStrategyIndia);
+                    string urlStrategyMobi = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<string>("URL_STRATEGY_MOBI");
+                    ajoAdTraceConfig.Call("setUrlStrategy", urlStrategyMobi);
                 }
-                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceDataResidencyEU)
+                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceDataResidencyIR)
                 {
-                    AndroidJavaObject ajoDataResidencyEU = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("DATA_RESIDENCY_EU");
-                    ajoAdTraceConfig.Call("setUrlStrategy", ajoDataResidencyEU);
-                }
-                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceDataResidencyTR)
-                {
-                    AndroidJavaObject ajoDataResidencyTR = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("DATA_RESIDENCY_TR");
-                    ajoAdTraceConfig.Call("setUrlStrategy", ajoDataResidencyTR);
-                }
-                else if (adtraceConfig.urlStrategy == AdTraceConfig.AdTraceDataResidencyUS)
-                {
-                    AndroidJavaObject ajoDataResidencyUS = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<AndroidJavaObject>("DATA_RESIDENCY_US");
-                    ajoAdTraceConfig.Call("setUrlStrategy", ajoDataResidencyUS);
+                    string dataResidencyIr = new AndroidJavaClass("io.adtrace.sdk.AdTraceConfig").GetStatic<string>("DATA_RESIDENCY_IR");
+                    ajoAdTraceConfig.Call("setUrlStrategy", dataResidencyIr);
                 }
             }
 

@@ -4,12 +4,9 @@ namespace io.adtrace.sdk
 {
     public class AdTraceConfig
     {
-        public const string AdTraceUrlStrategyChina = "china";
-        public const string AdTraceUrlStrategyIndia = "india";
-
-        public const string AdTraceDataResidencyEU = "data-residency-eu";
-        public const string AdTraceDataResidencyTR = "data-residency-tr";
-        public const string AdTraceDataResidencyUS = "data-residency-us";
+        public const string AdTraceUrlStrategyIR = "url_strategy_ir";
+        public const string AdTraceUrlStrategyMobi = "url_strategy_mobi";
+        public const string AdTraceDataResidencyIR = "data_residency_ir";
 
         public const string AdTraceAdRevenueSourceAppLovinMAX = "applovin_max_sdk";
         public const string AdTraceAdRevenueSourceMopub = "mopub";

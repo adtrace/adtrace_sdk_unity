@@ -54,7 +54,7 @@ public class AdTraceEditor : AssetPostprocessor
         // AdTrace Assets.
         assetsToExport.Add(assetsPath + "/3rd Party/SimpleJSON.cs");
 
-        assetsToExport.Add(assetsPath + "/Android/adtrace-android.jar");
+        assetsToExport.Add(assetsPath + "/Android/adtrace-android.aar");
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroid.cs");
         assetsToExport.Add(assetsPath + "/Android/AdTraceAndroidManifest.xml");
 
