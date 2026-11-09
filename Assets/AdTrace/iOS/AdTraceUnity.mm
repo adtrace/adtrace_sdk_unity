@@ -382,6 +382,41 @@ extern "C"
         return idfaCStringCopy;
     }
 
+    char* _AdtraceGetIdfv() {
+        NSString *idfv = [Adtrace idfv];
+        if (nil == idfv) {
+            return NULL;
+        }
+
+        const char* idfvCString = [idfv UTF8String];
+        if (NULL == idfvCString) {
+            return NULL;
+        }
+
+        char* idfvCStringCopy = strdup(idfvCString);
+        return idfvCStringCopy;
+    }
+
+    char* _AdtraceGetLastDeeplink() {
+        NSURL *lastDeeplink = [Adtrace lastDeeplink];
+        if (nil == lastDeeplink) {
+            return NULL;
+        }
+
+        NSString *lastDeeplinkString = [lastDeeplink absoluteString];
+        if (nil == lastDeeplinkString) {
+            return NULL;
+        }
+
+        const char* lastDeeplinkCString = [lastDeeplinkString UTF8String];
+        if (NULL == lastDeeplinkCString) {
+            return NULL;
+        }
+
+        char* lastDeeplinkCStringCopy = strdup(lastDeeplinkCString);
+        return lastDeeplinkCStringCopy;
+    }
+
     char* _AdtraceGetAdid() {
         NSString *adid = [Adtrace adid];
         if (nil == adid) {
@@ -701,6 +736,27 @@ extern "C"
 
     void _AdtraceUpdateConversionValue(int conversionValue) {
         [Adtrace updateConversionValue:conversionValue];
+    }
+
+    void _AdtraceUpdatePostbackConversionValue(int fineValue, const char* coarseValue, int lockWindow, const char* sceneName) {
+        NSString *stringCoarseValue = isStringValid(coarseValue) == true ? [NSString stringWithUTF8String:coarseValue] : nil;
+        NSString *stringSceneName = isStringValid(sceneName) == true ? [NSString stringWithUTF8String:sceneName] : nil;
+        if (stringCoarseValue == nil || stringSceneName == nil) {
+            return;
+        }
+
+        [Adtrace updatePostbackConversionValue:fineValue
+                                   coarseValue:stringCoarseValue
+                                    lockWindow:(BOOL)lockWindow
+                             completionHandler:^(NSError * _Nullable error) {
+            NSString *errorMessage = nil != error ? [error localizedDescription] : @"";
+            const char* charError = [errorMessage UTF8String];
+            UnitySendMessage([stringSceneName UTF8String], "GetNativePostbackConversionValueCompletion", NULL != charError ? charError : "");
+        }];
+    }
+
+    void _AdtraceCheckForNewAttStatus() {
+        [Adtrace checkForNewAttStatus];
     }
 
     int _AdtraceGetAppTrackingAuthorizationStatus() {

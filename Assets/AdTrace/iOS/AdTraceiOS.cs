@@ -76,6 +76,12 @@ namespace io.adtrace.sdk
         private static extern string _AdtraceGetIdfa();
 
         [DllImport("__Internal")]
+        private static extern string _AdtraceGetIdfv();
+
+        [DllImport("__Internal")]
+        private static extern string _AdtraceGetLastDeeplink();
+
+        [DllImport("__Internal")]
         private static extern string _AdtraceGetAdid();
 
         [DllImport("__Internal")]
@@ -165,6 +171,12 @@ namespace io.adtrace.sdk
 
         [DllImport("__Internal")]
         private static extern void _AdtraceUpdateConversionValue(int conversionValue);
+
+        [DllImport("__Internal")]
+        private static extern void _AdtraceUpdatePostbackConversionValue(int fineValue, string coarseValue, int lockWindow, string sceneName);
+
+        [DllImport("__Internal")]
+        private static extern void _AdtraceCheckForNewAttStatus();
 
         [DllImport("__Internal")]
         private static extern int _AdtraceGetAppTrackingAuthorizationStatus();
@@ -399,6 +411,18 @@ namespace io.adtrace.sdk
             _AdtraceUpdateConversionValue(conversionValue);
         }
 
+        public static void UpdatePostbackConversionValue(int fineValue, string coarseValue, bool lockWindow, string sceneName)
+        {
+            string cCoarseValue = coarseValue != null ? coarseValue : "ADT_INVALID";
+            string cSceneName = sceneName != null ? sceneName : "ADT_INVALID";
+            _AdtraceUpdatePostbackConversionValue(fineValue, cCoarseValue, AdTraceUtils.ConvertBool(lockWindow), cSceneName);
+        }
+
+        public static void CheckForNewAttStatus()
+        {
+            _AdtraceCheckForNewAttStatus();
+        }
+
         public static int GetAppTrackingAuthorizationStatus()
         {
             return _AdtraceGetAppTrackingAuthorizationStatus();
@@ -412,6 +436,16 @@ namespace io.adtrace.sdk
         public static string GetIdfa()
         {
             return _AdtraceGetIdfa();
+        }
+
+        public static string GetIdfv()
+        {
+            return _AdtraceGetIdfv();
+        }
+
+        public static string GetLastDeeplink()
+        {
+            return _AdtraceGetLastDeeplink();
         }
 
         public static string GetAdid()

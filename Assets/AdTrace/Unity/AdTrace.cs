@@ -30,6 +30,7 @@ namespace io.adtrace.sdk
         private static Action<AdTraceSessionFailure> sessionFailureDelegate = null;
         private static Action<AdTraceAttribution> attributionChangedDelegate = null;
         private static Action<int> conversionValueUpdatedDelegate = null;
+        private static Action<string> postbackConversionValueCompletionDelegate = null;
 #endif
 
         void Awake()
@@ -540,6 +541,43 @@ namespace io.adtrace.sdk
 #endif
         }
 
+        public static void updatePostbackConversionValue(int fineValue, string coarseValue, bool lockWindow, Action<string> completion, string sceneName = "AdTrace")
+        {
+            if (IsEditor())
+            {
+                return;
+            }
+
+#if UNITY_IOS
+            AdTrace.postbackConversionValueCompletionDelegate = completion;
+            AdtraceiOS.UpdatePostbackConversionValue(fineValue, coarseValue, lockWindow, sceneName);
+#elif UNITY_ANDROID
+            Debug.Log("[AdTrace]: Updating SKAdNetwork postback conversion value is only supported for iOS platform.");
+#elif (UNITY_WSA || UNITY_WP8)
+            Debug.Log("[AdTrace]: Updating SKAdNetwork postback conversion value is only supported for iOS platform.");
+#else
+            Debug.Log(errorMsgPlatform);
+#endif
+        }
+
+        public static void checkForNewAttStatus()
+        {
+            if (IsEditor())
+            {
+                return;
+            }
+
+#if UNITY_IOS
+            AdtraceiOS.CheckForNewAttStatus();
+#elif UNITY_ANDROID
+            Debug.Log("[AdTrace]: Checking ATT status is only supported for iOS platform.");
+#elif (UNITY_WSA || UNITY_WP8)
+            Debug.Log("[AdTrace]: Checking ATT status is only supported for iOS platform.");
+#else
+            Debug.Log(errorMsgPlatform);
+#endif
+        }
+
         public static int getAppTrackingAuthorizationStatus()
         {
             if (IsEditor())
@@ -634,6 +672,48 @@ namespace io.adtrace.sdk
             return string.Empty;
 #elif (UNITY_WSA || UNITY_WP8)
             Debug.Log("[AdTrace]: Error! IDFA is not available on Windows platform.");
+            return string.Empty;
+#else
+            Debug.Log(errorMsgPlatform);
+            return string.Empty;
+#endif
+        }
+
+        public static string getIdfv()
+        {
+            if (IsEditor())
+            {
+                return string.Empty;
+            }
+
+#if UNITY_IOS
+            return AdtraceiOS.GetIdfv();
+#elif UNITY_ANDROID
+            Debug.Log("[AdTrace]: Error! IDFV is not available on Android platform.");
+            return string.Empty;
+#elif (UNITY_WSA || UNITY_WP8)
+            Debug.Log("[AdTrace]: Error! IDFV is not available on Windows platform.");
+            return string.Empty;
+#else
+            Debug.Log(errorMsgPlatform);
+            return string.Empty;
+#endif
+        }
+
+        public static string getLastDeeplink()
+        {
+            if (IsEditor())
+            {
+                return string.Empty;
+            }
+
+#if UNITY_IOS
+            return AdtraceiOS.GetLastDeeplink();
+#elif UNITY_ANDROID
+            Debug.Log("[AdTrace]: Error! Last deeplink is not available on Android platform.");
+            return string.Empty;
+#elif (UNITY_WSA || UNITY_WP8)
+            Debug.Log("[AdTrace]: Error! Last deeplink is not available on Windows platform.");
             return string.Empty;
 #else
             Debug.Log(errorMsgPlatform);
@@ -820,6 +900,22 @@ namespace io.adtrace.sdk
             }
 
             AdTrace.deferredDeeplinkDelegate(deeplinkURL);
+        }
+
+        public void GetNativePostbackConversionValueCompletion(string error)
+        {
+            if (IsEditor())
+            {
+                return;
+            }
+
+            if (AdTrace.postbackConversionValueCompletionDelegate == null)
+            {
+                Debug.Log("[AdTrace]: Postback conversion value completion delegate was not set.");
+                return;
+            }
+
+            AdTrace.postbackConversionValueCompletionDelegate(string.IsNullOrEmpty(error) ? null : error);
         }
 
         public void GetNativeConversionValueUpdated(string conversionValue)
