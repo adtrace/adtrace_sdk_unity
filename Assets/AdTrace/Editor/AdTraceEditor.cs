@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
-#if UNITY_IOS
+#if UNITY_IOS || UNITY_TVOS
 using UnityEditor.iOS.Xcode;
 #endif
 
@@ -73,6 +73,7 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/iOS/ADTLogger.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTPurchase.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTPurchaseVerificationResult.h");
+        assetsToExport.Add(assetsPath + "/iOS/PrivacyInfo.xcprivacy");
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionFailure.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionSuccess.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSubscription.h");
@@ -142,10 +143,11 @@ public class AdTraceEditor : AssetPostprocessor
             UnityEngine.Debug.Log("[AdTrace]: Starting to perform post build tasks for Android platform.");
             RunPostProcessTasksAndroid();
         }
-        else if (target == BuildTarget.iOS)
+        else if (target == BuildTarget.iOS || target == BuildTarget.tvOS)
         {
-#if UNITY_IOS
-            UnityEngine.Debug.Log("[AdTrace]: Starting to perform post build tasks for iOS platform.");
+#if UNITY_IOS || UNITY_TVOS
+            bool isTvOs = target == BuildTarget.tvOS;
+            UnityEngine.Debug.Log("[AdTrace]: Starting to perform post build tasks for " + (isTvOs ? "tvOS" : "iOS") + " platform.");
             
             string xcodeProjectPath = projectPath + "/Unity-iPhone.xcodeproj/project.pbxproj";
 
@@ -218,11 +220,97 @@ public class AdTraceEditor : AssetPostprocessor
                 xcodeProject.AddBuildProperty(xcodeTarget, "OTHER_LDFLAGS", "-force_load $(PROJECT_DIR)/Libraries/AdTrace/iOS/AdTraceSigSdk.a");
             }
 
+            // iOS SDK 3.0.0 requires iOS 12.0 and tvOS 12.0.
+            string deploymentTargetSetting = isTvOs ? "TVOS_DEPLOYMENT_TARGET" : "IPHONEOS_DEPLOYMENT_TARGET";
+            EnsureMinimumDeploymentTarget(xcodeProject, xcodeTarget, deploymentTargetSetting, "12.0");
+#if UNITY_2019_3_OR_NEWER
+            string mainTarget = xcodeProject.GetUnityMainTargetGuid();
+            EnsureMinimumDeploymentTarget(xcodeProject, mainTarget, deploymentTargetSetting, "12.0");
+#endif
+
+            AddPrivacyManifest(xcodeProject, projectPath, xcodeTarget);
+
             // Save the changes to Xcode project file.
             xcodeProject.WriteToFile(xcodeProjectPath);
 #endif
         }
     }
+
+#if UNITY_IOS || UNITY_TVOS
+    private static void EnsureMinimumDeploymentTarget(PBXProject xcodeProject, string targetGuid, string settingName, string minimumVersion)
+    {
+        string currentValue = xcodeProject.GetBuildPropertyForAnyConfig(targetGuid, settingName);
+        if (!IsVersionLower(currentValue, minimumVersion))
+        {
+            return;
+        }
+
+        UnityEngine.Debug.Log("[AdTrace]: Setting " + settingName + " to " + minimumVersion + ".");
+        xcodeProject.SetBuildProperty(targetGuid, settingName, minimumVersion);
+    }
+
+    private static bool IsVersionLower(string currentValue, string minimumVersion)
+    {
+        if (string.IsNullOrEmpty(currentValue))
+        {
+            return true;
+        }
+
+        string[] currentParts = currentValue.Split('.');
+        string[] minimumParts = minimumVersion.Split('.');
+        int length = Math.Max(currentParts.Length, minimumParts.Length);
+        for (int i = 0; i < length; i++)
+        {
+            int currentPart = 0;
+            int minimumPart = 0;
+            if (i < currentParts.Length)
+            {
+                int.TryParse(currentParts[i], out currentPart);
+            }
+            if (i < minimumParts.Length)
+            {
+                int.TryParse(minimumParts[i], out minimumPart);
+            }
+            if (currentPart != minimumPart)
+            {
+                return currentPart < minimumPart;
+            }
+        }
+
+        return false;
+    }
+
+    private static void AddPrivacyManifest(PBXProject xcodeProject, string projectPath, string targetGuid)
+    {
+        const string fileName = "PrivacyInfo.xcprivacy";
+        string sourcePath = Path.Combine(Application.dataPath, "AdTrace/iOS", fileName);
+        string relativePath = "Libraries/AdTrace/iOS/" + fileName;
+        string destinationPath = Path.Combine(projectPath, relativePath);
+
+        if (!File.Exists(sourcePath))
+        {
+            UnityEngine.Debug.Log("[AdTrace]: PrivacyInfo.xcprivacy was not found at " + sourcePath + ".");
+            return;
+        }
+
+        string destinationDirectory = Path.GetDirectoryName(destinationPath);
+        if (!Directory.Exists(destinationDirectory))
+        {
+            Directory.CreateDirectory(destinationDirectory);
+        }
+
+        File.Copy(sourcePath, destinationPath, true);
+
+        string fileGuid = xcodeProject.FindFileGuidByProjectPath(relativePath);
+        if (string.IsNullOrEmpty(fileGuid))
+        {
+            fileGuid = xcodeProject.AddFile(relativePath, relativePath, PBXSourceTree.Source);
+        }
+
+        xcodeProject.AddFileToBuild(targetGuid, fileGuid);
+        UnityEngine.Debug.Log("[AdTrace]: Added PrivacyInfo.xcprivacy to the Xcode project.");
+    }
+#endif
 
     private static void RunPostProcessTasksiOS(string projectPath) {}
 
