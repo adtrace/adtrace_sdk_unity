@@ -71,6 +71,8 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/iOS/ADTEventFailure.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTEventSuccess.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTLogger.h");
+        assetsToExport.Add(assetsPath + "/iOS/ADTPurchase.h");
+        assetsToExport.Add(assetsPath + "/iOS/ADTPurchaseVerificationResult.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionFailure.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionSuccess.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSubscription.h");
