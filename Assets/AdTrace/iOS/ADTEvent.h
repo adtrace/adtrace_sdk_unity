@@ -1,10 +1,3 @@
-//
-//  ADTEvent.h
-//  adtrace
-//
-//  Created by Pedro Filipe on 15/10/14.
-//  Copyright (c) 2014 adtrace GmbH. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 
@@ -44,14 +37,20 @@
 @property (nonatomic, copy, readonly, nonnull) NSData *receipt;
 
 /**
- * @brief List of value parameters.
- */
-@property (nonatomic, readonly, nonnull) NSDictionary *valueParameters;
-
-/**
  * @brief List of callback parameters.
  */
 @property (nonatomic, readonly, nonnull) NSDictionary *callbackParameters;
+
+/**
+ * @brief List of partner parameters.
+ */
+@property (nonatomic, readonly, nonnull) NSDictionary *partnerParameters;
+
+/**
+ * @brief List of event parameters.
+ */
+@property (nonatomic, readonly, nonnull) NSDictionary *eventValueParameters;
+
 
 /**
  * @brief Is the given receipt empty.
@@ -59,10 +58,15 @@
 @property (nonatomic, assign, readonly) BOOL emptyReceipt;
 
 /**
+ * @brief IAP product ID.
+ */
+@property (nonatomic, copy, readonly, nonnull) NSString *productId;
+
+/**
  * @brief Create Event object with event token.
  *
  * @param eventToken Event token that is created in the dashboard
- *                   at http://adtrace.com and should be six characters long.
+ *                   at http://adtrace.io and should be six characters long.
  */
 + (nullable ADTEvent *)eventWithEventToken:(nonnull NSString *)eventToken;
 
@@ -74,7 +78,7 @@
  * @param key String key in the callback URL.
  * @param value String value of the key in the Callback URL.
  *
- * @note In your dashboard at http://adtrace.com you can assign a callback URL to each
+ * @note In your dashboard at http://adtrace.io you can assign a callback URL to each
  *       event type. That URL will get called every time the event is triggered. On
  *       top of that you can add callback parameters to the following method that
  *       will be forwarded to these callbacks.
@@ -82,11 +86,19 @@
 - (void)addCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
- * @brief Add a key-pair to be sent with the event.
+ * @brief Add a key-pair to be fowarded to a partner.
  *
- * @param key String key to be with the event.
- * @param value String value of the key to be with the event.
+ * @param key String key to be fowarded to the partner.
+ * @param value String value of the key to be fowarded to the partner.
  */
+- (void)addPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+
+/**
+ * @brief Add a key-pair to be sent with event.
+ *
+ * @param key String key to be sent with event.
+ * @param value String value of the key to be sent with event.
+ *  */
 - (void)addEventValueParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 /**
@@ -120,6 +132,20 @@
 - (void)setCallbackId:(nonnull NSString *)callbackId;
 
 /**
+ * @brief Set the product ID of a In-App Purchases to perform IAP verification.
+ *
+ * @param productId The product ID of the purchased item.
+ */
+- (void)setProductId:(NSString * _Nonnull)productId;
+
+/**
+ * @brief Set the receipt of a In-App Purchases to perform IAP verification.
+ *
+ * @param receipt The receipt obtained after successful IAP.
+ */
+- (void)setReceipt:(NSData * _Nonnull)receipt;
+
+/**
  * @brief Check if created adtrace event object is valid.
  *
  * @return Boolean indicating whether the adtrace event object is valid or not.
@@ -133,7 +159,6 @@
  * @param transactionId The identifier used to validate the receipt and to avoid duplicate revenue events.
  *
  * @note This method is obsolete and should not be used.
- *       For more information, visit: https://github.com/adtrace/ios_purchase_sdk
  */
 - (void)setReceipt:(nonnull NSData *)receipt transactionId:(nonnull NSString *)transactionId;
 

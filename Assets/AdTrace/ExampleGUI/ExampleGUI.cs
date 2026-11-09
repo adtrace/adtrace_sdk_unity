@@ -26,7 +26,7 @@ public class ExampleGUI : MonoBehaviour
         {
             if (!string.Equals(txtManualLaunch, "SDK Launched", StringComparison.OrdinalIgnoreCase))
             {
-                AdTraceConfig adtraceConfig = new AdTraceConfig("2fm9gkqubvpc", AdTraceEnvironment.Sandbox);
+                AdTraceConfig adtraceConfig = new AdTraceConfig("{YourAppToken}", AdTraceEnvironment.Sandbox);
                 adtraceConfig.setLogLevel(AdTraceLogLevel.Verbose);
                 adtraceConfig.setLogDelegate(msg => Debug.Log(msg));
                 adtraceConfig.setEventSuccessDelegate(EventSuccessCallback);
@@ -44,20 +44,20 @@ public class ExampleGUI : MonoBehaviour
         
         if (GUI.Button(new Rect(0, Screen.height * 1 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Simple Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("g3mfiw");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
             AdTrace.trackEvent(adtraceEvent);
         }
 
         if (GUI.Button(new Rect(0, Screen.height * 2 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Revenue Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("a4fd35");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
             adtraceEvent.setRevenue(0.25, "EUR");
             AdTrace.trackEvent(adtraceEvent);
         }
 
         if (GUI.Button(new Rect(0, Screen.height * 3 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Callback Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("34vgg9");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
             adtraceEvent.addCallbackParameter("key", "value");
             adtraceEvent.addCallbackParameter("foo", "bar");
             AdTrace.trackEvent(adtraceEvent);
@@ -65,7 +65,7 @@ public class ExampleGUI : MonoBehaviour
 
         if (GUI.Button(new Rect(0, Screen.height * 4 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Value Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("w788qs");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
             adtraceEvent.addValueParameter("key", "value");
             adtraceEvent.addValueParameter("foo", "bar");
             AdTrace.trackEvent(adtraceEvent);

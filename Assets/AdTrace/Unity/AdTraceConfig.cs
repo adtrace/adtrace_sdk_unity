@@ -4,12 +4,9 @@ namespace io.adtrace.sdk
 {
     public class AdTraceConfig
     {
-        public const string AdTraceUrlStrategyChina = "china";
-        public const string AdTraceUrlStrategyIndia = "india";
-
-        public const string AdTraceDataResidencyEU = "data-residency-eu";
-        public const string AdTraceDataResidencyTR = "data-residency-tr";
-        public const string AdTraceDataResidencyUS = "data-residency-us";
+        public const string AdTraceUrlStrategyIR = "url_strategy_ir";
+        public const string AdTraceUrlStrategyMobi = "url_strategy_mobi";
+        public const string AdTraceDataResidencyIR = "data_residency_ir";
 
         public const string AdTraceAdRevenueSourceAppLovinMAX = "applovin_max_sdk";
         public const string AdTraceAdRevenueSourceMopub = "mopub";
@@ -18,6 +15,9 @@ namespace io.adtrace.sdk
         public const string AdTraceAdRevenueSourceAdmost = "admost_sdk";
         public const string AdTraceAdRevenueSourceUnity = "unity_sdk";
         public const string AdTraceAdRevenueSourceHeliumChartboost = "helium_chartboost_sdk";
+        public const string AdTraceAdRevenueSourcePublisher = "publisher_sdk";
+        public const string AdTraceAdRevenueSourceTopOn = "topon_sdk";
+        public const string AdTraceAdRevenueSourceAdx = "adx_sdk";
 
         internal string appToken;
         internal string sceneName;
@@ -36,6 +36,8 @@ namespace io.adtrace.sdk
         internal bool? eventBufferingEnabled;
         internal bool? allowSuppressLogLevel;
         internal bool? needsCost;
+        internal bool? readDeviceInfoOnceEnabled;
+        internal bool? coppaCompliantEnabled;
         internal bool launchDeferredDeeplink;
         internal AdTraceLogLevel? logLevel;
         internal AdTraceEnvironment environment;
@@ -50,12 +52,19 @@ namespace io.adtrace.sdk
         // Android specific members
         internal bool? readImei;
         internal bool? preinstallTrackingEnabled;
+        internal bool? playStoreKidsAppEnabled;
+        internal bool? finalAttributionEnabled;
         internal string processName;
+        internal string fbAppId;
+        internal string preinstallFilePath;
+        internal string appVersionAppTokenChanged;
         // iOS specific members
         internal bool? allowiAdInfoReading;
         internal bool? allowAdServicesInfoReading;
         internal bool? allowIdfaReading;
         internal bool? skAdNetworkHandling;
+        internal bool? linkMeEnabled;
+        internal int? attConsentWaitingInterval;
         // Windows specific members
         internal Action<String> logDelegate;
 
@@ -109,6 +118,16 @@ namespace io.adtrace.sdk
         public void setNeedsCost(bool needsCost)
         {
             this.needsCost = needsCost;
+        }
+
+        public void setReadDeviceInfoOnceEnabled(bool readDeviceInfoOnceEnabled)
+        {
+            this.readDeviceInfoOnceEnabled = readDeviceInfoOnceEnabled;
+        }
+
+        public void setCoppaCompliantEnabled(bool coppaCompliantEnabled)
+        {
+            this.coppaCompliantEnabled = coppaCompliantEnabled;
         }
 
         public void setDelayStart(double delayStart)
@@ -238,6 +257,16 @@ namespace io.adtrace.sdk
             this.allowIdfaReading = allowIdfaReading;
         }
 
+        public void setLinkMeEnabled(bool linkMeEnabled)
+        {
+            this.linkMeEnabled = linkMeEnabled;
+        }
+
+        public void setAttConsentWaitingInterval(int attConsentWaitingInterval)
+        {
+            this.attConsentWaitingInterval = attConsentWaitingInterval;
+        }
+
         // Android specific methods.
         public void setProcessName(string processName)
         {
@@ -253,6 +282,31 @@ namespace io.adtrace.sdk
         public void setPreinstallTrackingEnabled(bool preinstallTrackingEnabled)
         {
             this.preinstallTrackingEnabled = preinstallTrackingEnabled;
+        }
+
+        public void setPreinstallFilePath(string preinstallFilePath)
+        {
+            this.preinstallFilePath = preinstallFilePath;
+        }
+
+        public void setPlayStoreKidsAppEnabled(bool playStoreKidsAppEnabled)
+        {
+            this.playStoreKidsAppEnabled = playStoreKidsAppEnabled;
+        }
+
+        public void setFinalAttributionEnabled(bool finalAttributionEnabled)
+        {
+            this.finalAttributionEnabled = finalAttributionEnabled;
+        }
+
+        public void setFbAppId(string fbAppId)
+        {
+            this.fbAppId = fbAppId;
+        }
+
+        public void setAppVersionAppTokenChanged(string appVersionAppTokenChanged)
+        {
+            this.appVersionAppTokenChanged = appVersionAppTokenChanged;
         }
 
         // Windows specific methods.

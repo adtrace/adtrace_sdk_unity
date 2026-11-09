@@ -8,7 +8,7 @@ namespace io.adtrace.sdk
 #if UNITY_IOS
     public class AdtraceiOS
     {
-        private const string sdkPrefix = "unity2.0.1";
+        private const string sdkPrefix = "unity3.0.0";
 
         [DllImport("__Internal")]
         private static extern void _AdtraceLaunchApp(
@@ -43,7 +43,11 @@ namespace io.adtrace.sdk
             int isSessionSuccessCallbackImplemented,
             int isSessionFailureCallbackImplemented,
             int isDeferredDeeplinkCallbackImplemented,
-            int isConversionValueUpdatedCallbackImplemented);
+            int isConversionValueUpdatedCallbackImplemented,
+            int coppaCompliantEnabled,
+            int readDeviceInfoOnceEnabled,
+            int linkMeEnabled,
+            int attConsentWaitingInterval);
 
         [DllImport("__Internal")]
         private static extern void _AdtraceTrackEvent(
@@ -55,7 +59,8 @@ namespace io.adtrace.sdk
             string callbackId,
             int isReceiptSet,
             string jsonCallbackParameters,
-            string jsonValueParameters);
+            string jsonValueParameters,
+            string productId);
 
         [DllImport("__Internal")]
         private static extern void _AdtraceSetEnabled(int enabled);
@@ -74,6 +79,12 @@ namespace io.adtrace.sdk
 
         [DllImport("__Internal")]
         private static extern string _AdtraceGetIdfa();
+
+        [DllImport("__Internal")]
+        private static extern string _AdtraceGetIdfv();
+
+        [DllImport("__Internal")]
+        private static extern string _AdtraceGetLastDeeplink();
 
         [DllImport("__Internal")]
         private static extern string _AdtraceGetAdid();
@@ -157,7 +168,6 @@ namespace io.adtrace.sdk
             int teardown,
             int deleteState,
             int noBackoffWait,
-            int iAdFrameworkEnabled,
             int adServicesFrameworkEnabled);
 
         [DllImport("__Internal")]
@@ -165,6 +175,15 @@ namespace io.adtrace.sdk
 
         [DllImport("__Internal")]
         private static extern void _AdtraceUpdateConversionValue(int conversionValue);
+
+        [DllImport("__Internal")]
+        private static extern void _AdtraceUpdatePostbackConversionValue(int fineValue, string coarseValue, int lockWindow, string sceneName);
+
+        [DllImport("__Internal")]
+        private static extern void _AdtraceCheckForNewAttStatus();
+
+        [DllImport("__Internal")]
+        private static extern void _AdtraceVerifyPurchase(string transactionId, string productId, string receipt, string sceneName);
 
         [DllImport("__Internal")]
         private static extern int _AdtraceGetAppTrackingAuthorizationStatus();
@@ -210,6 +229,10 @@ namespace io.adtrace.sdk
             int isSessionFailureCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getSessionFailureDelegate() != null);
             int isDeferredDeeplinkCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getDeferredDeeplinkDelegate() != null);
             int isConversionValueUpdatedCallbackImplemented = AdTraceUtils.ConvertBool(adtraceConfig.getConversionValueUpdatedDelegate() != null);
+            int coppaCompliantEnabled = AdTraceUtils.ConvertBool(adtraceConfig.coppaCompliantEnabled);
+            int readDeviceInfoOnceEnabled = AdTraceUtils.ConvertBool(adtraceConfig.readDeviceInfoOnceEnabled);
+            int linkMeEnabled = AdTraceUtils.ConvertBool(adtraceConfig.linkMeEnabled);
+            int attConsentWaitingInterval = adtraceConfig.attConsentWaitingInterval.HasValue ? adtraceConfig.attConsentWaitingInterval.Value : -1;
 
             _AdtraceLaunchApp(
                 appToken,
@@ -243,7 +266,11 @@ namespace io.adtrace.sdk
                 isSessionSuccessCallbackImplemented,
                 isSessionFailureCallbackImplemented,
                 isDeferredDeeplinkCallbackImplemented,
-                isConversionValueUpdatedCallbackImplemented);
+                isConversionValueUpdatedCallbackImplemented,
+                coppaCompliantEnabled,
+                readDeviceInfoOnceEnabled,
+                linkMeEnabled,
+                attConsentWaitingInterval);
         }
 
         public static void TrackEvent(AdTraceEvent adtraceEvent)
@@ -255,10 +282,11 @@ namespace io.adtrace.sdk
             string receipt = adtraceEvent.receipt;
             string transactionId = adtraceEvent.transactionId;
             string callbackId = adtraceEvent.callbackId;
+            string productId = adtraceEvent.productId;
             string stringJsonCallbackParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.callbackList);
             string stringJsonValueParameters = AdTraceUtils.ConvertListToJson(adtraceEvent.valueList);
 
-            _AdtraceTrackEvent(eventToken, revenue, currency, receipt, transactionId, callbackId, isReceiptSet, stringJsonCallbackParameters, stringJsonValueParameters);
+            _AdtraceTrackEvent(eventToken, revenue, currency, receipt, transactionId, callbackId, isReceiptSet, stringJsonCallbackParameters, stringJsonValueParameters, productId);
         }        
 
         public static void SetEnabled(bool enabled)
@@ -399,6 +427,27 @@ namespace io.adtrace.sdk
             _AdtraceUpdateConversionValue(conversionValue);
         }
 
+        public static void UpdatePostbackConversionValue(int fineValue, string coarseValue, bool lockWindow, string sceneName)
+        {
+            string cCoarseValue = coarseValue != null ? coarseValue : "ADT_INVALID";
+            string cSceneName = sceneName != null ? sceneName : "ADT_INVALID";
+            _AdtraceUpdatePostbackConversionValue(fineValue, cCoarseValue, AdTraceUtils.ConvertBool(lockWindow), cSceneName);
+        }
+
+        public static void CheckForNewAttStatus()
+        {
+            _AdtraceCheckForNewAttStatus();
+        }
+
+        public static void VerifyPurchase(AdTracePurchase purchase, string sceneName)
+        {
+            string transactionId = purchase.transactionId != null ? purchase.transactionId : "ADT_INVALID";
+            string productId = purchase.productId != null ? purchase.productId : "ADT_INVALID";
+            string receipt = purchase.receipt != null ? purchase.receipt : "ADT_INVALID";
+            string cSceneName = sceneName != null ? sceneName : "ADT_INVALID";
+            _AdtraceVerifyPurchase(transactionId, productId, receipt, cSceneName);
+        }
+
         public static int GetAppTrackingAuthorizationStatus()
         {
             return _AdtraceGetAppTrackingAuthorizationStatus();
@@ -412,6 +461,16 @@ namespace io.adtrace.sdk
         public static string GetIdfa()
         {
             return _AdtraceGetIdfa();
+        }
+
+        public static string GetIdfv()
+        {
+            return _AdtraceGetIdfv();
+        }
+
+        public static string GetLastDeeplink()
+        {
+            return _AdtraceGetLastDeeplink();
         }
 
         public static string GetAdid()
@@ -460,7 +519,6 @@ namespace io.adtrace.sdk
             bool teardown = false;
             bool deleteState = false;
             bool noBackoffWait = false;
-            bool iAdFrameworkEnabled = false;
             bool adServicesFrameworkEnabled = false;
 
             if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsTimerIntervalInMilliseconds)) 
@@ -491,10 +549,6 @@ namespace io.adtrace.sdk
             {
                 noBackoffWait = testOptions[AdTraceUtils.KeyTestOptionsNoBackoffWait].ToLower() == "true";
             }
-            if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsiAdFrameworkEnabled))
-            {
-                iAdFrameworkEnabled = testOptions[AdTraceUtils.KeyTestOptionsiAdFrameworkEnabled].ToLower() == "true";
-            }
             if (testOptions.ContainsKey(AdTraceUtils.KeyTestOptionsAdServicesFrameworkEnabled))
             {
                 adServicesFrameworkEnabled = testOptions[AdTraceUtils.KeyTestOptionsAdServicesFrameworkEnabled].ToLower() == "true";
@@ -512,7 +566,6 @@ namespace io.adtrace.sdk
                 AdTraceUtils.ConvertBool(teardown),
                 AdTraceUtils.ConvertBool(deleteState),
                 AdTraceUtils.ConvertBool(noBackoffWait),
-                AdTraceUtils.ConvertBool(iAdFrameworkEnabled),
                 AdTraceUtils.ConvertBool(adServicesFrameworkEnabled));
         }
 

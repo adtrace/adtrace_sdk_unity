@@ -1,10 +1,3 @@
-//
-//  ADTSubscription.h
-//  Adtrace
-//
-//  Created by Uglješa Erceg on 16.04.20.
-//  Copyright © 2020 adtrace GmbH. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 
