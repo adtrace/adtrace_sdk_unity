@@ -44,20 +44,20 @@ public class ExampleGUI : MonoBehaviour
         
         if (GUI.Button(new Rect(0, Screen.height * 1 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Simple Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("{YourEventToken}");
             AdTrace.trackEvent(adtraceEvent);
         }
 
         if (GUI.Button(new Rect(0, Screen.height * 2 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Revenue Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("{YourEventToken}");
             adtraceEvent.setRevenue(0.25, "EUR");
             AdTrace.trackEvent(adtraceEvent);
         }
 
         if (GUI.Button(new Rect(0, Screen.height * 3 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Callback Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("{YourEventToken}");
             adtraceEvent.addCallbackParameter("key", "value");
             adtraceEvent.addCallbackParameter("foo", "bar");
             AdTrace.trackEvent(adtraceEvent);
@@ -65,7 +65,7 @@ public class ExampleGUI : MonoBehaviour
 
         if (GUI.Button(new Rect(0, Screen.height * 4 / numberOfButtons, Screen.width, Screen.height / numberOfButtons), "Track Value Event"))
         {
-            AdTraceEvent adtraceEvent = new AdTraceEvent("j8zxug");
+            AdTraceEvent adtraceEvent = new AdTraceEvent("{YourEventToken}");
             adtraceEvent.addValueParameter("key", "value");
             adtraceEvent.addValueParameter("foo", "bar");
             AdTrace.trackEvent(adtraceEvent);
