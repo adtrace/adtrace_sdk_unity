@@ -87,7 +87,6 @@ Read this in other languages: [English][en-readme],
       * [Disable third-party sharing](#ad-disable-third-party-sharing)
       * [Enable third-party sharing](#ad-enable-third-party-sharing)
    * [Measurement consent](#ad-measurement-consent)
-   * [Data residency](#ad-data-residency)
 
 ### Testing and troubleshooting
    * [Debug information in iOS](#tt-debug-ios)
@@ -1204,14 +1203,6 @@ AdTrace.trackMeasurementConsent(true);
 ```
 
 Upon receiving this information, AdTrace changes sharing the specific user's data to partners. The AdTrace SDK will continue to work as expected.
-
-### <a id="ad-data-residency"></a>Data residency
-
-Call `setUrlStrategy` on the `AdTraceConfig` instance with this constant:
-
-```objc
-adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceDataResidencyIR); // Iran data residency
-```
 
 ## Testing and troubleshooting
 
