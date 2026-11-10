@@ -65,11 +65,13 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.prefab");
         assetsToExport.Add(assetsPath + "/ExampleGUI/ExampleGUI.unity");
 
+        assetsToExport.Add(assetsPath + "/iOS/ADTAdRevenue.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTAttribution.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTConfig.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTEvent.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTEventFailure.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTEventSuccess.h");
+        assetsToExport.Add(assetsPath + "/iOS/ADTLinkResolution.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTLogger.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTPurchase.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTPurchaseVerificationResult.h");
@@ -77,6 +79,7 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionFailure.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSessionSuccess.h");
         assetsToExport.Add(assetsPath + "/iOS/ADTSubscription.h");
+        assetsToExport.Add(assetsPath + "/iOS/ADTThirdPartySharing.h");
         assetsToExport.Add(assetsPath + "/iOS/AdTrace.h");
         assetsToExport.Add(assetsPath + "/iOS/AdTraceiOS.cs");
         assetsToExport.Add(assetsPath + "/iOS/AdTraceSdk.a");
@@ -88,6 +91,7 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/Prefab/AdTrace.prefab");
 
         assetsToExport.Add(assetsPath + "/Unity/AdTrace.cs");
+        assetsToExport.Add(assetsPath + "/Unity/AdTraceAdRevenue.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceAppStoreSubscription.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceAttribution.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceConfig.cs");
@@ -101,6 +105,7 @@ public class AdTraceEditor : AssetPostprocessor
         assetsToExport.Add(assetsPath + "/Unity/AdTracePurchaseVerificationResult.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceSessionFailure.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceSessionSuccess.cs");
+        assetsToExport.Add(assetsPath + "/Unity/AdTraceThirdPartySharing.cs");
         assetsToExport.Add(assetsPath + "/Unity/AdTraceUtils.cs");
 
         assetsToExport.Add(assetsPath + "/Windows/AdTraceWindows.cs");
