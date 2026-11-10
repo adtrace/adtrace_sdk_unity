@@ -1207,11 +1207,9 @@ Upon receiving this information, AdTrace changes sharing the specific user's dat
 
 ### <a id="ad-data-residency"></a>Data residency
 
-Call `setUrlStrategy` on the `AdTraceConfig` instance with one of the following constants:
+Call `setUrlStrategy` on the `AdTraceConfig` instance with this constant:
 
 ```objc
-adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceUrlStrategyIR); // Iran URL strategy
-adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceUrlStrategyMobi); // Mobi URL strategy
 adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceDataResidencyIR); // Iran data residency
 ```
 
