@@ -104,7 +104,7 @@ To integrate the AdTrace SDK into your Unity project, follow these steps.
 
 ### <a id="qs-get-sdk"></a>Get the SDK
 
-As of version `2.0.1`, you can add AdTrace SDK from the latest version from our [releases page][releases].
+Version `3.0.0` is available from our [releases page][releases].
 
 ### <a id="qs-add-sdk"></a>Add the SDK to your project
 
@@ -197,7 +197,7 @@ With Google Play Services library 15.0.0, Google has moved the classes needed to
 
 #### <a id="gps-adid-permission"></a>Add permission to gather Google advertising ID
 
-If you are targeting Android 12 and above (API level 31), you need to add the `com.google.android.gms.AD_ID` permission to read the device's advertising ID. This is not done automatically during the [post-build process](#qs-post-build-android). Add the following line to your `AndroidManifest.xml` to enable the permission.
+If you are targeting Android 12 and above (API level 31), the app needs the `com.google.android.gms.permission.AD_ID` permission to read the device's advertising ID. The [post-build process](#qs-post-build-android) adds the following line to your `AndroidManifest.xml`.
 
 ```xml
 <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
@@ -260,6 +260,8 @@ To execute the iOS post-build process properly, use Unity 5 or later and have `i
 - Adds the `CoreTelephony.framework` (needed for reading type of network device is connected to)
 - Adds the other linker flag `-ObjC` (needed to recognize AdTrace Objective-C categories during build time)
 - Enables `Objective-C exceptions`
+- Sets the iOS and tvOS deployment target to `12.0` when it is missing or lower
+- Adds `PrivacyInfo.xcprivacy` to the Xcode project
 
 In case you enable iOS 14+ support (`Assets/AdTrace/Toggle iOS 14 Support`), iOS post-build process will add two additional frameworks to your Xcode project:
 
@@ -274,6 +276,7 @@ The Android post-build process makes changes to the `AndroidManifest.xml` file l
 - Adds the `ACCESS_WIFI_STATE` permission (needed if you are not distributing your app via the Play Store)
 - Adds the `ACCESS_NETWORK_STATE` permission (needed for reading type of network device is connected to)
 - Adds the `BIND_GET_INSTALL_REFERRER_SERVICE` permission (needed for the new Google install referrer API to work)
+- Adds the `com.google.android.gms.permission.AD_ID` permission (needed to read the Google advertising ID on Android 12 and above)
 - Adds the AdTrace broadcast receiver (needed for getting install referrer information via Google Play Store intent). For more details, consult the official [Android SDK README][android]. 
 
 **Note:** If you are using your own broadcast receiver to handle the `INSTALL_REFERRER` intent, you don't need to add the AdTrace broadcast receiver to your manifest file. Remove it, but add the call to the AdTrace broadcast receiver inside your own receiver, as described in the [Android guide][android-custom-receiver].
@@ -610,7 +613,7 @@ To get the current app tracking authorization status you can call `getAppTrackin
 
 **Note**: This feature exists only in iOS platform.
 
-If you have implemented the AdTrace iOS SDK v4.23.0 or above and your app is running on iOS 14 and above, the communication with SKAdNetwork will be set on by default, although you can choose to turn it off. When set on, AdTrace automatically registers for SKAdNetwork attribution when the SDK is initialized. If events are set up in the AdTrace panel to receive conversion values, the AdTrace backend sends the conversion value data to the SDK. The SDK then sets the conversion value. After AdTrace receives the SKAdNetwork callback data, it is then displayed in the panel.
+On iOS 14 and above, communication with SKAdNetwork is on by default, although you can choose to turn it off. When set on, AdTrace automatically registers for SKAdNetwork attribution when the SDK is initialized. If events are set up in the AdTrace panel to receive conversion values, the AdTrace backend sends the conversion value data to the SDK. The SDK then sets the conversion value. After AdTrace receives the SKAdNetwork callback data, it is then displayed in the panel.
 
 In case you don't want the AdTrace SDK to automatically communicate with SKAdNetwork, you can disable that by calling the following method on configuration object:
 
@@ -969,7 +972,7 @@ string idfa = AdTrace.getIdfa();
 
 The Google Play Services Advertising Identifier (Google advertising ID) is a unique identifier for a device. Users can opt out of sharing their Google advertising ID by toggling the "Opt out of Ads Personalization" setting on their device. When a user has enabled this setting, the AdTrace SDK returns a string of zeros when trying to read the Google advertising ID.
 
-> **Important**: If you are targeting Android 12 and above (API level 31), you need to add the [`com.google.android.gms.AD_ID` permission](#gps-adid-permission) to your app. If you do not add this permission, you will not be able to read the Google advertising ID even if the user has not opted out of sharing their ID.
+> **Important**: If you are targeting Android 12 and above (API level 31), the app needs the [`com.google.android.gms.permission.AD_ID` permission](#gps-adid-permission). The post-build process adds it. Without this permission, the SDK cannot read the Google advertising ID even if the user has not opted out of sharing their ID.
 
 The Google advertising ID can only be read in a background thread. If you call the method `getGoogleAdId` of the `AdTrace` instance with an `Action<string>` delegate, it will work in any situation:
 
@@ -1204,12 +1207,12 @@ Upon receiving this information, AdTrace changes sharing the specific user's dat
 
 ### <a id="ad-data-residency"></a>Data residency
 
-In order to enable data residency feature, make sure to make a call to `setUrlStrategy` method of the `AdTraceConfig` instance with one of the following constants:
+Call `setUrlStrategy` on the `AdTraceConfig` instance with one of the following constants:
 
 ```objc
-adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceDataResidencyEU); // for EU data residency region
-adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceDataResidencyTR); // for Turkey data residency region
-adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceDataResidencyUS); // for US data residency region
+adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceUrlStrategyIR); // Iran URL strategy
+adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceUrlStrategyMobi); // Mobi URL strategy
+adtraceConfig.setUrlStrategy(AdTraceConfig.AdTraceDataResidencyIR); // Iran data residency
 ```
 
 ## Testing and troubleshooting
